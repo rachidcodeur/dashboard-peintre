@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Génère le dashboard HTML récapitulatif de tous les sites peintres déployés.
- * Scanne le dossier output/ pour trouver les départements générés.
+ * Lit deployed.json (mis à jour par deploy.js lors du rsync).
  *
  * Usage : node dashboard-peintre/generate-dashboard.js
  */
@@ -10,53 +10,23 @@ const fs   = require('fs');
 const path = require('path');
 
 const ROOT      = path.resolve(__dirname, '..');
-const OUTPUT    = path.join(ROOT, 'output');
 const COMMUNES  = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'communes.json'), 'utf8'));
 const DASH_DIR  = path.join(ROOT, 'dashboard-peintre');
+const DEPLOYED  = JSON.parse(fs.readFileSync(path.join(DASH_DIR, 'deployed.json'), 'utf8'));
 
 // ─── Index des communes par dep_code ─────────────────────────────────────────
 
 const depNames = {};
 COMMUNES.forEach(c => { if (!depNames[c.dep_code]) depNames[c.dep_code] = c.dep_nom; });
 
-// ─── Scan des dossiers output/ ───────────────────────────────────────────────
+// ─── Lecture du registre deployed.json ───────────────────────────────────────
 
 function scanDepartments() {
-  if (!fs.existsSync(OUTPUT)) return [];
-
-  const entries = fs.readdirSync(OUTPUT).filter(d =>
-    fs.statSync(path.join(OUTPUT, d)).isDirectory()
-  );
-
-  // Dossiers villes : {code}-{nom}  (ex: 33-gironde)
-  // Dossiers dep :    {code}-{nom}-dep (ex: 33-gironde-dep)
-  const depPattern = /^(\d{1,3})-(.+?)(?:-dep)?$/;
-  const depsMap = {};
-
-  entries.forEach(dir => {
-    const m = dir.match(depPattern);
-    if (!m) return;
-    const code = m[1];
-    if (!depsMap[code]) depsMap[code] = { code, nom: '', cities: [], hasDepSite: false };
-
-    if (dir.endsWith('-dep')) {
-      depsMap[code].hasDepSite = true;
-    } else {
-      // Scan les sous-dossiers (villes)
-      const villesDir = path.join(OUTPUT, dir);
-      const cities = fs.readdirSync(villesDir).filter(f =>
-        fs.statSync(path.join(villesDir, f)).isDirectory()
-      );
-      depsMap[code].cities = cities.sort();
-    }
-  });
-
-  // Noms des départements
-  Object.values(depsMap).forEach(dep => {
-    dep.nom = depNames[dep.code] || dep.code;
-  });
-
-  return Object.values(depsMap).sort((a, b) => {
+  return Object.entries(DEPLOYED).map(([code, data]) => ({
+    code,
+    nom: data.nom || depNames[code] || code,
+    cities: (data.cities || []).sort(),
+  })).sort((a, b) => {
     const cA = String(a.code).padStart(3, '0');
     const cB = String(b.code).padStart(3, '0');
     return cA.localeCompare(cB);
