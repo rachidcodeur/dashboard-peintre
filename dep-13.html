@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bouches-du-Rhone (13) — Dashboard Peintres</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f4f7f9;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .dash-header {
+      text-align: center;
+      padding: 2.5rem 1rem 1.5rem;
+    }
+    .dash-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #003c57;
+      margin-bottom: .6rem;
+    }
+    .accent { color: #007198; }
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #04bbff, #007198);
+      color: #fff;
+      padding: .45rem 1.4rem;
+      border-radius: 50px;
+      font-size: .95rem;
+      font-weight: 600;
+    }
+    .back-link {
+      display: inline-block;
+      color: #007198;
+      font-size: .9rem;
+      margin-bottom: .5rem;
+      transition: opacity .2s;
+    }
+    .back-link:hover { opacity: .7; }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    /* Search */
+    .search-box {
+      max-width: 560px;
+      margin: 0 auto 2rem;
+      text-align: center;
+    }
+    .search-box input {
+      width: 100%;
+      padding: .85rem 1.2rem;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 60, 87, 0.15);
+      background: #fff;
+      color: #1a1a1a;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .search-box input::placeholder { color: #999; }
+    .search-box input:focus {
+      border-color: #04bbff;
+      box-shadow: 0 0 0 3px rgba(4, 187, 255, 0.18);
+    }
+    .search-count {
+      margin-top: .5rem;
+      font-size: .85rem;
+      color: #888;
+    }
+
+    /* Department cards grid */
+    .dep-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    .dep-card {
+      background: linear-gradient(145deg, #04bbff, #007198);
+      border-radius: 14px;
+      padding: 1.3rem;
+      transition: transform .2s, box-shadow .2s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+    }
+    .dep-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(0, 113, 152, 0.3);
+    }
+    .dep-card-icon {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.3rem;
+      opacity: .6;
+    }
+    .dep-card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: .35rem;
+    }
+    .dep-card-count {
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 700;
+      font-size: .95rem;
+    }
+    .dep-card-name {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: .85rem;
+      margin-top: .15rem;
+    }
+
+    /* Department detail */
+    .dep-detail-card {
+      background: #fff;
+      border: 1px solid rgba(0, 60, 87, 0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0, 60, 87, 0.06);
+    }
+    .dep-detail-header {
+      background: linear-gradient(135deg, #04bbff, #007198);
+      color: #fff;
+      padding: 1rem 1.5rem;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    /* Sites table */
+    .sites-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .sites-table tr {
+      border-bottom: 1px solid rgba(0, 60, 87, 0.06);
+      transition: background .15s;
+    }
+    .sites-table tr:hover {
+      background: rgba(4, 187, 255, 0.05);
+    }
+    .sites-table td {
+      padding: .75rem 1rem;
+      vertical-align: middle;
+    }
+    .row-num {
+      color: #007198;
+      font-weight: 700;
+      width: 3rem;
+      text-align: center;
+    }
+    .row-name a {
+      color: #1a1a1a;
+      font-weight: 500;
+      transition: color .15s;
+    }
+    .row-name a:hover { color: #007198; }
+    .pop {
+      margin-left: .6rem;
+      color: #007198;
+      font-size: .85rem;
+    }
+    .row-actions {
+      text-align: right;
+      white-space: nowrap;
+    }
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #04bbff, #007198);
+      margin-left: 4px;
+      font-size: .8rem;
+      transition: transform .15s, box-shadow .15s;
+      color: #fff;
+    }
+    .action-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 12px rgba(0, 113, 152, 0.3);
+    }
+    .action-g { font-weight: 700; font-size: .85rem; }
+    .action-b { font-weight: 700; font-size: .85rem; }
+
+    @media (max-width: 640px) {
+      .dash-header h1 { font-size: 1.4rem; }
+      .dep-grid { grid-template-columns: repeat(2, 1fr); gap: .7rem; }
+      .dep-card { padding: 1rem; }
+      .row-actions { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="dash-header">
+    <a href="index.html" class="back-link">← Retour</a>
+    <h1>Peintre en Bâtiment <span class="accent">Bouches-du-Rhone (13)</span></h1>
+    <div class="badge">119 sites en ligne</div>
+  </header>
+
+  <main class="container">
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Rechercher une ville ou un lien..." autocomplete="off">
+      <div class="search-count" id="search-count">119 sites affichés</div>
+    </div>
+
+    <div class="dep-detail-card">
+      <div class="dep-detail-header">
+        🌐 peintre-en-batiment-13.com · 119 sites
+      </div>
+      <table class="sites-table" id="sites-table">
+        <tbody>
+
+          <tr>
+            <td class="row-num">1.</td>
+            <td class="row-name">
+              <a href="https://aix-en-provence.peintre-en-batiment-13.com" target="_blank" rel="noopener">aix-en-provence.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 147 478</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://aix-en-provence.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=aix-en-provence.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:aix-en-provence.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Aix-en-Provence" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Aix-en-Provence" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">2.</td>
+            <td class="row-name">
+              <a href="https://allauch.peintre-en-batiment-13.com" target="_blank" rel="noopener">allauch.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 21 490</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://allauch.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=allauch.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:allauch.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Allauch" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Allauch" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">3.</td>
+            <td class="row-name">
+              <a href="https://alleins.peintre-en-batiment-13.com" target="_blank" rel="noopener">alleins.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 2 764</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://alleins.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=alleins.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:alleins.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Alleins" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Alleins" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">4.</td>
+            <td class="row-name">
+              <a href="https://arles.peintre-en-batiment-13.com" target="_blank" rel="noopener">arles.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 50 415</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://arles.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=arles.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:arles.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Arles" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Arles" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">5.</td>
+            <td class="row-name">
+              <a href="https://aubagne.peintre-en-batiment-13.com" target="_blank" rel="noopener">aubagne.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 47 342</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://aubagne.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=aubagne.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:aubagne.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Aubagne" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Aubagne" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">6.</td>
+            <td class="row-name">
+              <a href="https://aureille.peintre-en-batiment-13.com" target="_blank" rel="noopener">aureille.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 1 541</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://aureille.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=aureille.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:aureille.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Aureille" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Aureille" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">7.</td>
+            <td class="row-name">
+              <a href="https://auriol.peintre-en-batiment-13.com" target="_blank" rel="noopener">auriol.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 12 839</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://auriol.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=auriol.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:auriol.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Auriol" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Auriol" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">8.</td>
+            <td class="row-name">
+              <a href="https://aurons.peintre-en-batiment-13.com" target="_blank" rel="noopener">aurons.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 564</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://aurons.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=aurons.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:aurons.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Aurons" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Aurons" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">9.</td>
+            <td class="row-name">
+              <a href="https://barbentane.peintre-en-batiment-13.com" target="_blank" rel="noopener">barbentane.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 4 236</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://barbentane.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=barbentane.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:barbentane.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Barbentane" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Barbentane" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">10.</td>
+            <td class="row-name">
+              <a href="https://beaurecueil.peintre-en-batiment-13.com" target="_blank" rel="noopener">beaurecueil.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 607</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://beaurecueil.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=beaurecueil.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:beaurecueil.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Beaurecueil" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Beaurecueil" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">11.</td>
+            <td class="row-name">
+              <a href="https://belcodene.peintre-en-batiment-13.com" target="_blank" rel="noopener">belcodene.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 1 948</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://belcodene.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=belcodene.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:belcodene.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Belcod%C3%A8ne" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Belcod%C3%A8ne" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">12.</td>
+            <td class="row-name">
+              <a href="https://berre-l-etang.peintre-en-batiment-13.com" target="_blank" rel="noopener">berre-l-etang.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 13 912</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://berre-l-etang.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=berre-l-etang.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:berre-l-etang.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Berre-l'%C3%89tang" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Berre-l'%C3%89tang" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">13.</td>
+            <td class="row-name">
+              <a href="https://bouc-bel-air.peintre-en-batiment-13.com" target="_blank" rel="noopener">bouc-bel-air.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 15 248</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://bouc-bel-air.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=bouc-bel-air.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:bouc-bel-air.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Bouc-Bel-Air" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Bouc-Bel-Air" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">14.</td>
+            <td class="row-name">
+              <a href="https://boulbon.peintre-en-batiment-13.com" target="_blank" rel="noopener">boulbon.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 1 519</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://boulbon.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=boulbon.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:boulbon.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Boulbon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Boulbon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">15.</td>
+            <td class="row-name">
+              <a href="https://cabannes.peintre-en-batiment-13.com" target="_blank" rel="noopener">cabannes.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 4 595</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://cabannes.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=cabannes.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:cabannes.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Cabannes" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Cabannes" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">16.</td>
+            <td class="row-name">
+              <a href="https://cabries.peintre-en-batiment-13.com" target="_blank" rel="noopener">cabries.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 10 070</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://cabries.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=cabries.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:cabries.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Cabri%C3%A8s" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Cabri%C3%A8s" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">17.</td>
+            <td class="row-name">
+              <a href="https://cadolive.peintre-en-batiment-13.com" target="_blank" rel="noopener">cadolive.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 2 202</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://cadolive.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=cadolive.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:cadolive.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Cadolive" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Cadolive" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">18.</td>
+            <td class="row-name">
+              <a href="https://carnoux-en-provence.peintre-en-batiment-13.com" target="_blank" rel="noopener">carnoux-en-provence.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 6 747</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://carnoux-en-provence.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=carnoux-en-provence.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:carnoux-en-provence.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Carnoux-en-Provence" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Carnoux-en-Provence" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">19.</td>
+            <td class="row-name">
+              <a href="https://carry-le-rouet.peintre-en-batiment-13.com" target="_blank" rel="noopener">carry-le-rouet.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 5 708</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://carry-le-rouet.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=carry-le-rouet.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:carry-le-rouet.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Carry-le-Rouet" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Carry-le-Rouet" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">20.</td>
+            <td class="row-name">
+              <a href="https://cassis.peintre-en-batiment-13.com" target="_blank" rel="noopener">cassis.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 6 720</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://cassis.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=cassis.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:cassis.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Cassis" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Cassis" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">21.</td>
+            <td class="row-name">
+              <a href="https://ceyreste.peintre-en-batiment-13.com" target="_blank" rel="noopener">ceyreste.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 4 813</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://ceyreste.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=ceyreste.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:ceyreste.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Ceyreste" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Ceyreste" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">22.</td>
+            <td class="row-name">
+              <a href="https://charleval.peintre-en-batiment-13.com" target="_blank" rel="noopener">charleval.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 2 628</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://charleval.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=charleval.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:charleval.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Charleval" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Charleval" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">23.</td>
+            <td class="row-name">
+              <a href="https://chateauneuf-le-rouge.peintre-en-batiment-13.com" target="_blank" rel="noopener">chateauneuf-le-rouge.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 2 357</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://chateauneuf-le-rouge.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=chateauneuf-le-rouge.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:chateauneuf-le-rouge.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Ch%C3%A2teauneuf-le-Rouge" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Ch%C3%A2teauneuf-le-Rouge" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">24.</td>
+            <td class="row-name">
+              <a href="https://chateauneuf-les-martigues.peintre-en-batiment-13.com" target="_blank" rel="noopener">chateauneuf-les-martigues.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 17 909</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://chateauneuf-les-martigues.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=chateauneuf-les-martigues.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:chateauneuf-les-martigues.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Ch%C3%A2teauneuf-les-Martigues" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Ch%C3%A2teauneuf-les-Martigues" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">25.</td>
+            <td class="row-name">
+              <a href="https://chateaurenard.peintre-en-batiment-13.com" target="_blank" rel="noopener">chateaurenard.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 16 669</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://chateaurenard.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=chateaurenard.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:chateaurenard.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Ch%C3%A2teaurenard" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Ch%C3%A2teaurenard" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">26.</td>
+            <td class="row-name">
+              <a href="https://cornillon-confoux.peintre-en-batiment-13.com" target="_blank" rel="noopener">cornillon-confoux.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 1 571</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://cornillon-confoux.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=cornillon-confoux.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:cornillon-confoux.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Cornillon-Confoux" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Cornillon-Confoux" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">27.</td>
+            <td class="row-name">
+              <a href="https://coudoux.peintre-en-batiment-13.com" target="_blank" rel="noopener">coudoux.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 3 726</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://coudoux.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=coudoux.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:coudoux.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Coudoux" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Coudoux" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">28.</td>
+            <td class="row-name">
+              <a href="https://cuges-les-pins.peintre-en-batiment-13.com" target="_blank" rel="noopener">cuges-les-pins.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 5 662</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://cuges-les-pins.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=cuges-les-pins.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:cuges-les-pins.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Cuges-les-Pins" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Cuges-les-Pins" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">29.</td>
+            <td class="row-name">
+              <a href="https://eguilles.peintre-en-batiment-13.com" target="_blank" rel="noopener">eguilles.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 8 220</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://eguilles.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=eguilles.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:eguilles.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+%C3%89guilles" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+%C3%89guilles" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">30.</td>
+            <td class="row-name">
+              <a href="https://ensues-la-redonne.peintre-en-batiment-13.com" target="_blank" rel="noopener">ensues-la-redonne.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 5 768</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://ensues-la-redonne.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=ensues-la-redonne.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:ensues-la-redonne.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Ensu%C3%A8s-la-Redonne" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Ensu%C3%A8s-la-Redonne" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">31.</td>
+            <td class="row-name">
+              <a href="https://eygalieres.peintre-en-batiment-13.com" target="_blank" rel="noopener">eygalieres.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 1 733</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://eygalieres.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=eygalieres.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:eygalieres.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Eygali%C3%A8res" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Eygali%C3%A8res" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">32.</td>
+            <td class="row-name">
+              <a href="https://eyguieres.peintre-en-batiment-13.com" target="_blank" rel="noopener">eyguieres.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 6 887</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://eyguieres.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=eyguieres.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:eyguieres.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Eygui%C3%A8res" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Eygui%C3%A8res" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">33.</td>
+            <td class="row-name">
+              <a href="https://eyragues.peintre-en-batiment-13.com" target="_blank" rel="noopener">eyragues.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 4 355</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://eyragues.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=eyragues.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:eyragues.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Eyragues" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Eyragues" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">34.</td>
+            <td class="row-name">
+              <a href="https://fontvieille.peintre-en-batiment-13.com" target="_blank" rel="noopener">fontvieille.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 3 521</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://fontvieille.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=fontvieille.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:fontvieille.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Fontvieille" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Fontvieille" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">35.</td>
+            <td class="row-name">
+              <a href="https://fos-sur-mer.peintre-en-batiment-13.com" target="_blank" rel="noopener">fos-sur-mer.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 15 469</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://fos-sur-mer.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=fos-sur-mer.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:fos-sur-mer.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Fos-sur-Mer" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Fos-sur-Mer" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">36.</td>
+            <td class="row-name">
+              <a href="https://fuveau.peintre-en-batiment-13.com" target="_blank" rel="noopener">fuveau.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 10 115</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://fuveau.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=fuveau.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:fuveau.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Fuveau" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Fuveau" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">37.</td>
+            <td class="row-name">
+              <a href="https://gardanne.peintre-en-batiment-13.com" target="_blank" rel="noopener">gardanne.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 21 174</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://gardanne.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=gardanne.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:gardanne.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Gardanne" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Gardanne" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">38.</td>
+            <td class="row-name">
+              <a href="https://gemenos.peintre-en-batiment-13.com" target="_blank" rel="noopener">gemenos.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 6 794</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://gemenos.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=gemenos.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:gemenos.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+G%C3%A9menos" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+G%C3%A9menos" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">39.</td>
+            <td class="row-name">
+              <a href="https://gignac-la-nerthe.peintre-en-batiment-13.com" target="_blank" rel="noopener">gignac-la-nerthe.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 10 083</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://gignac-la-nerthe.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=gignac-la-nerthe.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:gignac-la-nerthe.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Gignac-la-Nerthe" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Gignac-la-Nerthe" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">40.</td>
+            <td class="row-name">
+              <a href="https://grans.peintre-en-batiment-13.com" target="_blank" rel="noopener">grans.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 5 274</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://grans.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=grans.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:grans.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Grans" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Grans" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">41.</td>
+            <td class="row-name">
+              <a href="https://graveson.peintre-en-batiment-13.com" target="_blank" rel="noopener">graveson.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 4 791</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://graveson.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=graveson.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:graveson.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Graveson" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Graveson" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">42.</td>
+            <td class="row-name">
+              <a href="https://greasque.peintre-en-batiment-13.com" target="_blank" rel="noopener">greasque.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 4 392</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://greasque.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=greasque.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:greasque.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Gr%C3%A9asque" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Gr%C3%A9asque" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">43.</td>
+            <td class="row-name">
+              <a href="https://istres.peintre-en-batiment-13.com" target="_blank" rel="noopener">istres.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 44 577</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://istres.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=istres.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:istres.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Istres" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Istres" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">44.</td>
+            <td class="row-name">
+              <a href="https://jouques.peintre-en-batiment-13.com" target="_blank" rel="noopener">jouques.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 4 404</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://jouques.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=jouques.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:jouques.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Jouques" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Jouques" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">45.</td>
+            <td class="row-name">
+              <a href="https://la-barben.peintre-en-batiment-13.com" target="_blank" rel="noopener">la-barben.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 850</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://la-barben.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=la-barben.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:la-barben.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+La+Barben" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+La+Barben" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">46.</td>
+            <td class="row-name">
+              <a href="https://la-bouilladisse.peintre-en-batiment-13.com" target="_blank" rel="noopener">la-bouilladisse.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 6 341</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://la-bouilladisse.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=la-bouilladisse.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:la-bouilladisse.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+La+Bouilladisse" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+La+Bouilladisse" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">47.</td>
+            <td class="row-name">
+              <a href="https://la-ciotat.peintre-en-batiment-13.com" target="_blank" rel="noopener">la-ciotat.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 36 987</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://la-ciotat.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=la-ciotat.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:la-ciotat.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+La+Ciotat" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+La+Ciotat" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">48.</td>
+            <td class="row-name">
+              <a href="https://la-destrousse.peintre-en-batiment-13.com" target="_blank" rel="noopener">la-destrousse.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 3 913</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://la-destrousse.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=la-destrousse.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:la-destrousse.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+La+Destrousse" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+La+Destrousse" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">49.</td>
+            <td class="row-name">
+              <a href="https://la-fare-les-oliviers.peintre-en-batiment-13.com" target="_blank" rel="noopener">la-fare-les-oliviers.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 8 867</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://la-fare-les-oliviers.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=la-fare-les-oliviers.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:la-fare-les-oliviers.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+La+Fare-les-Oliviers" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+La+Fare-les-Oliviers" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">50.</td>
+            <td class="row-name">
+              <a href="https://la-penne-sur-huveaune.peintre-en-batiment-13.com" target="_blank" rel="noopener">la-penne-sur-huveaune.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 6 569</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://la-penne-sur-huveaune.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=la-penne-sur-huveaune.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:la-penne-sur-huveaune.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+La+Penne-sur-Huveaune" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+La+Penne-sur-Huveaune" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">51.</td>
+            <td class="row-name">
+              <a href="https://la-roque-d-antheron.peintre-en-batiment-13.com" target="_blank" rel="noopener">la-roque-d-antheron.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 5 377</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://la-roque-d-antheron.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=la-roque-d-antheron.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:la-roque-d-antheron.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+La+Roque-d'Anth%C3%A9ron" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+La+Roque-d'Anth%C3%A9ron" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">52.</td>
+            <td class="row-name">
+              <a href="https://lamanon.peintre-en-batiment-13.com" target="_blank" rel="noopener">lamanon.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 2 046</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://lamanon.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=lamanon.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:lamanon.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Lamanon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Lamanon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">53.</td>
+            <td class="row-name">
+              <a href="https://lambesc.peintre-en-batiment-13.com" target="_blank" rel="noopener">lambesc.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 9 991</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://lambesc.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=lambesc.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:lambesc.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Lambesc" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Lambesc" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">54.</td>
+            <td class="row-name">
+              <a href="https://lancon-provence.peintre-en-batiment-13.com" target="_blank" rel="noopener">lancon-provence.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 9 340</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://lancon-provence.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=lancon-provence.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:lancon-provence.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Lan%C3%A7on-Provence" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Lan%C3%A7on-Provence" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">55.</td>
+            <td class="row-name">
+              <a href="https://le-puy-sainte-reparade.peintre-en-batiment-13.com" target="_blank" rel="noopener">le-puy-sainte-reparade.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 5 830</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://le-puy-sainte-reparade.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=le-puy-sainte-reparade.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:le-puy-sainte-reparade.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Le+Puy-Sainte-R%C3%A9parade" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Le+Puy-Sainte-R%C3%A9parade" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">56.</td>
+            <td class="row-name">
+              <a href="https://le-rove.peintre-en-batiment-13.com" target="_blank" rel="noopener">le-rove.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 5 194</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://le-rove.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=le-rove.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:le-rove.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Le+Rove" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Le+Rove" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">57.</td>
+            <td class="row-name">
+              <a href="https://le-tholonet.peintre-en-batiment-13.com" target="_blank" rel="noopener">le-tholonet.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 2 355</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://le-tholonet.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=le-tholonet.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:le-tholonet.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Le+Tholonet" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Le+Tholonet" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">58.</td>
+            <td class="row-name">
+              <a href="https://les-baux-de-provence.peintre-en-batiment-13.com" target="_blank" rel="noopener">les-baux-de-provence.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 289</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://les-baux-de-provence.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=les-baux-de-provence.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:les-baux-de-provence.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Les+Baux-de-Provence" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Les+Baux-de-Provence" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">59.</td>
+            <td class="row-name">
+              <a href="https://les-pennes-mirabeau.peintre-en-batiment-13.com" target="_blank" rel="noopener">les-pennes-mirabeau.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 22 161</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://les-pennes-mirabeau.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=les-pennes-mirabeau.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:les-pennes-mirabeau.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Les+Pennes-Mirabeau" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Les+Pennes-Mirabeau" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">60.</td>
+            <td class="row-name">
+              <a href="https://maillane.peintre-en-batiment-13.com" target="_blank" rel="noopener">maillane.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 2 738</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://maillane.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=maillane.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:maillane.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Maillane" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Maillane" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">61.</td>
+            <td class="row-name">
+              <a href="https://mallemort.peintre-en-batiment-13.com" target="_blank" rel="noopener">mallemort.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 6 172</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://mallemort.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=mallemort.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:mallemort.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Mallemort" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Mallemort" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">62.</td>
+            <td class="row-name">
+              <a href="https://marignane.peintre-en-batiment-13.com" target="_blank" rel="noopener">marignane.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 33 003</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://marignane.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=marignane.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:marignane.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Marignane" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Marignane" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">63.</td>
+            <td class="row-name">
+              <a href="https://marseille.peintre-en-batiment-13.com" target="_blank" rel="noopener">marseille.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 873 076</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://marseille.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=marseille.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:marseille.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Marseille" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Marseille" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">64.</td>
+            <td class="row-name">
+              <a href="https://martigues.peintre-en-batiment-13.com" target="_blank" rel="noopener">martigues.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 48 568</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://martigues.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=martigues.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:martigues.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Martigues" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Martigues" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">65.</td>
+            <td class="row-name">
+              <a href="https://mas-blanc-des-alpilles.peintre-en-batiment-13.com" target="_blank" rel="noopener">mas-blanc-des-alpilles.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 513</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://mas-blanc-des-alpilles.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=mas-blanc-des-alpilles.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:mas-blanc-des-alpilles.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Mas-Blanc-des-Alpilles" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Mas-Blanc-des-Alpilles" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">66.</td>
+            <td class="row-name">
+              <a href="https://maussane-les-alpilles.peintre-en-batiment-13.com" target="_blank" rel="noopener">maussane-les-alpilles.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 2 396</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://maussane-les-alpilles.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=maussane-les-alpilles.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:maussane-les-alpilles.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Maussane-les-Alpilles" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Maussane-les-Alpilles" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">67.</td>
+            <td class="row-name">
+              <a href="https://meyrargues.peintre-en-batiment-13.com" target="_blank" rel="noopener">meyrargues.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 3 830</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://meyrargues.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=meyrargues.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:meyrargues.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Meyrargues" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Meyrargues" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">68.</td>
+            <td class="row-name">
+              <a href="https://meyreuil.peintre-en-batiment-13.com" target="_blank" rel="noopener">meyreuil.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 5 935</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://meyreuil.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=meyreuil.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:meyreuil.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Meyreuil" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Meyreuil" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">69.</td>
+            <td class="row-name">
+              <a href="https://mimet.peintre-en-batiment-13.com" target="_blank" rel="noopener">mimet.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 4 187</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://mimet.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=mimet.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:mimet.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Mimet" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Mimet" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">70.</td>
+            <td class="row-name">
+              <a href="https://miramas.peintre-en-batiment-13.com" target="_blank" rel="noopener">miramas.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 26 405</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://miramas.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=miramas.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:miramas.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Miramas" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Miramas" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">71.</td>
+            <td class="row-name">
+              <a href="https://molleges.peintre-en-batiment-13.com" target="_blank" rel="noopener">molleges.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 2 666</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://molleges.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=molleges.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:molleges.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Moll%C3%A9g%C3%A8s" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Moll%C3%A9g%C3%A8s" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">72.</td>
+            <td class="row-name">
+              <a href="https://mouries.peintre-en-batiment-13.com" target="_blank" rel="noopener">mouries.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 3 414</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://mouries.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=mouries.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:mouries.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Mouri%C3%A8s" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Mouri%C3%A8s" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">73.</td>
+            <td class="row-name">
+              <a href="https://noves.peintre-en-batiment-13.com" target="_blank" rel="noopener">noves.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 5 853</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://noves.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=noves.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:noves.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Noves" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Noves" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">74.</td>
+            <td class="row-name">
+              <a href="https://orgon.peintre-en-batiment-13.com" target="_blank" rel="noopener">orgon.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 2 698</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://orgon.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=orgon.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:orgon.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Orgon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Orgon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">75.</td>
+            <td class="row-name">
+              <a href="https://paradou.peintre-en-batiment-13.com" target="_blank" rel="noopener">paradou.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 2 200</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://paradou.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=paradou.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:paradou.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Paradou" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Paradou" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">76.</td>
+            <td class="row-name">
+              <a href="https://pelissanne.peintre-en-batiment-13.com" target="_blank" rel="noopener">pelissanne.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 10 554</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://pelissanne.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=pelissanne.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:pelissanne.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+P%C3%A9lissanne" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+P%C3%A9lissanne" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">77.</td>
+            <td class="row-name">
+              <a href="https://peynier.peintre-en-batiment-13.com" target="_blank" rel="noopener">peynier.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 3 650</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://peynier.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=peynier.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:peynier.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Peynier" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Peynier" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">78.</td>
+            <td class="row-name">
+              <a href="https://peypin.peintre-en-batiment-13.com" target="_blank" rel="noopener">peypin.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 5 613</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://peypin.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=peypin.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:peypin.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Peypin" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Peypin" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">79.</td>
+            <td class="row-name">
+              <a href="https://peyrolles-en-provence.peintre-en-batiment-13.com" target="_blank" rel="noopener">peyrolles-en-provence.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 5 223</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://peyrolles-en-provence.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=peyrolles-en-provence.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:peyrolles-en-provence.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Peyrolles-en-Provence" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Peyrolles-en-Provence" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">80.</td>
+            <td class="row-name">
+              <a href="https://plan-d-orgon.peintre-en-batiment-13.com" target="_blank" rel="noopener">plan-d-orgon.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 3 552</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://plan-d-orgon.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=plan-d-orgon.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:plan-d-orgon.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Plan-d'Orgon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Plan-d'Orgon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">81.</td>
+            <td class="row-name">
+              <a href="https://plan-de-cuques.peintre-en-batiment-13.com" target="_blank" rel="noopener">plan-de-cuques.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 11 396</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://plan-de-cuques.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=plan-de-cuques.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:plan-de-cuques.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Plan-de-Cuques" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Plan-de-Cuques" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">82.</td>
+            <td class="row-name">
+              <a href="https://port-de-bouc.peintre-en-batiment-13.com" target="_blank" rel="noopener">port-de-bouc.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 16 136</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://port-de-bouc.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=port-de-bouc.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:port-de-bouc.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Port-de-Bouc" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Port-de-Bouc" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">83.</td>
+            <td class="row-name">
+              <a href="https://port-saint-louis-du-rhone.peintre-en-batiment-13.com" target="_blank" rel="noopener">port-saint-louis-du-rhone.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 8 446</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://port-saint-louis-du-rhone.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=port-saint-louis-du-rhone.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:port-saint-louis-du-rhone.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Port-Saint-Louis-du-Rh%C3%B4ne" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Port-Saint-Louis-du-Rh%C3%B4ne" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">84.</td>
+            <td class="row-name">
+              <a href="https://puyloubier.peintre-en-batiment-13.com" target="_blank" rel="noopener">puyloubier.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 1 783</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://puyloubier.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=puyloubier.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:puyloubier.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Puyloubier" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Puyloubier" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">85.</td>
+            <td class="row-name">
+              <a href="https://rognac.peintre-en-batiment-13.com" target="_blank" rel="noopener">rognac.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 12 175</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://rognac.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=rognac.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:rognac.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Rognac" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Rognac" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">86.</td>
+            <td class="row-name">
+              <a href="https://rognes.peintre-en-batiment-13.com" target="_blank" rel="noopener">rognes.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 4 586</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://rognes.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=rognes.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:rognes.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Rognes" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Rognes" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">87.</td>
+            <td class="row-name">
+              <a href="https://rognonas.peintre-en-batiment-13.com" target="_blank" rel="noopener">rognonas.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 4 111</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://rognonas.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=rognonas.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:rognonas.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Rognonas" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Rognonas" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">88.</td>
+            <td class="row-name">
+              <a href="https://roquefort-la-bedoule.peintre-en-batiment-13.com" target="_blank" rel="noopener">roquefort-la-bedoule.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 5 861</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://roquefort-la-bedoule.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=roquefort-la-bedoule.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:roquefort-la-bedoule.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Roquefort-la-B%C3%A9doule" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Roquefort-la-B%C3%A9doule" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">89.</td>
+            <td class="row-name">
+              <a href="https://roquevaire.peintre-en-batiment-13.com" target="_blank" rel="noopener">roquevaire.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 8 673</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://roquevaire.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=roquevaire.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:roquevaire.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Roquevaire" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Roquevaire" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">90.</td>
+            <td class="row-name">
+              <a href="https://rousset.peintre-en-batiment-13.com" target="_blank" rel="noopener">rousset.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 5 209</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://rousset.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=rousset.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:rousset.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Rousset" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Rousset" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">91.</td>
+            <td class="row-name">
+              <a href="https://saint-andiol.peintre-en-batiment-13.com" target="_blank" rel="noopener">saint-andiol.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 3 380</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-andiol.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-andiol.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-andiol.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Saint-Andiol" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Saint-Andiol" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">92.</td>
+            <td class="row-name">
+              <a href="https://saint-antonin-sur-bayon.peintre-en-batiment-13.com" target="_blank" rel="noopener">saint-antonin-sur-bayon.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 125</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-antonin-sur-bayon.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-antonin-sur-bayon.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-antonin-sur-bayon.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Saint-Antonin-sur-Bayon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Saint-Antonin-sur-Bayon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">93.</td>
+            <td class="row-name">
+              <a href="https://saint-cannat.peintre-en-batiment-13.com" target="_blank" rel="noopener">saint-cannat.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 5 653</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-cannat.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-cannat.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-cannat.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Saint-Cannat" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Saint-Cannat" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">94.</td>
+            <td class="row-name">
+              <a href="https://saint-chamas.peintre-en-batiment-13.com" target="_blank" rel="noopener">saint-chamas.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 8 643</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-chamas.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-chamas.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-chamas.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Saint-Chamas" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Saint-Chamas" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">95.</td>
+            <td class="row-name">
+              <a href="https://saint-esteve-janson.peintre-en-batiment-13.com" target="_blank" rel="noopener">saint-esteve-janson.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 372</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-esteve-janson.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-esteve-janson.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-esteve-janson.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Saint-Est%C3%A8ve-Janson" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Saint-Est%C3%A8ve-Janson" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">96.</td>
+            <td class="row-name">
+              <a href="https://saint-etienne-du-gres.peintre-en-batiment-13.com" target="_blank" rel="noopener">saint-etienne-du-gres.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 2 486</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-etienne-du-gres.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-etienne-du-gres.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-etienne-du-gres.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Saint-%C3%89tienne-du-Gr%C3%A8s" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Saint-%C3%89tienne-du-Gr%C3%A8s" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">97.</td>
+            <td class="row-name">
+              <a href="https://saint-marc-jaumegarde.peintre-en-batiment-13.com" target="_blank" rel="noopener">saint-marc-jaumegarde.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 1 247</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-marc-jaumegarde.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-marc-jaumegarde.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-marc-jaumegarde.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Saint-Marc-Jaumegarde" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Saint-Marc-Jaumegarde" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">98.</td>
+            <td class="row-name">
+              <a href="https://saint-martin-de-crau.peintre-en-batiment-13.com" target="_blank" rel="noopener">saint-martin-de-crau.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 13 729</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-martin-de-crau.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-martin-de-crau.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-martin-de-crau.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Saint-Martin-de-Crau" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Saint-Martin-de-Crau" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">99.</td>
+            <td class="row-name">
+              <a href="https://saint-mitre-les-remparts.peintre-en-batiment-13.com" target="_blank" rel="noopener">saint-mitre-les-remparts.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 5 816</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-mitre-les-remparts.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-mitre-les-remparts.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-mitre-les-remparts.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Saint-Mitre-les-Remparts" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Saint-Mitre-les-Remparts" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">100.</td>
+            <td class="row-name">
+              <a href="https://saint-paul-les-durance.peintre-en-batiment-13.com" target="_blank" rel="noopener">saint-paul-les-durance.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 887</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-paul-les-durance.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-paul-les-durance.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-paul-les-durance.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Saint-Paul-l%C3%A8s-Durance" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Saint-Paul-l%C3%A8s-Durance" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">101.</td>
+            <td class="row-name">
+              <a href="https://saint-pierre-de-mezoargues.peintre-en-batiment-13.com" target="_blank" rel="noopener">saint-pierre-de-mezoargues.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 223</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-pierre-de-mezoargues.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-pierre-de-mezoargues.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-pierre-de-mezoargues.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Saint-Pierre-de-M%C3%A9zoargues" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Saint-Pierre-de-M%C3%A9zoargues" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">102.</td>
+            <td class="row-name">
+              <a href="https://saint-remy-de-provence.peintre-en-batiment-13.com" target="_blank" rel="noopener">saint-remy-de-provence.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 9 619</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-remy-de-provence.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-remy-de-provence.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-remy-de-provence.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Saint-R%C3%A9my-de-Provence" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Saint-R%C3%A9my-de-Provence" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">103.</td>
+            <td class="row-name">
+              <a href="https://saint-savournin.peintre-en-batiment-13.com" target="_blank" rel="noopener">saint-savournin.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 3 501</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-savournin.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-savournin.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-savournin.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Saint-Savournin" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Saint-Savournin" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">104.</td>
+            <td class="row-name">
+              <a href="https://saint-victoret.peintre-en-batiment-13.com" target="_blank" rel="noopener">saint-victoret.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 6 648</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-victoret.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-victoret.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-victoret.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Saint-Victoret" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Saint-Victoret" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">105.</td>
+            <td class="row-name">
+              <a href="https://saintes-maries-de-la-mer.peintre-en-batiment-13.com" target="_blank" rel="noopener">saintes-maries-de-la-mer.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 2 120</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saintes-maries-de-la-mer.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saintes-maries-de-la-mer.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saintes-maries-de-la-mer.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Saintes-Maries-de-la-Mer" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Saintes-Maries-de-la-Mer" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">106.</td>
+            <td class="row-name">
+              <a href="https://salon-de-provence.peintre-en-batiment-13.com" target="_blank" rel="noopener">salon-de-provence.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 44 731</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://salon-de-provence.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=salon-de-provence.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:salon-de-provence.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Salon-de-Provence" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Salon-de-Provence" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">107.</td>
+            <td class="row-name">
+              <a href="https://sausset-les-pins.peintre-en-batiment-13.com" target="_blank" rel="noopener">sausset-les-pins.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 7 563</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://sausset-les-pins.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=sausset-les-pins.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:sausset-les-pins.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Sausset-les-Pins" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Sausset-les-Pins" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">108.</td>
+            <td class="row-name">
+              <a href="https://senas.peintre-en-batiment-13.com" target="_blank" rel="noopener">senas.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 6 838</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://senas.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=senas.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:senas.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+S%C3%A9nas" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+S%C3%A9nas" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">109.</td>
+            <td class="row-name">
+              <a href="https://septemes-les-vallons.peintre-en-batiment-13.com" target="_blank" rel="noopener">septemes-les-vallons.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 11 734</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://septemes-les-vallons.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=septemes-les-vallons.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:septemes-les-vallons.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Sept%C3%A8mes-les-Vallons" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Sept%C3%A8mes-les-Vallons" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">110.</td>
+            <td class="row-name">
+              <a href="https://simiane-collongue.peintre-en-batiment-13.com" target="_blank" rel="noopener">simiane-collongue.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 5 849</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://simiane-collongue.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=simiane-collongue.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:simiane-collongue.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Simiane-Collongue" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Simiane-Collongue" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">111.</td>
+            <td class="row-name">
+              <a href="https://tarascon.peintre-en-batiment-13.com" target="_blank" rel="noopener">tarascon.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 15 423</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://tarascon.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=tarascon.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:tarascon.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Tarascon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Tarascon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">112.</td>
+            <td class="row-name">
+              <a href="https://trets.peintre-en-batiment-13.com" target="_blank" rel="noopener">trets.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 10 678</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://trets.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=trets.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:trets.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Trets" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Trets" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">113.</td>
+            <td class="row-name">
+              <a href="https://vauvenargues.peintre-en-batiment-13.com" target="_blank" rel="noopener">vauvenargues.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 1 041</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://vauvenargues.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=vauvenargues.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:vauvenargues.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Vauvenargues" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Vauvenargues" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">114.</td>
+            <td class="row-name">
+              <a href="https://velaux.peintre-en-batiment-13.com" target="_blank" rel="noopener">velaux.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 8 713</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://velaux.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=velaux.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:velaux.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Velaux" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Velaux" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">115.</td>
+            <td class="row-name">
+              <a href="https://venelles.peintre-en-batiment-13.com" target="_blank" rel="noopener">venelles.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 8 426</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://venelles.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=venelles.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:venelles.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Venelles" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Venelles" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">116.</td>
+            <td class="row-name">
+              <a href="https://ventabren.peintre-en-batiment-13.com" target="_blank" rel="noopener">ventabren.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 5 484</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://ventabren.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=ventabren.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:ventabren.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Ventabren" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Ventabren" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">117.</td>
+            <td class="row-name">
+              <a href="https://vernegues.peintre-en-batiment-13.com" target="_blank" rel="noopener">vernegues.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 2 123</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://vernegues.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=vernegues.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:vernegues.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Vern%C3%A8gues" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Vern%C3%A8gues" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">118.</td>
+            <td class="row-name">
+              <a href="https://verquieres.peintre-en-batiment-13.com" target="_blank" rel="noopener">verquieres.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 790</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://verquieres.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=verquieres.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:verquieres.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Verqui%C3%A8res" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Verqui%C3%A8res" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">119.</td>
+            <td class="row-name">
+              <a href="https://vitrolles.peintre-en-batiment-13.com" target="_blank" rel="noopener">vitrolles.peintre-en-batiment-13.com</a>
+              <span class="pop">🏠 35 532</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://vitrolles.peintre-en-batiment-13.com" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=vitrolles.peintre-en-batiment-13.com" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:vitrolles.peintre-en-batiment-13.com" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+en+batiment+Vitrolles" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+en+batiment+Vitrolles" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    const input = document.getElementById('search');
+    const table = document.getElementById('sites-table');
+    const rows  = [...table.querySelectorAll('tr')];
+    const count = document.getElementById('search-count');
+    input.addEventListener('input', function() {
+      const q = this.value.toLowerCase().trim();
+      let n = 0;
+      rows.forEach(r => {
+        const text = r.textContent.toLowerCase();
+        const show = !q || text.includes(q);
+        r.style.display = show ? '' : 'none';
+        if (show) n++;
+      });
+      count.textContent = n + ' site' + (n > 1 ? 's' : '') + ' affiché' + (n > 1 ? 's' : '');
+    });
+  </script>
+</body>
+</html>
