@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Peintres France</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f4f7f9;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .dash-header {
+      text-align: center;
+      padding: 2.5rem 1rem 1.5rem;
+    }
+    .dash-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #003c57;
+      margin-bottom: .6rem;
+    }
+    .accent { color: #007198; }
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #04bbff, #007198);
+      color: #fff;
+      padding: .45rem 1.4rem;
+      border-radius: 50px;
+      font-size: .95rem;
+      font-weight: 600;
+    }
+    .back-link {
+      display: inline-block;
+      color: #007198;
+      font-size: .9rem;
+      margin-bottom: .5rem;
+      transition: opacity .2s;
+    }
+    .back-link:hover { opacity: .7; }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    /* Search */
+    .search-box {
+      max-width: 560px;
+      margin: 0 auto 2rem;
+      text-align: center;
+    }
+    .search-box input {
+      width: 100%;
+      padding: .85rem 1.2rem;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 60, 87, 0.15);
+      background: #fff;
+      color: #1a1a1a;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .search-box input::placeholder { color: #999; }
+    .search-box input:focus {
+      border-color: #04bbff;
+      box-shadow: 0 0 0 3px rgba(4, 187, 255, 0.18);
+    }
+    .search-count {
+      margin-top: .5rem;
+      font-size: .85rem;
+      color: #888;
+    }
+
+    /* Department cards grid */
+    .dep-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    .dep-card {
+      background: linear-gradient(145deg, #04bbff, #007198);
+      border-radius: 14px;
+      padding: 1.3rem;
+      transition: transform .2s, box-shadow .2s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+    }
+    .dep-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(0, 113, 152, 0.3);
+    }
+    .dep-card-icon {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.3rem;
+      opacity: .6;
+    }
+    .dep-card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: .35rem;
+    }
+    .dep-card-count {
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 700;
+      font-size: .95rem;
+    }
+    .dep-card-name {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: .85rem;
+      margin-top: .15rem;
+    }
+
+    /* Department detail */
+    .dep-detail-card {
+      background: #fff;
+      border: 1px solid rgba(0, 60, 87, 0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0, 60, 87, 0.06);
+    }
+    .dep-detail-header {
+      background: linear-gradient(135deg, #04bbff, #007198);
+      color: #fff;
+      padding: 1rem 1.5rem;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    /* Sites table */
+    .sites-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .sites-table tr {
+      border-bottom: 1px solid rgba(0, 60, 87, 0.06);
+      transition: background .15s;
+    }
+    .sites-table tr:hover {
+      background: rgba(4, 187, 255, 0.05);
+    }
+    .sites-table td {
+      padding: .75rem 1rem;
+      vertical-align: middle;
+    }
+    .row-num {
+      color: #007198;
+      font-weight: 700;
+      width: 3rem;
+      text-align: center;
+    }
+    .row-name a {
+      color: #1a1a1a;
+      font-weight: 500;
+      transition: color .15s;
+    }
+    .row-name a:hover { color: #007198; }
+    .pop {
+      margin-left: .6rem;
+      color: #007198;
+      font-size: .85rem;
+    }
+    .row-actions {
+      text-align: right;
+      white-space: nowrap;
+    }
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #04bbff, #007198);
+      margin-left: 4px;
+      font-size: .8rem;
+      transition: transform .15s, box-shadow .15s;
+      color: #fff;
+    }
+    .action-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 12px rgba(0, 113, 152, 0.3);
+    }
+    .action-g { font-weight: 700; font-size: .85rem; }
+    .action-b { font-weight: 700; font-size: .85rem; }
+
+    @media (max-width: 640px) {
+      .dash-header h1 { font-size: 1.4rem; }
+      .dep-grid { grid-template-columns: repeat(2, 1fr); gap: .7rem; }
+      .dep-card { padding: 1rem; }
+      .row-actions { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="dash-header">
+    <a href="index.html" class="back-link">← Choix du projet</a>
+    <h1>Sites Peintres en Bâtiment</h1>
+    <div class="badge">34574 sites en ligne · 95 départements</div>
+  </header>
+
+  <main class="container">
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Rechercher un département..." autocomplete="off">
+    </div>
+
+    <div class="dep-grid" id="dep-grid">
+
+        <a href="dep-01.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 01</div>
+          <div class="dep-card-count">391 sites</div>
+          <div class="dep-card-name">ain</div>
+        </a>
+
+        <a href="dep-02.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 02</div>
+          <div class="dep-card-count">795 sites</div>
+          <div class="dep-card-name">Aisne</div>
+        </a>
+
+        <a href="dep-03.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 03</div>
+          <div class="dep-card-count">317 sites</div>
+          <div class="dep-card-name">Allier</div>
+        </a>
+
+        <a href="dep-04.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 04</div>
+          <div class="dep-card-count">198 sites</div>
+          <div class="dep-card-name">Alpes-de-Haute-Provence</div>
+        </a>
+
+        <a href="dep-05.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 05</div>
+          <div class="dep-card-count">161 sites</div>
+          <div class="dep-card-name">hautes-alpes</div>
+        </a>
+
+        <a href="dep-06.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 06</div>
+          <div class="dep-card-count">162 sites</div>
+          <div class="dep-card-name">Alpes-Maritimes</div>
+        </a>
+
+        <a href="dep-07.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 07</div>
+          <div class="dep-card-count">334 sites</div>
+          <div class="dep-card-name">Ardeche</div>
+        </a>
+
+        <a href="dep-08.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 08</div>
+          <div class="dep-card-count">446 sites</div>
+          <div class="dep-card-name">Ardennes</div>
+        </a>
+
+        <a href="dep-09.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 09</div>
+          <div class="dep-card-count">324 sites</div>
+          <div class="dep-card-name">Ariège</div>
+        </a>
+
+        <a href="dep-10.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 10</div>
+          <div class="dep-card-count">430 sites</div>
+          <div class="dep-card-name">Aube</div>
+        </a>
+
+        <a href="dep-11.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 11</div>
+          <div class="dep-card-count">431 sites</div>
+          <div class="dep-card-name">Aude</div>
+        </a>
+
+        <a href="dep-12.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 12</div>
+          <div class="dep-card-count">282 sites</div>
+          <div class="dep-card-name">Aveyron</div>
+        </a>
+
+        <a href="dep-13.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 13</div>
+          <div class="dep-card-count">119 sites</div>
+          <div class="dep-card-name">Bouches-du-Rhône</div>
+        </a>
+
+        <a href="dep-14.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 14</div>
+          <div class="dep-card-count">524 sites</div>
+          <div class="dep-card-name">Calvados</div>
+        </a>
+
+        <a href="dep-15.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 15</div>
+          <div class="dep-card-count">245 sites</div>
+          <div class="dep-card-name">Cantal</div>
+        </a>
+
+        <a href="dep-16.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 16</div>
+          <div class="dep-card-count">355 sites</div>
+          <div class="dep-card-name">Charente</div>
+        </a>
+
+        <a href="dep-17.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 17</div>
+          <div class="dep-card-count">461 sites</div>
+          <div class="dep-card-name">Charente-Maritime</div>
+        </a>
+
+        <a href="dep-18.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 18</div>
+          <div class="dep-card-count">286 sites</div>
+          <div class="dep-card-name">Cher</div>
+        </a>
+
+        <a href="dep-19.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 19</div>
+          <div class="dep-card-count">274 sites</div>
+          <div class="dep-card-name">Corrèze</div>
+        </a>
+
+        <a href="dep-20.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 20</div>
+          <div class="dep-card-count">359 sites</div>
+          <div class="dep-card-name">Corse</div>
+        </a>
+
+        <a href="dep-21.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 21</div>
+          <div class="dep-card-count">697 sites</div>
+          <div class="dep-card-name">Cote-d-Or</div>
+        </a>
+
+        <a href="dep-22.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 22</div>
+          <div class="dep-card-count">343 sites</div>
+          <div class="dep-card-name">Cotes-d-Armor</div>
+        </a>
+
+        <a href="dep-23.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 23</div>
+          <div class="dep-card-count">254 sites</div>
+          <div class="dep-card-name">Creuse</div>
+        </a>
+
+        <a href="dep-24.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 24</div>
+          <div class="dep-card-count">499 sites</div>
+          <div class="dep-card-name">Dordogne</div>
+        </a>
+
+        <a href="dep-25.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 25</div>
+          <div class="dep-card-count">563 sites</div>
+          <div class="dep-card-name">Doubs</div>
+        </a>
+
+        <a href="dep-26.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 26</div>
+          <div class="dep-card-count">360 sites</div>
+          <div class="dep-card-name">Drome</div>
+        </a>
+
+        <a href="dep-27.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 27</div>
+          <div class="dep-card-count">579 sites</div>
+          <div class="dep-card-name">Eure</div>
+        </a>
+
+        <a href="dep-28.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 28</div>
+          <div class="dep-card-count">360 sites</div>
+          <div class="dep-card-name">Eure-et-Loir</div>
+        </a>
+
+        <a href="dep-29.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 29</div>
+          <div class="dep-card-count">277 sites</div>
+          <div class="dep-card-name">Finistere</div>
+        </a>
+
+        <a href="dep-30.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 30</div>
+          <div class="dep-card-count">346 sites</div>
+          <div class="dep-card-name">Gard</div>
+        </a>
+
+        <a href="dep-31.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 31</div>
+          <div class="dep-card-count">585 sites</div>
+          <div class="dep-card-name">Haute-Garonne</div>
+        </a>
+
+        <a href="dep-32.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 32</div>
+          <div class="dep-card-count">457 sites</div>
+          <div class="dep-card-name">Gers</div>
+        </a>
+
+        <a href="dep-33.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 33</div>
+          <div class="dep-card-count">534 sites</div>
+          <div class="dep-card-name">Gironde</div>
+        </a>
+
+        <a href="dep-34.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 34</div>
+          <div class="dep-card-count">340 sites</div>
+          <div class="dep-card-name">Hérault</div>
+        </a>
+
+        <a href="dep-35.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 35</div>
+          <div class="dep-card-count">332 sites</div>
+          <div class="dep-card-name">Ille-et-Vilaine</div>
+        </a>
+
+        <a href="dep-36.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 36</div>
+          <div class="dep-card-count">240 sites</div>
+          <div class="dep-card-name">Indre</div>
+        </a>
+
+        <a href="dep-37.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 37</div>
+          <div class="dep-card-count">271 sites</div>
+          <div class="dep-card-name">Indre-et-Loire</div>
+        </a>
+
+        <a href="dep-38.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 38</div>
+          <div class="dep-card-count">511 sites</div>
+          <div class="dep-card-name">Isere</div>
+        </a>
+
+        <a href="dep-39.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 39</div>
+          <div class="dep-card-count">491 sites</div>
+          <div class="dep-card-name">Jura</div>
+        </a>
+
+        <a href="dep-40.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 40</div>
+          <div class="dep-card-count">326 sites</div>
+          <div class="dep-card-name">Landes</div>
+        </a>
+
+        <a href="dep-41.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 41</div>
+          <div class="dep-card-count">266 sites</div>
+          <div class="dep-card-name">Loir-et-Cher</div>
+        </a>
+
+        <a href="dep-42.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 42</div>
+          <div class="dep-card-count">316 sites</div>
+          <div class="dep-card-name">Loire</div>
+        </a>
+
+        <a href="dep-43.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 43</div>
+          <div class="dep-card-count">254 sites</div>
+          <div class="dep-card-name">Haute-Loire</div>
+        </a>
+
+        <a href="dep-44.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 44</div>
+          <div class="dep-card-count">207 sites</div>
+          <div class="dep-card-name">Loire-Atlantique</div>
+        </a>
+
+        <a href="dep-45.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 45</div>
+          <div class="dep-card-count">324 sites</div>
+          <div class="dep-card-name">Loiret</div>
+        </a>
+
+        <a href="dep-46.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 46</div>
+          <div class="dep-card-count">309 sites</div>
+          <div class="dep-card-name">Lot</div>
+        </a>
+
+        <a href="dep-47.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 47</div>
+          <div class="dep-card-count">318 sites</div>
+          <div class="dep-card-name">Lot-et-Garonne</div>
+        </a>
+
+        <a href="dep-48.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 48</div>
+          <div class="dep-card-count">152 sites</div>
+          <div class="dep-card-name">Lozère</div>
+        </a>
+
+        <a href="dep-49.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 49</div>
+          <div class="dep-card-count">175 sites</div>
+          <div class="dep-card-name">Maine-et-Loire</div>
+        </a>
+
+        <a href="dep-50.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 50</div>
+          <div class="dep-card-count">443 sites</div>
+          <div class="dep-card-name">Manche</div>
+        </a>
+
+        <a href="dep-51.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 51</div>
+          <div class="dep-card-count">604 sites</div>
+          <div class="dep-card-name">Marne</div>
+        </a>
+
+        <a href="dep-52.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 52</div>
+          <div class="dep-card-count">415 sites</div>
+          <div class="dep-card-name">Haute-Marne</div>
+        </a>
+
+        <a href="dep-53.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 53</div>
+          <div class="dep-card-count">238 sites</div>
+          <div class="dep-card-name">Mayenne</div>
+        </a>
+
+        <a href="dep-54.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 54</div>
+          <div class="dep-card-count">590 sites</div>
+          <div class="dep-card-name">Meurthe-et-Moselle</div>
+        </a>
+
+        <a href="dep-55.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 55</div>
+          <div class="dep-card-count">498 sites</div>
+          <div class="dep-card-name">Meuse</div>
+        </a>
+
+        <a href="dep-56.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 56</div>
+          <div class="dep-card-count">248 sites</div>
+          <div class="dep-card-name">Morbihan</div>
+        </a>
+
+        <a href="dep-57.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 57</div>
+          <div class="dep-card-count">720 sites</div>
+          <div class="dep-card-name">Moselle</div>
+        </a>
+
+        <a href="dep-58.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 58</div>
+          <div class="dep-card-count">306 sites</div>
+          <div class="dep-card-name">Nièvre</div>
+        </a>
+
+        <a href="dep-59.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 59</div>
+          <div class="dep-card-count">642 sites</div>
+          <div class="dep-card-name">Nord</div>
+        </a>
+
+        <a href="dep-60.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 60</div>
+          <div class="dep-card-count">676 sites</div>
+          <div class="dep-card-name">Oise</div>
+        </a>
+
+        <a href="dep-61.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 61</div>
+          <div class="dep-card-count">377 sites</div>
+          <div class="dep-card-name">Orne</div>
+        </a>
+
+        <a href="dep-62.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 62</div>
+          <div class="dep-card-count">880 sites</div>
+          <div class="dep-card-name">Pas-de-Calais</div>
+        </a>
+
+        <a href="dep-63.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 63</div>
+          <div class="dep-card-count">458 sites</div>
+          <div class="dep-card-name">Puy-de-Dome</div>
+        </a>
+
+        <a href="dep-64.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 64</div>
+          <div class="dep-card-count">543 sites</div>
+          <div class="dep-card-name">Pyrénées-Atlantiques</div>
+        </a>
+
+        <a href="dep-65.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 65</div>
+          <div class="dep-card-count">469 sites</div>
+          <div class="dep-card-name">Hautes-Pyrénées</div>
+        </a>
+
+        <a href="dep-66.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 66</div>
+          <div class="dep-card-count">226 sites</div>
+          <div class="dep-card-name">Pyrénées-Orientales</div>
+        </a>
+
+        <a href="dep-67.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 67</div>
+          <div class="dep-card-count">497 sites</div>
+          <div class="dep-card-name">Bas-Rhin</div>
+        </a>
+
+        <a href="dep-68.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 68</div>
+          <div class="dep-card-count">359 sites</div>
+          <div class="dep-card-name">Haut-Rhin</div>
+        </a>
+
+        <a href="dep-69.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 69</div>
+          <div class="dep-card-count">264 sites</div>
+          <div class="dep-card-name">Rhone</div>
+        </a>
+
+        <a href="dep-70.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 70</div>
+          <div class="dep-card-count">533 sites</div>
+          <div class="dep-card-name">Haute-Saone</div>
+        </a>
+
+        <a href="dep-71.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 71</div>
+          <div class="dep-card-count">561 sites</div>
+          <div class="dep-card-name">Saône-et-Loire</div>
+        </a>
+
+        <a href="dep-72.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 72</div>
+          <div class="dep-card-count">348 sites</div>
+          <div class="dep-card-name">Sarthe</div>
+        </a>
+
+        <a href="dep-73.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 73</div>
+          <div class="dep-card-count">270 sites</div>
+          <div class="dep-card-name">Savoie</div>
+        </a>
+
+        <a href="dep-74.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 74</div>
+          <div class="dep-card-count">277 sites</div>
+          <div class="dep-card-name">Haute-Savoie</div>
+        </a>
+
+        <a href="dep-75.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 75</div>
+          <div class="dep-card-count">20 sites</div>
+          <div class="dep-card-name">Paris</div>
+        </a>
+
+        <a href="dep-76.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 76</div>
+          <div class="dep-card-count">703 sites</div>
+          <div class="dep-card-name">Seine-Maritime</div>
+        </a>
+
+        <a href="dep-77.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 77</div>
+          <div class="dep-card-count">504 sites</div>
+          <div class="dep-card-name">Seine-et-Marne</div>
+        </a>
+
+        <a href="dep-78.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 78</div>
+          <div class="dep-card-count">259 sites</div>
+          <div class="dep-card-name">Yvelines</div>
+        </a>
+
+        <a href="dep-79.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 79</div>
+          <div class="dep-card-count">251 sites</div>
+          <div class="dep-card-name">Deux-Sevres</div>
+        </a>
+
+        <a href="dep-80.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 80</div>
+          <div class="dep-card-count">768 sites</div>
+          <div class="dep-card-name">Somme</div>
+        </a>
+
+        <a href="dep-81.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 81</div>
+          <div class="dep-card-count">314 sites</div>
+          <div class="dep-card-name">Tarn</div>
+        </a>
+
+        <a href="dep-82.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 82</div>
+          <div class="dep-card-count">195 sites</div>
+          <div class="dep-card-name">Tarn-et-Garonne</div>
+        </a>
+
+        <a href="dep-83.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 83</div>
+          <div class="dep-card-count">152 sites</div>
+          <div class="dep-card-name">Var</div>
+        </a>
+
+        <a href="dep-84.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 84</div>
+          <div class="dep-card-count">151 sites</div>
+          <div class="dep-card-name">Vaucluse</div>
+        </a>
+
+        <a href="dep-85.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 85</div>
+          <div class="dep-card-count">249 sites</div>
+          <div class="dep-card-name">Vendee</div>
+        </a>
+
+        <a href="dep-86.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 86</div>
+          <div class="dep-card-count">265 sites</div>
+          <div class="dep-card-name">Vienne</div>
+        </a>
+
+        <a href="dep-87.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 87</div>
+          <div class="dep-card-count">195 sites</div>
+          <div class="dep-card-name">Haute-Vienne</div>
+        </a>
+
+        <a href="dep-88.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 88</div>
+          <div class="dep-card-count">505 sites</div>
+          <div class="dep-card-name">Vosges</div>
+        </a>
+
+        <a href="dep-89.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 89</div>
+          <div class="dep-card-count">422 sites</div>
+          <div class="dep-card-name">Yonne</div>
+        </a>
+
+        <a href="dep-90.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 90</div>
+          <div class="dep-card-count">101 sites</div>
+          <div class="dep-card-name">Territoire-de-Belfort</div>
+        </a>
+
+        <a href="dep-91.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 91</div>
+          <div class="dep-card-count">194 sites</div>
+          <div class="dep-card-name">Essonne</div>
+        </a>
+
+        <a href="dep-92.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 92</div>
+          <div class="dep-card-count">36 sites</div>
+          <div class="dep-card-name">Hauts-de-Seine</div>
+        </a>
+
+        <a href="dep-93.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 93</div>
+          <div class="dep-card-count">39 sites</div>
+          <div class="dep-card-name">Seine-Saint-Denis</div>
+        </a>
+
+        <a href="dep-94.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 94</div>
+          <div class="dep-card-count">47 sites</div>
+          <div class="dep-card-name">Val-de-Marne</div>
+        </a>
+
+        <a href="dep-95.html" class="dep-card">
+          <div class="dep-card-icon">🌐</div>
+          <div class="dep-card-title">Peintre en Bâtiment 95</div>
+          <div class="dep-card-count">182 sites</div>
+          <div class="dep-card-name">Val-d-Oise</div>
+        </a>
+    </div>
+  </main>
+
+  <script>
+    const input = document.getElementById('search');
+    const grid  = document.getElementById('dep-grid');
+    const cards = [...grid.querySelectorAll('.dep-card')];
+    input.addEventListener('input', function() {
+      const q = this.value.toLowerCase().trim();
+      cards.forEach(c => {
+        const text = c.textContent.toLowerCase();
+        c.style.display = (!q || text.includes(q)) ? '' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

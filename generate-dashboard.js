@@ -87,6 +87,7 @@ function generateIndex() {
 </head>
 <body>
   <header class="dash-header">
+    <a href="index.html" class="back-link">← Choix du projet</a>
     <h1>Sites Peintres en Bâtiment</h1>
     <div class="badge">${totalSites} sites en ligne · ${totalDeps} départements</div>
   </header>
@@ -155,7 +156,7 @@ function generateDepPage(dep) {
 </head>
 <body>
   <header class="dash-header">
-    <a href="index.html" class="back-link">← Retour</a>
+    <a href="batiment.html" class="back-link">← Retour</a>
     <h1>Peintre en Bâtiment <span class="accent">${dep.nom} (${depCode})</span></h1>
     <div class="badge">${dep.cities.length} sites en ligne</div>
   </header>
@@ -403,8 +404,8 @@ function getCSS() {
 
 // ─── Écriture ────────────────────────────────────────────────────────────────
 
-fs.writeFileSync(path.join(DASH_DIR, 'index.html'), generateIndex(), 'utf8');
-console.log(`✅  Dashboard index → ${totalDeps} départements, ${totalSites} sites`);
+fs.writeFileSync(path.join(DASH_DIR, 'batiment.html'), generateIndex(), 'utf8');
+console.log(`✅  Dashboard batiment.html → ${totalDeps} départements, ${totalSites} sites`);
 
 departments.forEach(dep => {
   fs.writeFileSync(
