@@ -9,9 +9,9 @@
 const fs   = require('fs');
 const path = require('path');
 
-const ROOT      = path.resolve(__dirname, '..');
+const ROOT      = path.resolve(__dirname, '..', '..');
 const COMMUNES  = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'communes.json'), 'utf8'));
-const DASH_DIR  = path.join(ROOT, 'dashboard-peintre-interieur');
+const DASH_DIR  = __dirname;
 const DEPLOYED  = JSON.parse(fs.readFileSync(path.join(DASH_DIR, 'deployed.json'), 'utf8'));
 
 // ─── Utilitaires ─────────────────────────────────────────────────────────────
