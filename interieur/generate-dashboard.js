@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
  * Dashboard récapitulatif des sites Peintre Intérieur déployés.
- * Lit dashboard-peintre-interieur/deployed.json (mis à jour par template-peintre-interieur/deploy.js).
+ * Lit dashboard-peintre/interieur/deployed.json (mis à jour par peintre-interieur/deploy.js).
  *
- * Usage : node dashboard-peintre-interieur/generate-dashboard.js
+ * Usage : node dashboard-peintre/interieur/generate-dashboard.js
  */
 
 const fs   = require('fs');
@@ -414,4 +414,4 @@ departments.forEach(dep => {
   );
 });
 
-console.log(`✅  ${departments.length} pages département générées dans dashboard-peintre-interieur/`);
+console.log(`✅  ${departments.length} pages département générées dans dashboard-peintre/interieur/`);

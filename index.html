@@ -135,6 +135,14 @@
       border-color: rgba(253, 157, 78, 0.4);
     }
 
+    /* Couvreur — terracotta */
+    .card--couvreur .cta {
+      background: linear-gradient(135deg, #FF8B3D, #B85410);
+    }
+    .card--couvreur:hover {
+      border-color: rgba(255, 139, 61, 0.4);
+    }
+
     @media (max-width: 720px) {
       .cards { grid-template-columns: 1fr; gap: 1.5rem; }
       .header h1 { font-size: 1.6rem; }
@@ -150,7 +158,7 @@
 
   <div class="cards">
 
-    <a href="batiment.html" class="card card--batiment">
+    <a href="batiment/index.html" class="card card--batiment">
       <div class="logo-wrap">
         <img src="assets/logo-batiment.webp" alt="Peintre en Bâtiment" loading="lazy">
       </div>
@@ -166,6 +174,17 @@
         <img src="assets/logo-interieur.webp" alt="Peintre Intérieur" loading="lazy">
       </div>
       <h2>Peintre Intérieur</h2>
+      <span class="cta">
+        Ouvrir le dashboard
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </span>
+    </a>
+
+    <a href="couvreur/index.html" class="card card--couvreur">
+      <div class="logo-wrap">
+        <img src="assets/logo-couvreur.webp" alt="Couvreur" loading="lazy">
+      </div>
+      <h2>Couvreur</h2>
       <span class="cta">
         Ouvrir le dashboard
         <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
