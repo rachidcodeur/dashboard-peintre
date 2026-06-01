@@ -1,0 +1,2508 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vaucluse (84) — Dashboard Couvreur</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Poppins", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f4f5f7;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .dash-header {
+      text-align: center;
+      padding: 2.5rem 1rem 1.5rem;
+    }
+    .dash-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #010122;
+      margin-bottom: .6rem;
+    }
+    .accent { color: #BD5722; }
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #FD9D4E, #BD5722);
+      color: #fff;
+      padding: .45rem 1.4rem;
+      border-radius: 50px;
+      font-size: .95rem;
+      font-weight: 600;
+    }
+    .back-link {
+      display: inline-block;
+      color: #BD5722;
+      font-size: .9rem;
+      margin-bottom: .5rem;
+      transition: opacity .2s;
+    }
+    .back-link:hover { opacity: .7; }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    .search-box {
+      max-width: 560px;
+      margin: 0 auto 2rem;
+      text-align: center;
+    }
+    .search-box input {
+      width: 100%;
+      padding: .85rem 1.2rem;
+      border-radius: 12px;
+      border: 1px solid rgba(1, 1, 34, 0.15);
+      background: #fff;
+      color: #1a1a1a;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .search-box input::placeholder { color: #999; }
+    .search-box input:focus {
+      border-color: #BD5722;
+      box-shadow: 0 0 0 3px rgba(189, 87, 34, 0.18);
+    }
+    .search-count {
+      margin-top: .5rem;
+      font-size: .85rem;
+      color: #888;
+    }
+
+    .dep-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    .dep-card {
+      background: linear-gradient(145deg, #FD9D4E, #BD5722);
+      border-radius: 14px;
+      padding: 1.3rem;
+      transition: transform .2s, box-shadow .2s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+    }
+    .dep-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(189, 87, 34, 0.3);
+    }
+    .dep-card-icon {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.3rem;
+      opacity: .6;
+    }
+    .dep-card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: .35rem;
+    }
+    .dep-card-count {
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 700;
+      font-size: .95rem;
+    }
+    .dep-card-name {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: .85rem;
+      margin-top: .15rem;
+    }
+
+    .dep-detail-card {
+      background: #fff;
+      border: 1px solid rgba(1, 1, 34, 0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(1, 1, 34, 0.06);
+    }
+    .dep-detail-header {
+      background: linear-gradient(135deg, #FD9D4E, #BD5722);
+      color: #fff;
+      padding: 1rem 1.5rem;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .sites-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .sites-table tr {
+      border-bottom: 1px solid rgba(1, 1, 34, 0.06);
+      transition: background .15s;
+    }
+    .sites-table tr:hover {
+      background: rgba(189, 87, 34, 0.05);
+    }
+    .sites-table td {
+      padding: .75rem 1rem;
+      vertical-align: middle;
+    }
+    .row-num {
+      color: #BD5722;
+      font-weight: 700;
+      width: 3rem;
+      text-align: center;
+    }
+    .row-name a {
+      color: #1a1a1a;
+      font-weight: 500;
+      transition: color .15s;
+    }
+    .row-name a:hover { color: #BD5722; }
+    .pop {
+      margin-left: .6rem;
+      color: #BD5722;
+      font-size: .85rem;
+    }
+    .row-actions {
+      text-align: right;
+      white-space: nowrap;
+    }
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #FD9D4E, #BD5722);
+      margin-left: 4px;
+      font-size: .8rem;
+      transition: transform .15s, box-shadow .15s;
+      color: #fff;
+    }
+    .action-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 12px rgba(189, 87, 34, 0.3);
+    }
+    .action-g { font-weight: 700; font-size: .85rem; }
+    .action-b { font-weight: 700; font-size: .85rem; }
+
+    @media (max-width: 640px) {
+      .dash-header h1 { font-size: 1.4rem; }
+      .dep-grid { grid-template-columns: repeat(2, 1fr); gap: .7rem; }
+      .dep-card { padding: 1rem; }
+      .row-actions { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="dash-header">
+    <a href="index.html" class="back-link">← Retour</a>
+    <h1>Couvreur <span class="accent">Vaucluse (84)</span></h1>
+    <div class="badge">151 sites en ligne</div>
+  </header>
+
+  <main class="container">
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Rechercher une ville ou un lien..." autocomplete="off">
+      <div class="search-count" id="search-count">151 sites affichés</div>
+    </div>
+
+    <div class="dep-detail-card">
+      <div class="dep-detail-header">
+        🌐 couvreur84-pro.fr · 151 sites
+      </div>
+      <table class="sites-table" id="sites-table">
+        <tbody>
+
+          <tr>
+            <td class="row-num">1.</td>
+            <td class="row-name">
+              <a href="https://althen-des-paluds.couvreur84-pro.fr" target="_blank" rel="noopener">althen-des-paluds.couvreur84-pro.fr</a>
+              <span class="pop">🏠 2 802</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://althen-des-paluds.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=althen-des-paluds.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:althen-des-paluds.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Althen-des-Paluds" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Althen-des-Paluds" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">2.</td>
+            <td class="row-name">
+              <a href="https://ansouis.couvreur84-pro.fr" target="_blank" rel="noopener">ansouis.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 061</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://ansouis.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=ansouis.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:ansouis.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Ansouis" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Ansouis" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">3.</td>
+            <td class="row-name">
+              <a href="https://apt.couvreur84-pro.fr" target="_blank" rel="noopener">apt.couvreur84-pro.fr</a>
+              <span class="pop">🏠 10 536</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://apt.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=apt.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:apt.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Apt" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Apt" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">4.</td>
+            <td class="row-name">
+              <a href="https://aubignan.couvreur84-pro.fr" target="_blank" rel="noopener">aubignan.couvreur84-pro.fr</a>
+              <span class="pop">🏠 5 894</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://aubignan.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=aubignan.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:aubignan.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Aubignan" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Aubignan" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">5.</td>
+            <td class="row-name">
+              <a href="https://aurel.couvreur84-pro.fr" target="_blank" rel="noopener">aurel.couvreur84-pro.fr</a>
+              <span class="pop">🏠 188</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://aurel.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=aurel.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:aurel.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Aurel" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Aurel" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">6.</td>
+            <td class="row-name">
+              <a href="https://auribeau.couvreur84-pro.fr" target="_blank" rel="noopener">auribeau.couvreur84-pro.fr</a>
+              <span class="pop">🏠 71</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://auribeau.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=auribeau.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:auribeau.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Auribeau" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Auribeau" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">7.</td>
+            <td class="row-name">
+              <a href="https://avignon.couvreur84-pro.fr" target="_blank" rel="noopener">avignon.couvreur84-pro.fr</a>
+              <span class="pop">🏠 90 330</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://avignon.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=avignon.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:avignon.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Avignon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Avignon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">8.</td>
+            <td class="row-name">
+              <a href="https://beaumes-de-venise.couvreur84-pro.fr" target="_blank" rel="noopener">beaumes-de-venise.couvreur84-pro.fr</a>
+              <span class="pop">🏠 2 389</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://beaumes-de-venise.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=beaumes-de-venise.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:beaumes-de-venise.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Beaumes-de-Venise" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Beaumes-de-Venise" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">9.</td>
+            <td class="row-name">
+              <a href="https://beaumettes.couvreur84-pro.fr" target="_blank" rel="noopener">beaumettes.couvreur84-pro.fr</a>
+              <span class="pop">🏠 303</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://beaumettes.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=beaumettes.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:beaumettes.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Beaumettes" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Beaumettes" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">10.</td>
+            <td class="row-name">
+              <a href="https://beaumont-de-pertuis.couvreur84-pro.fr" target="_blank" rel="noopener">beaumont-de-pertuis.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 115</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://beaumont-de-pertuis.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=beaumont-de-pertuis.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:beaumont-de-pertuis.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Beaumont-de-Pertuis" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Beaumont-de-Pertuis" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">11.</td>
+            <td class="row-name">
+              <a href="https://beaumont-du-ventoux.couvreur84-pro.fr" target="_blank" rel="noopener">beaumont-du-ventoux.couvreur84-pro.fr</a>
+              <span class="pop">🏠 304</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://beaumont-du-ventoux.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=beaumont-du-ventoux.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:beaumont-du-ventoux.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Beaumont-du-Ventoux" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Beaumont-du-Ventoux" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">12.</td>
+            <td class="row-name">
+              <a href="https://bedarrides.couvreur84-pro.fr" target="_blank" rel="noopener">bedarrides.couvreur84-pro.fr</a>
+              <span class="pop">🏠 5 410</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://bedarrides.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=bedarrides.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:bedarrides.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+B%C3%A9darrides" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+B%C3%A9darrides" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">13.</td>
+            <td class="row-name">
+              <a href="https://bedoin.couvreur84-pro.fr" target="_blank" rel="noopener">bedoin.couvreur84-pro.fr</a>
+              <span class="pop">🏠 3 086</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://bedoin.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=bedoin.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:bedoin.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+B%C3%A9doin" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+B%C3%A9doin" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">14.</td>
+            <td class="row-name">
+              <a href="https://blauvac.couvreur84-pro.fr" target="_blank" rel="noopener">blauvac.couvreur84-pro.fr</a>
+              <span class="pop">🏠 536</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://blauvac.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=blauvac.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:blauvac.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Blauvac" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Blauvac" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">15.</td>
+            <td class="row-name">
+              <a href="https://bollene.couvreur84-pro.fr" target="_blank" rel="noopener">bollene.couvreur84-pro.fr</a>
+              <span class="pop">🏠 13 605</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://bollene.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=bollene.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:bollene.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Boll%C3%A8ne" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Boll%C3%A8ne" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">16.</td>
+            <td class="row-name">
+              <a href="https://bonnieux.couvreur84-pro.fr" target="_blank" rel="noopener">bonnieux.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 177</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://bonnieux.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=bonnieux.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:bonnieux.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Bonnieux" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Bonnieux" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">17.</td>
+            <td class="row-name">
+              <a href="https://brantes.couvreur84-pro.fr" target="_blank" rel="noopener">brantes.couvreur84-pro.fr</a>
+              <span class="pop">🏠 87</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://brantes.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=brantes.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:brantes.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Brantes" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Brantes" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">18.</td>
+            <td class="row-name">
+              <a href="https://buisson.couvreur84-pro.fr" target="_blank" rel="noopener">buisson.couvreur84-pro.fr</a>
+              <span class="pop">🏠 261</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://buisson.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=buisson.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:buisson.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Buisson" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Buisson" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">19.</td>
+            <td class="row-name">
+              <a href="https://buoux.couvreur84-pro.fr" target="_blank" rel="noopener">buoux.couvreur84-pro.fr</a>
+              <span class="pop">🏠 100</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://buoux.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=buoux.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:buoux.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Buoux" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Buoux" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">20.</td>
+            <td class="row-name">
+              <a href="https://cabrieres-d-aigues.couvreur84-pro.fr" target="_blank" rel="noopener">cabrieres-d-aigues.couvreur84-pro.fr</a>
+              <span class="pop">🏠 949</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://cabrieres-d-aigues.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=cabrieres-d-aigues.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:cabrieres-d-aigues.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Cabri%C3%A8res-d'Aigues" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Cabri%C3%A8res-d'Aigues" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">21.</td>
+            <td class="row-name">
+              <a href="https://cabrieres-d-avignon.couvreur84-pro.fr" target="_blank" rel="noopener">cabrieres-d-avignon.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 795</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://cabrieres-d-avignon.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=cabrieres-d-avignon.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:cabrieres-d-avignon.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Cabri%C3%A8res-d'Avignon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Cabri%C3%A8res-d'Avignon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">22.</td>
+            <td class="row-name">
+              <a href="https://cadenet.couvreur84-pro.fr" target="_blank" rel="noopener">cadenet.couvreur84-pro.fr</a>
+              <span class="pop">🏠 4 292</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://cadenet.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=cadenet.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:cadenet.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Cadenet" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Cadenet" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">23.</td>
+            <td class="row-name">
+              <a href="https://caderousse.couvreur84-pro.fr" target="_blank" rel="noopener">caderousse.couvreur84-pro.fr</a>
+              <span class="pop">🏠 2 590</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://caderousse.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=caderousse.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:caderousse.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Caderousse" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Caderousse" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">24.</td>
+            <td class="row-name">
+              <a href="https://cairanne.couvreur84-pro.fr" target="_blank" rel="noopener">cairanne.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 104</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://cairanne.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=cairanne.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:cairanne.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Cairanne" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Cairanne" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">25.</td>
+            <td class="row-name">
+              <a href="https://camaret-sur-aigues.couvreur84-pro.fr" target="_blank" rel="noopener">camaret-sur-aigues.couvreur84-pro.fr</a>
+              <span class="pop">🏠 4 547</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://camaret-sur-aigues.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=camaret-sur-aigues.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:camaret-sur-aigues.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Camaret-sur-Aigues" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Camaret-sur-Aigues" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">26.</td>
+            <td class="row-name">
+              <a href="https://caromb.couvreur84-pro.fr" target="_blank" rel="noopener">caromb.couvreur84-pro.fr</a>
+              <span class="pop">🏠 3 458</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://caromb.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=caromb.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:caromb.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Caromb" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Caromb" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">27.</td>
+            <td class="row-name">
+              <a href="https://carpentras.couvreur84-pro.fr" target="_blank" rel="noopener">carpentras.couvreur84-pro.fr</a>
+              <span class="pop">🏠 30 769</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://carpentras.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=carpentras.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:carpentras.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Carpentras" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Carpentras" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">28.</td>
+            <td class="row-name">
+              <a href="https://caseneuve.couvreur84-pro.fr" target="_blank" rel="noopener">caseneuve.couvreur84-pro.fr</a>
+              <span class="pop">🏠 511</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://caseneuve.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=caseneuve.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:caseneuve.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Caseneuve" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Caseneuve" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">29.</td>
+            <td class="row-name">
+              <a href="https://castellet-en-luberon.couvreur84-pro.fr" target="_blank" rel="noopener">castellet-en-luberon.couvreur84-pro.fr</a>
+              <span class="pop">🏠 113</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://castellet-en-luberon.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=castellet-en-luberon.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:castellet-en-luberon.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Castellet-en-Luberon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Castellet-en-Luberon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">30.</td>
+            <td class="row-name">
+              <a href="https://caumont-sur-durance.couvreur84-pro.fr" target="_blank" rel="noopener">caumont-sur-durance.couvreur84-pro.fr</a>
+              <span class="pop">🏠 5 422</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://caumont-sur-durance.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=caumont-sur-durance.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:caumont-sur-durance.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Caumont-sur-Durance" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Caumont-sur-Durance" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">31.</td>
+            <td class="row-name">
+              <a href="https://cavaillon.couvreur84-pro.fr" target="_blank" rel="noopener">cavaillon.couvreur84-pro.fr</a>
+              <span class="pop">🏠 25 923</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://cavaillon.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=cavaillon.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:cavaillon.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Cavaillon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Cavaillon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">32.</td>
+            <td class="row-name">
+              <a href="https://chateauneuf-de-gadagne.couvreur84-pro.fr" target="_blank" rel="noopener">chateauneuf-de-gadagne.couvreur84-pro.fr</a>
+              <span class="pop">🏠 3 437</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://chateauneuf-de-gadagne.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=chateauneuf-de-gadagne.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:chateauneuf-de-gadagne.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Ch%C3%A2teauneuf-de-Gadagne" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Ch%C3%A2teauneuf-de-Gadagne" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">33.</td>
+            <td class="row-name">
+              <a href="https://chateauneuf-du-pape.couvreur84-pro.fr" target="_blank" rel="noopener">chateauneuf-du-pape.couvreur84-pro.fr</a>
+              <span class="pop">🏠 2 040</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://chateauneuf-du-pape.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=chateauneuf-du-pape.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:chateauneuf-du-pape.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Ch%C3%A2teauneuf-du-Pape" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Ch%C3%A2teauneuf-du-Pape" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">34.</td>
+            <td class="row-name">
+              <a href="https://cheval-blanc.couvreur84-pro.fr" target="_blank" rel="noopener">cheval-blanc.couvreur84-pro.fr</a>
+              <span class="pop">🏠 4 317</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://cheval-blanc.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=cheval-blanc.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:cheval-blanc.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Cheval-Blanc" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Cheval-Blanc" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">35.</td>
+            <td class="row-name">
+              <a href="https://courthezon.couvreur84-pro.fr" target="_blank" rel="noopener">courthezon.couvreur84-pro.fr</a>
+              <span class="pop">🏠 6 064</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://courthezon.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=courthezon.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:courthezon.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Courth%C3%A9zon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Courth%C3%A9zon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">36.</td>
+            <td class="row-name">
+              <a href="https://crestet.couvreur84-pro.fr" target="_blank" rel="noopener">crestet.couvreur84-pro.fr</a>
+              <span class="pop">🏠 422</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://crestet.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=crestet.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:crestet.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Crestet" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Crestet" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">37.</td>
+            <td class="row-name">
+              <a href="https://crillon-le-brave.couvreur84-pro.fr" target="_blank" rel="noopener">crillon-le-brave.couvreur84-pro.fr</a>
+              <span class="pop">🏠 484</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://crillon-le-brave.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=crillon-le-brave.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:crillon-le-brave.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Crillon-le-Brave" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Crillon-le-Brave" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">38.</td>
+            <td class="row-name">
+              <a href="https://cucuron.couvreur84-pro.fr" target="_blank" rel="noopener">cucuron.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 814</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://cucuron.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=cucuron.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:cucuron.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Cucuron" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Cucuron" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">39.</td>
+            <td class="row-name">
+              <a href="https://entraigues-sur-la-sorgue.couvreur84-pro.fr" target="_blank" rel="noopener">entraigues-sur-la-sorgue.couvreur84-pro.fr</a>
+              <span class="pop">🏠 8 793</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://entraigues-sur-la-sorgue.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=entraigues-sur-la-sorgue.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:entraigues-sur-la-sorgue.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Entraigues-sur-la-Sorgue" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Entraigues-sur-la-Sorgue" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">40.</td>
+            <td class="row-name">
+              <a href="https://entrechaux.couvreur84-pro.fr" target="_blank" rel="noopener">entrechaux.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 151</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://entrechaux.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=entrechaux.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:entrechaux.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Entrechaux" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Entrechaux" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">41.</td>
+            <td class="row-name">
+              <a href="https://faucon.couvreur84-pro.fr" target="_blank" rel="noopener">faucon.couvreur84-pro.fr</a>
+              <span class="pop">🏠 452</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://faucon.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=faucon.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:faucon.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Faucon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Faucon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">42.</td>
+            <td class="row-name">
+              <a href="https://flassan.couvreur84-pro.fr" target="_blank" rel="noopener">flassan.couvreur84-pro.fr</a>
+              <span class="pop">🏠 463</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://flassan.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=flassan.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:flassan.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Flassan" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Flassan" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">43.</td>
+            <td class="row-name">
+              <a href="https://fontaine-de-vaucluse.couvreur84-pro.fr" target="_blank" rel="noopener">fontaine-de-vaucluse.couvreur84-pro.fr</a>
+              <span class="pop">🏠 567</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://fontaine-de-vaucluse.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=fontaine-de-vaucluse.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:fontaine-de-vaucluse.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Fontaine-de-Vaucluse" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Fontaine-de-Vaucluse" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">44.</td>
+            <td class="row-name">
+              <a href="https://gargas.couvreur84-pro.fr" target="_blank" rel="noopener">gargas.couvreur84-pro.fr</a>
+              <span class="pop">🏠 3 039</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://gargas.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=gargas.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:gargas.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Gargas" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Gargas" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">45.</td>
+            <td class="row-name">
+              <a href="https://gignac.couvreur84-pro.fr" target="_blank" rel="noopener">gignac.couvreur84-pro.fr</a>
+              <span class="pop">🏠 73</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://gignac.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=gignac.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:gignac.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Gignac" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Gignac" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">46.</td>
+            <td class="row-name">
+              <a href="https://gigondas.couvreur84-pro.fr" target="_blank" rel="noopener">gigondas.couvreur84-pro.fr</a>
+              <span class="pop">🏠 430</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://gigondas.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=gigondas.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:gigondas.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Gigondas" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Gigondas" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">47.</td>
+            <td class="row-name">
+              <a href="https://gordes.couvreur84-pro.fr" target="_blank" rel="noopener">gordes.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 666</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://gordes.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=gordes.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:gordes.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Gordes" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Gordes" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">48.</td>
+            <td class="row-name">
+              <a href="https://goult.couvreur84-pro.fr" target="_blank" rel="noopener">goult.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 080</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://goult.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=goult.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:goult.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Goult" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Goult" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">49.</td>
+            <td class="row-name">
+              <a href="https://grambois.couvreur84-pro.fr" target="_blank" rel="noopener">grambois.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 214</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://grambois.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=grambois.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:grambois.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Grambois" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Grambois" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">50.</td>
+            <td class="row-name">
+              <a href="https://grillon.couvreur84-pro.fr" target="_blank" rel="noopener">grillon.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 759</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://grillon.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=grillon.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:grillon.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Grillon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Grillon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">51.</td>
+            <td class="row-name">
+              <a href="https://jonquerettes.couvreur84-pro.fr" target="_blank" rel="noopener">jonquerettes.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 595</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://jonquerettes.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=jonquerettes.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:jonquerettes.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Jonquerettes" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Jonquerettes" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">52.</td>
+            <td class="row-name">
+              <a href="https://jonquieres.couvreur84-pro.fr" target="_blank" rel="noopener">jonquieres.couvreur84-pro.fr</a>
+              <span class="pop">🏠 5 298</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://jonquieres.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=jonquieres.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:jonquieres.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Jonqui%C3%A8res" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Jonqui%C3%A8res" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">53.</td>
+            <td class="row-name">
+              <a href="https://joucas.couvreur84-pro.fr" target="_blank" rel="noopener">joucas.couvreur84-pro.fr</a>
+              <span class="pop">🏠 352</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://joucas.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=joucas.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:joucas.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Joucas" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Joucas" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">54.</td>
+            <td class="row-name">
+              <a href="https://l-isle-sur-la-sorgue.couvreur84-pro.fr" target="_blank" rel="noopener">l-isle-sur-la-sorgue.couvreur84-pro.fr</a>
+              <span class="pop">🏠 19 965</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://l-isle-sur-la-sorgue.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=l-isle-sur-la-sorgue.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:l-isle-sur-la-sorgue.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+L'Isle-sur-la-Sorgue" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+L'Isle-sur-la-Sorgue" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">55.</td>
+            <td class="row-name">
+              <a href="https://la-bastide-des-jourdans.couvreur84-pro.fr" target="_blank" rel="noopener">la-bastide-des-jourdans.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 686</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://la-bastide-des-jourdans.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=la-bastide-des-jourdans.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:la-bastide-des-jourdans.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+La+Bastide-des-Jourdans" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+La+Bastide-des-Jourdans" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">56.</td>
+            <td class="row-name">
+              <a href="https://la-bastidonne.couvreur84-pro.fr" target="_blank" rel="noopener">la-bastidonne.couvreur84-pro.fr</a>
+              <span class="pop">🏠 899</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://la-bastidonne.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=la-bastidonne.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:la-bastidonne.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+La+Bastidonne" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+La+Bastidonne" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">57.</td>
+            <td class="row-name">
+              <a href="https://la-motte-d-aigues.couvreur84-pro.fr" target="_blank" rel="noopener">la-motte-d-aigues.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 399</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://la-motte-d-aigues.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=la-motte-d-aigues.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:la-motte-d-aigues.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+La+Motte-d'Aigues" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+La+Motte-d'Aigues" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">58.</td>
+            <td class="row-name">
+              <a href="https://la-roque-alric.couvreur84-pro.fr" target="_blank" rel="noopener">la-roque-alric.couvreur84-pro.fr</a>
+              <span class="pop">🏠 52</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://la-roque-alric.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=la-roque-alric.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:la-roque-alric.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+La+Roque-Alric" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+La+Roque-Alric" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">59.</td>
+            <td class="row-name">
+              <a href="https://la-roque-sur-pernes.couvreur84-pro.fr" target="_blank" rel="noopener">la-roque-sur-pernes.couvreur84-pro.fr</a>
+              <span class="pop">🏠 427</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://la-roque-sur-pernes.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=la-roque-sur-pernes.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:la-roque-sur-pernes.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+La+Roque-sur-Pernes" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+La+Roque-sur-Pernes" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">60.</td>
+            <td class="row-name">
+              <a href="https://la-tour-d-aigues.couvreur84-pro.fr" target="_blank" rel="noopener">la-tour-d-aigues.couvreur84-pro.fr</a>
+              <span class="pop">🏠 4 346</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://la-tour-d-aigues.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=la-tour-d-aigues.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:la-tour-d-aigues.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+La+Tour-d'Aigues" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+La+Tour-d'Aigues" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">61.</td>
+            <td class="row-name">
+              <a href="https://lacoste.couvreur84-pro.fr" target="_blank" rel="noopener">lacoste.couvreur84-pro.fr</a>
+              <span class="pop">🏠 438</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://lacoste.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=lacoste.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:lacoste.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Lacoste" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Lacoste" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">62.</td>
+            <td class="row-name">
+              <a href="https://lafare.couvreur84-pro.fr" target="_blank" rel="noopener">lafare.couvreur84-pro.fr</a>
+              <span class="pop">🏠 125</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://lafare.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=lafare.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:lafare.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Lafare" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Lafare" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">63.</td>
+            <td class="row-name">
+              <a href="https://lagarde-d-apt.couvreur84-pro.fr" target="_blank" rel="noopener">lagarde-d-apt.couvreur84-pro.fr</a>
+              <span class="pop">🏠 30</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://lagarde-d-apt.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=lagarde-d-apt.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:lagarde-d-apt.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Lagarde-d'Apt" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Lagarde-d'Apt" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">64.</td>
+            <td class="row-name">
+              <a href="https://lagarde-pareol.couvreur84-pro.fr" target="_blank" rel="noopener">lagarde-pareol.couvreur84-pro.fr</a>
+              <span class="pop">🏠 322</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://lagarde-pareol.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=lagarde-pareol.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:lagarde-pareol.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Lagarde-Par%C3%A9ol" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Lagarde-Par%C3%A9ol" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">65.</td>
+            <td class="row-name">
+              <a href="https://lagnes.couvreur84-pro.fr" target="_blank" rel="noopener">lagnes.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 673</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://lagnes.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=lagnes.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:lagnes.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Lagnes" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Lagnes" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">66.</td>
+            <td class="row-name">
+              <a href="https://lamotte-du-rhone.couvreur84-pro.fr" target="_blank" rel="noopener">lamotte-du-rhone.couvreur84-pro.fr</a>
+              <span class="pop">🏠 391</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://lamotte-du-rhone.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=lamotte-du-rhone.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:lamotte-du-rhone.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Lamotte-du-Rh%C3%B4ne" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Lamotte-du-Rh%C3%B4ne" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">67.</td>
+            <td class="row-name">
+              <a href="https://lapalud.couvreur84-pro.fr" target="_blank" rel="noopener">lapalud.couvreur84-pro.fr</a>
+              <span class="pop">🏠 3 836</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://lapalud.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=lapalud.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:lapalud.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Lapalud" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Lapalud" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">68.</td>
+            <td class="row-name">
+              <a href="https://lauris.couvreur84-pro.fr" target="_blank" rel="noopener">lauris.couvreur84-pro.fr</a>
+              <span class="pop">🏠 3 896</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://lauris.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=lauris.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:lauris.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Lauris" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Lauris" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">69.</td>
+            <td class="row-name">
+              <a href="https://le-barroux.couvreur84-pro.fr" target="_blank" rel="noopener">le-barroux.couvreur84-pro.fr</a>
+              <span class="pop">🏠 658</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://le-barroux.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=le-barroux.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:le-barroux.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Le+Barroux" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Le+Barroux" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">70.</td>
+            <td class="row-name">
+              <a href="https://le-beaucet.couvreur84-pro.fr" target="_blank" rel="noopener">le-beaucet.couvreur84-pro.fr</a>
+              <span class="pop">🏠 365</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://le-beaucet.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=le-beaucet.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:le-beaucet.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Le+Beaucet" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Le+Beaucet" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">71.</td>
+            <td class="row-name">
+              <a href="https://le-pontet.couvreur84-pro.fr" target="_blank" rel="noopener">le-pontet.couvreur84-pro.fr</a>
+              <span class="pop">🏠 17 551</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://le-pontet.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=le-pontet.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:le-pontet.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Le+Pontet" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Le+Pontet" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">72.</td>
+            <td class="row-name">
+              <a href="https://le-thor.couvreur84-pro.fr" target="_blank" rel="noopener">le-thor.couvreur84-pro.fr</a>
+              <span class="pop">🏠 8 858</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://le-thor.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=le-thor.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:le-thor.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Le+Thor" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Le+Thor" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">73.</td>
+            <td class="row-name">
+              <a href="https://lioux.couvreur84-pro.fr" target="_blank" rel="noopener">lioux.couvreur84-pro.fr</a>
+              <span class="pop">🏠 288</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://lioux.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=lioux.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:lioux.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Lioux" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Lioux" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">74.</td>
+            <td class="row-name">
+              <a href="https://loriol-du-comtat.couvreur84-pro.fr" target="_blank" rel="noopener">loriol-du-comtat.couvreur84-pro.fr</a>
+              <span class="pop">🏠 2 471</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://loriol-du-comtat.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=loriol-du-comtat.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:loriol-du-comtat.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Loriol-du-Comtat" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Loriol-du-Comtat" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">75.</td>
+            <td class="row-name">
+              <a href="https://lourmarin.couvreur84-pro.fr" target="_blank" rel="noopener">lourmarin.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 042</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://lourmarin.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=lourmarin.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:lourmarin.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Lourmarin" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Lourmarin" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">76.</td>
+            <td class="row-name">
+              <a href="https://malaucene.couvreur84-pro.fr" target="_blank" rel="noopener">malaucene.couvreur84-pro.fr</a>
+              <span class="pop">🏠 2 756</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://malaucene.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=malaucene.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:malaucene.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Malauc%C3%A8ne" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Malauc%C3%A8ne" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">77.</td>
+            <td class="row-name">
+              <a href="https://malemort-du-comtat.couvreur84-pro.fr" target="_blank" rel="noopener">malemort-du-comtat.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 935</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://malemort-du-comtat.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=malemort-du-comtat.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:malemort-du-comtat.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Malemort-du-Comtat" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Malemort-du-Comtat" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">78.</td>
+            <td class="row-name">
+              <a href="https://maubec.couvreur84-pro.fr" target="_blank" rel="noopener">maubec.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 914</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://maubec.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=maubec.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:maubec.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Maubec" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Maubec" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">79.</td>
+            <td class="row-name">
+              <a href="https://mazan.couvreur84-pro.fr" target="_blank" rel="noopener">mazan.couvreur84-pro.fr</a>
+              <span class="pop">🏠 6 269</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://mazan.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=mazan.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:mazan.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Mazan" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Mazan" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">80.</td>
+            <td class="row-name">
+              <a href="https://menerbes.couvreur84-pro.fr" target="_blank" rel="noopener">menerbes.couvreur84-pro.fr</a>
+              <span class="pop">🏠 979</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://menerbes.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=menerbes.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:menerbes.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+M%C3%A9nerbes" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+M%C3%A9nerbes" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">81.</td>
+            <td class="row-name">
+              <a href="https://merindol.couvreur84-pro.fr" target="_blank" rel="noopener">merindol.couvreur84-pro.fr</a>
+              <span class="pop">🏠 2 251</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://merindol.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=merindol.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:merindol.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+M%C3%A9rindol" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+M%C3%A9rindol" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">82.</td>
+            <td class="row-name">
+              <a href="https://methamis.couvreur84-pro.fr" target="_blank" rel="noopener">methamis.couvreur84-pro.fr</a>
+              <span class="pop">🏠 447</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://methamis.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=methamis.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:methamis.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+M%C3%A9thamis" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+M%C3%A9thamis" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">83.</td>
+            <td class="row-name">
+              <a href="https://mirabeau.couvreur84-pro.fr" target="_blank" rel="noopener">mirabeau.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 419</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://mirabeau.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=mirabeau.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:mirabeau.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Mirabeau" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Mirabeau" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">84.</td>
+            <td class="row-name">
+              <a href="https://modene.couvreur84-pro.fr" target="_blank" rel="noopener">modene.couvreur84-pro.fr</a>
+              <span class="pop">🏠 464</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://modene.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=modene.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:modene.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Mod%C3%A8ne" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Mod%C3%A8ne" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">85.</td>
+            <td class="row-name">
+              <a href="https://mondragon.couvreur84-pro.fr" target="_blank" rel="noopener">mondragon.couvreur84-pro.fr</a>
+              <span class="pop">🏠 3 679</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://mondragon.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=mondragon.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:mondragon.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Mondragon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Mondragon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">86.</td>
+            <td class="row-name">
+              <a href="https://monieux.couvreur84-pro.fr" target="_blank" rel="noopener">monieux.couvreur84-pro.fr</a>
+              <span class="pop">🏠 272</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://monieux.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=monieux.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:monieux.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Monieux" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Monieux" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">87.</td>
+            <td class="row-name">
+              <a href="https://monteux.couvreur84-pro.fr" target="_blank" rel="noopener">monteux.couvreur84-pro.fr</a>
+              <span class="pop">🏠 13 129</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://monteux.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=monteux.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:monteux.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Monteux" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Monteux" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">88.</td>
+            <td class="row-name">
+              <a href="https://morieres-les-avignon.couvreur84-pro.fr" target="_blank" rel="noopener">morieres-les-avignon.couvreur84-pro.fr</a>
+              <span class="pop">🏠 8 922</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://morieres-les-avignon.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=morieres-les-avignon.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:morieres-les-avignon.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Mori%C3%A8res-l%C3%A8s-Avignon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Mori%C3%A8res-l%C3%A8s-Avignon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">89.</td>
+            <td class="row-name">
+              <a href="https://mormoiron.couvreur84-pro.fr" target="_blank" rel="noopener">mormoiron.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 879</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://mormoiron.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=mormoiron.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:mormoiron.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Mormoiron" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Mormoiron" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">90.</td>
+            <td class="row-name">
+              <a href="https://mornas.couvreur84-pro.fr" target="_blank" rel="noopener">mornas.couvreur84-pro.fr</a>
+              <span class="pop">🏠 2 492</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://mornas.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=mornas.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:mornas.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Mornas" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Mornas" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">91.</td>
+            <td class="row-name">
+              <a href="https://murs.couvreur84-pro.fr" target="_blank" rel="noopener">murs.couvreur84-pro.fr</a>
+              <span class="pop">🏠 404</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://murs.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=murs.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:murs.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Murs" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Murs" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">92.</td>
+            <td class="row-name">
+              <a href="https://oppede.couvreur84-pro.fr" target="_blank" rel="noopener">oppede.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 284</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://oppede.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=oppede.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:oppede.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Opp%C3%A8de" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Opp%C3%A8de" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">93.</td>
+            <td class="row-name">
+              <a href="https://orange.couvreur84-pro.fr" target="_blank" rel="noopener">orange.couvreur84-pro.fr</a>
+              <span class="pop">🏠 28 949</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://orange.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=orange.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:orange.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Orange" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Orange" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">94.</td>
+            <td class="row-name">
+              <a href="https://pernes-les-fontaines.couvreur84-pro.fr" target="_blank" rel="noopener">pernes-les-fontaines.couvreur84-pro.fr</a>
+              <span class="pop">🏠 10 636</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://pernes-les-fontaines.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=pernes-les-fontaines.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:pernes-les-fontaines.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Pernes-les-Fontaines" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Pernes-les-Fontaines" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">95.</td>
+            <td class="row-name">
+              <a href="https://pertuis.couvreur84-pro.fr" target="_blank" rel="noopener">pertuis.couvreur84-pro.fr</a>
+              <span class="pop">🏠 20 012</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://pertuis.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=pertuis.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:pertuis.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Pertuis" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Pertuis" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">96.</td>
+            <td class="row-name">
+              <a href="https://peypin-d-aigues.couvreur84-pro.fr" target="_blank" rel="noopener">peypin-d-aigues.couvreur84-pro.fr</a>
+              <span class="pop">🏠 670</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://peypin-d-aigues.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=peypin-d-aigues.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:peypin-d-aigues.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Peypin-d'Aigues" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Peypin-d'Aigues" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">97.</td>
+            <td class="row-name">
+              <a href="https://piolenc.couvreur84-pro.fr" target="_blank" rel="noopener">piolenc.couvreur84-pro.fr</a>
+              <span class="pop">🏠 5 536</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://piolenc.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=piolenc.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:piolenc.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Piolenc" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Piolenc" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">98.</td>
+            <td class="row-name">
+              <a href="https://puget.couvreur84-pro.fr" target="_blank" rel="noopener">puget.couvreur84-pro.fr</a>
+              <span class="pop">🏠 864</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://puget.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=puget.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:puget.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Puget" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Puget" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">99.</td>
+            <td class="row-name">
+              <a href="https://puymeras.couvreur84-pro.fr" target="_blank" rel="noopener">puymeras.couvreur84-pro.fr</a>
+              <span class="pop">🏠 585</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://puymeras.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=puymeras.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:puymeras.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Puym%C3%A9ras" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Puym%C3%A9ras" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">100.</td>
+            <td class="row-name">
+              <a href="https://puyvert.couvreur84-pro.fr" target="_blank" rel="noopener">puyvert.couvreur84-pro.fr</a>
+              <span class="pop">🏠 819</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://puyvert.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=puyvert.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:puyvert.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Puyvert" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Puyvert" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">101.</td>
+            <td class="row-name">
+              <a href="https://rasteau.couvreur84-pro.fr" target="_blank" rel="noopener">rasteau.couvreur84-pro.fr</a>
+              <span class="pop">🏠 785</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://rasteau.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=rasteau.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:rasteau.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Rasteau" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Rasteau" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">102.</td>
+            <td class="row-name">
+              <a href="https://richerenches.couvreur84-pro.fr" target="_blank" rel="noopener">richerenches.couvreur84-pro.fr</a>
+              <span class="pop">🏠 542</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://richerenches.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=richerenches.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:richerenches.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Richerenches" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Richerenches" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">103.</td>
+            <td class="row-name">
+              <a href="https://roaix.couvreur84-pro.fr" target="_blank" rel="noopener">roaix.couvreur84-pro.fr</a>
+              <span class="pop">🏠 619</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://roaix.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=roaix.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:roaix.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Roaix" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Roaix" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">104.</td>
+            <td class="row-name">
+              <a href="https://robion.couvreur84-pro.fr" target="_blank" rel="noopener">robion.couvreur84-pro.fr</a>
+              <span class="pop">🏠 4 746</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://robion.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=robion.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:robion.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Robion" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Robion" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">105.</td>
+            <td class="row-name">
+              <a href="https://roussillon.couvreur84-pro.fr" target="_blank" rel="noopener">roussillon.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 302</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://roussillon.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=roussillon.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:roussillon.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Roussillon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Roussillon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">106.</td>
+            <td class="row-name">
+              <a href="https://rustrel.couvreur84-pro.fr" target="_blank" rel="noopener">rustrel.couvreur84-pro.fr</a>
+              <span class="pop">🏠 678</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://rustrel.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=rustrel.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:rustrel.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Rustrel" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Rustrel" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">107.</td>
+            <td class="row-name">
+              <a href="https://sablet.couvreur84-pro.fr" target="_blank" rel="noopener">sablet.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 391</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://sablet.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=sablet.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:sablet.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Sablet" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Sablet" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">108.</td>
+            <td class="row-name">
+              <a href="https://saignon.couvreur84-pro.fr" target="_blank" rel="noopener">saignon.couvreur84-pro.fr</a>
+              <span class="pop">🏠 923</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saignon.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saignon.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saignon.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Saignon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Saignon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">109.</td>
+            <td class="row-name">
+              <a href="https://saint-christol.couvreur84-pro.fr" target="_blank" rel="noopener">saint-christol.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 422</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-christol.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-christol.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-christol.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Saint-Christol" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Saint-Christol" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">110.</td>
+            <td class="row-name">
+              <a href="https://saint-didier.couvreur84-pro.fr" target="_blank" rel="noopener">saint-didier.couvreur84-pro.fr</a>
+              <span class="pop">🏠 2 126</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-didier.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-didier.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-didier.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Saint-Didier" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Saint-Didier" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">111.</td>
+            <td class="row-name">
+              <a href="https://saint-hippolyte-le-graveyron.couvreur84-pro.fr" target="_blank" rel="noopener">saint-hippolyte-le-graveyron.couvreur84-pro.fr</a>
+              <span class="pop">🏠 169</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-hippolyte-le-graveyron.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-hippolyte-le-graveyron.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-hippolyte-le-graveyron.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Saint-Hippolyte-le-Graveyron" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Saint-Hippolyte-le-Graveyron" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">112.</td>
+            <td class="row-name">
+              <a href="https://saint-leger-du-ventoux.couvreur84-pro.fr" target="_blank" rel="noopener">saint-leger-du-ventoux.couvreur84-pro.fr</a>
+              <span class="pop">🏠 29</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-leger-du-ventoux.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-leger-du-ventoux.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-leger-du-ventoux.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Saint-L%C3%A9ger-du-Ventoux" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Saint-L%C3%A9ger-du-Ventoux" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">113.</td>
+            <td class="row-name">
+              <a href="https://saint-marcellin-les-vaison.couvreur84-pro.fr" target="_blank" rel="noopener">saint-marcellin-les-vaison.couvreur84-pro.fr</a>
+              <span class="pop">🏠 332</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-marcellin-les-vaison.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-marcellin-les-vaison.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-marcellin-les-vaison.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Saint-Marcellin-l%C3%A8s-Vaison" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Saint-Marcellin-l%C3%A8s-Vaison" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">114.</td>
+            <td class="row-name">
+              <a href="https://saint-martin-de-castillon.couvreur84-pro.fr" target="_blank" rel="noopener">saint-martin-de-castillon.couvreur84-pro.fr</a>
+              <span class="pop">🏠 703</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-martin-de-castillon.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-martin-de-castillon.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-martin-de-castillon.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Saint-Martin-de-Castillon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Saint-Martin-de-Castillon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">115.</td>
+            <td class="row-name">
+              <a href="https://saint-martin-de-la-brasque.couvreur84-pro.fr" target="_blank" rel="noopener">saint-martin-de-la-brasque.couvreur84-pro.fr</a>
+              <span class="pop">🏠 816</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-martin-de-la-brasque.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-martin-de-la-brasque.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-martin-de-la-brasque.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Saint-Martin-de-la-Brasque" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Saint-Martin-de-la-Brasque" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">116.</td>
+            <td class="row-name">
+              <a href="https://saint-pantaleon.couvreur84-pro.fr" target="_blank" rel="noopener">saint-pantaleon.couvreur84-pro.fr</a>
+              <span class="pop">🏠 191</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-pantaleon.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-pantaleon.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-pantaleon.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Saint-Pantal%C3%A9on" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Saint-Pantal%C3%A9on" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">117.</td>
+            <td class="row-name">
+              <a href="https://saint-pierre-de-vassols.couvreur84-pro.fr" target="_blank" rel="noopener">saint-pierre-de-vassols.couvreur84-pro.fr</a>
+              <span class="pop">🏠 496</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-pierre-de-vassols.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-pierre-de-vassols.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-pierre-de-vassols.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Saint-Pierre-de-Vassols" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Saint-Pierre-de-Vassols" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">118.</td>
+            <td class="row-name">
+              <a href="https://saint-romain-en-viennois.couvreur84-pro.fr" target="_blank" rel="noopener">saint-romain-en-viennois.couvreur84-pro.fr</a>
+              <span class="pop">🏠 834</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-romain-en-viennois.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-romain-en-viennois.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-romain-en-viennois.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Saint-Romain-en-Viennois" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Saint-Romain-en-Viennois" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">119.</td>
+            <td class="row-name">
+              <a href="https://saint-roman-de-malegarde.couvreur84-pro.fr" target="_blank" rel="noopener">saint-roman-de-malegarde.couvreur84-pro.fr</a>
+              <span class="pop">🏠 336</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-roman-de-malegarde.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-roman-de-malegarde.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-roman-de-malegarde.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Saint-Roman-de-Malegarde" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Saint-Roman-de-Malegarde" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">120.</td>
+            <td class="row-name">
+              <a href="https://saint-saturnin-les-apt.couvreur84-pro.fr" target="_blank" rel="noopener">saint-saturnin-les-apt.couvreur84-pro.fr</a>
+              <span class="pop">🏠 2 947</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-saturnin-les-apt.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-saturnin-les-apt.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-saturnin-les-apt.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Saint-Saturnin-l%C3%A8s-Apt" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Saint-Saturnin-l%C3%A8s-Apt" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">121.</td>
+            <td class="row-name">
+              <a href="https://saint-saturnin-les-avignon.couvreur84-pro.fr" target="_blank" rel="noopener">saint-saturnin-les-avignon.couvreur84-pro.fr</a>
+              <span class="pop">🏠 5 119</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-saturnin-les-avignon.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-saturnin-les-avignon.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-saturnin-les-avignon.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Saint-Saturnin-l%C3%A8s-Avignon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Saint-Saturnin-l%C3%A8s-Avignon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">122.</td>
+            <td class="row-name">
+              <a href="https://saint-trinit.couvreur84-pro.fr" target="_blank" rel="noopener">saint-trinit.couvreur84-pro.fr</a>
+              <span class="pop">🏠 122</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-trinit.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-trinit.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-trinit.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Saint-Trinit" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Saint-Trinit" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">123.</td>
+            <td class="row-name">
+              <a href="https://sainte-cecile-les-vignes.couvreur84-pro.fr" target="_blank" rel="noopener">sainte-cecile-les-vignes.couvreur84-pro.fr</a>
+              <span class="pop">🏠 2 637</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://sainte-cecile-les-vignes.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=sainte-cecile-les-vignes.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:sainte-cecile-les-vignes.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Sainte-C%C3%A9cile-les-Vignes" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Sainte-C%C3%A9cile-les-Vignes" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">124.</td>
+            <td class="row-name">
+              <a href="https://sannes.couvreur84-pro.fr" target="_blank" rel="noopener">sannes.couvreur84-pro.fr</a>
+              <span class="pop">🏠 292</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://sannes.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=sannes.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:sannes.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Sannes" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Sannes" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">125.</td>
+            <td class="row-name">
+              <a href="https://sarrians.couvreur84-pro.fr" target="_blank" rel="noopener">sarrians.couvreur84-pro.fr</a>
+              <span class="pop">🏠 5 932</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://sarrians.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=sarrians.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:sarrians.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Sarrians" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Sarrians" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">126.</td>
+            <td class="row-name">
+              <a href="https://sault.couvreur84-pro.fr" target="_blank" rel="noopener">sault.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 354</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://sault.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=sault.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:sault.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Sault" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Sault" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">127.</td>
+            <td class="row-name">
+              <a href="https://saumane-de-vaucluse.couvreur84-pro.fr" target="_blank" rel="noopener">saumane-de-vaucluse.couvreur84-pro.fr</a>
+              <span class="pop">🏠 908</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saumane-de-vaucluse.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saumane-de-vaucluse.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saumane-de-vaucluse.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Saumane-de-Vaucluse" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Saumane-de-Vaucluse" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">128.</td>
+            <td class="row-name">
+              <a href="https://savoillan.couvreur84-pro.fr" target="_blank" rel="noopener">savoillan.couvreur84-pro.fr</a>
+              <span class="pop">🏠 66</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://savoillan.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=savoillan.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:savoillan.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Savoillan" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Savoillan" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">129.</td>
+            <td class="row-name">
+              <a href="https://seguret.couvreur84-pro.fr" target="_blank" rel="noopener">seguret.couvreur84-pro.fr</a>
+              <span class="pop">🏠 801</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://seguret.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=seguret.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:seguret.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+S%C3%A9guret" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+S%C3%A9guret" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">130.</td>
+            <td class="row-name">
+              <a href="https://serignan-du-comtat.couvreur84-pro.fr" target="_blank" rel="noopener">serignan-du-comtat.couvreur84-pro.fr</a>
+              <span class="pop">🏠 2 866</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://serignan-du-comtat.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=serignan-du-comtat.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:serignan-du-comtat.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+S%C3%A9rignan-du-Comtat" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+S%C3%A9rignan-du-Comtat" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">131.</td>
+            <td class="row-name">
+              <a href="https://sivergues.couvreur84-pro.fr" target="_blank" rel="noopener">sivergues.couvreur84-pro.fr</a>
+              <span class="pop">🏠 47</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://sivergues.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=sivergues.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:sivergues.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Sivergues" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Sivergues" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">132.</td>
+            <td class="row-name">
+              <a href="https://sorgues.couvreur84-pro.fr" target="_blank" rel="noopener">sorgues.couvreur84-pro.fr</a>
+              <span class="pop">🏠 19 117</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://sorgues.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=sorgues.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:sorgues.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Sorgues" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Sorgues" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">133.</td>
+            <td class="row-name">
+              <a href="https://suzette.couvreur84-pro.fr" target="_blank" rel="noopener">suzette.couvreur84-pro.fr</a>
+              <span class="pop">🏠 110</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://suzette.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=suzette.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:suzette.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Suzette" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Suzette" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">134.</td>
+            <td class="row-name">
+              <a href="https://taillades.couvreur84-pro.fr" target="_blank" rel="noopener">taillades.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 957</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://taillades.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=taillades.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:taillades.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Taillades" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Taillades" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">135.</td>
+            <td class="row-name">
+              <a href="https://travaillan.couvreur84-pro.fr" target="_blank" rel="noopener">travaillan.couvreur84-pro.fr</a>
+              <span class="pop">🏠 713</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://travaillan.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=travaillan.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:travaillan.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Travaillan" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Travaillan" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">136.</td>
+            <td class="row-name">
+              <a href="https://uchaux.couvreur84-pro.fr" target="_blank" rel="noopener">uchaux.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 688</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://uchaux.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=uchaux.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:uchaux.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Uchaux" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Uchaux" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">137.</td>
+            <td class="row-name">
+              <a href="https://vacqueyras.couvreur84-pro.fr" target="_blank" rel="noopener">vacqueyras.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 209</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://vacqueyras.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=vacqueyras.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:vacqueyras.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Vacqueyras" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Vacqueyras" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">138.</td>
+            <td class="row-name">
+              <a href="https://vaison-la-romaine.couvreur84-pro.fr" target="_blank" rel="noopener">vaison-la-romaine.couvreur84-pro.fr</a>
+              <span class="pop">🏠 5 929</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://vaison-la-romaine.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=vaison-la-romaine.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:vaison-la-romaine.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Vaison-la-Romaine" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Vaison-la-Romaine" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">139.</td>
+            <td class="row-name">
+              <a href="https://valreas.couvreur84-pro.fr" target="_blank" rel="noopener">valreas.couvreur84-pro.fr</a>
+              <span class="pop">🏠 9 346</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://valreas.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=valreas.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:valreas.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Valr%C3%A9as" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Valr%C3%A9as" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">140.</td>
+            <td class="row-name">
+              <a href="https://vaugines.couvreur84-pro.fr" target="_blank" rel="noopener">vaugines.couvreur84-pro.fr</a>
+              <span class="pop">🏠 557</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://vaugines.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=vaugines.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:vaugines.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Vaugines" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Vaugines" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">141.</td>
+            <td class="row-name">
+              <a href="https://vedene.couvreur84-pro.fr" target="_blank" rel="noopener">vedene.couvreur84-pro.fr</a>
+              <span class="pop">🏠 11 457</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://vedene.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=vedene.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:vedene.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Ved%C3%A8ne" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Ved%C3%A8ne" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">142.</td>
+            <td class="row-name">
+              <a href="https://velleron.couvreur84-pro.fr" target="_blank" rel="noopener">velleron.couvreur84-pro.fr</a>
+              <span class="pop">🏠 3 084</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://velleron.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=velleron.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:velleron.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Velleron" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Velleron" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">143.</td>
+            <td class="row-name">
+              <a href="https://venasque.couvreur84-pro.fr" target="_blank" rel="noopener">venasque.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 050</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://venasque.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=venasque.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:venasque.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Venasque" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Venasque" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">144.</td>
+            <td class="row-name">
+              <a href="https://viens.couvreur84-pro.fr" target="_blank" rel="noopener">viens.couvreur84-pro.fr</a>
+              <span class="pop">🏠 630</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://viens.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=viens.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:viens.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Viens" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Viens" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">145.</td>
+            <td class="row-name">
+              <a href="https://villars.couvreur84-pro.fr" target="_blank" rel="noopener">villars.couvreur84-pro.fr</a>
+              <span class="pop">🏠 771</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://villars.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=villars.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:villars.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Villars" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Villars" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">146.</td>
+            <td class="row-name">
+              <a href="https://villedieu.couvreur84-pro.fr" target="_blank" rel="noopener">villedieu.couvreur84-pro.fr</a>
+              <span class="pop">🏠 461</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://villedieu.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=villedieu.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:villedieu.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Villedieu" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Villedieu" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">147.</td>
+            <td class="row-name">
+              <a href="https://villelaure.couvreur84-pro.fr" target="_blank" rel="noopener">villelaure.couvreur84-pro.fr</a>
+              <span class="pop">🏠 3 337</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://villelaure.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=villelaure.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:villelaure.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Villelaure" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Villelaure" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">148.</td>
+            <td class="row-name">
+              <a href="https://villes-sur-auzon.couvreur84-pro.fr" target="_blank" rel="noopener">villes-sur-auzon.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 279</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://villes-sur-auzon.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=villes-sur-auzon.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:villes-sur-auzon.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Villes-sur-Auzon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Villes-sur-Auzon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">149.</td>
+            <td class="row-name">
+              <a href="https://violes.couvreur84-pro.fr" target="_blank" rel="noopener">violes.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 736</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://violes.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=violes.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:violes.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Viol%C3%A8s" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Viol%C3%A8s" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">150.</td>
+            <td class="row-name">
+              <a href="https://visan.couvreur84-pro.fr" target="_blank" rel="noopener">visan.couvreur84-pro.fr</a>
+              <span class="pop">🏠 1 902</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://visan.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=visan.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:visan.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Visan" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Visan" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">151.</td>
+            <td class="row-name">
+              <a href="https://vitrolles-en-luberon.couvreur84-pro.fr" target="_blank" rel="noopener">vitrolles-en-luberon.couvreur84-pro.fr</a>
+              <span class="pop">🏠 180</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://vitrolles-en-luberon.couvreur84-pro.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=vitrolles-en-luberon.couvreur84-pro.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:vitrolles-en-luberon.couvreur84-pro.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=peintre+couvreur+Vitrolles-en-Lub%C3%A9ron" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=peintre+couvreur+Vitrolles-en-Lub%C3%A9ron" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    const input = document.getElementById('search');
+    const table = document.getElementById('sites-table');
+    const rows  = [...table.querySelectorAll('tr')];
+    const count = document.getElementById('search-count');
+    input.addEventListener('input', function() {
+      const q = this.value.toLowerCase().trim();
+      let n = 0;
+      rows.forEach(r => {
+        const text = r.textContent.toLowerCase();
+        const show = !q || text.includes(q);
+        r.style.display = show ? '' : 'none';
+        if (show) n++;
+      });
+      count.textContent = n + ' site' + (n > 1 ? 's' : '') + ' affiché' + (n > 1 ? 's' : '');
+    });
+  </script>
+</body>
+</html>
