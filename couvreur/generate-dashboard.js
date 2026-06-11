@@ -86,6 +86,9 @@ function generateIndex() {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Couvreur</title>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="googlebot" content="noindex, nofollow, noarchive">
+  <script src="../auth.js"></script>
   <style>${getCSS()}</style>
 </head>
 <body>
@@ -155,6 +158,9 @@ function generateDepPage(dep) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${dep.nom} (${dep2}) — Dashboard Couvreur</title>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="googlebot" content="noindex, nofollow, noarchive">
+  <script src="../auth.js"></script>
   <style>${getCSS()}</style>
 </head>
 <body>
