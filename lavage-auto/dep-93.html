@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seine-Saint-Denis (93) — Dashboard Lavage Auto à domicile</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Poppins", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f4f5f7;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .dash-header {
+      text-align: center;
+      padding: 2.5rem 1rem 1.5rem;
+    }
+    .dash-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #010122;
+      margin-bottom: .6rem;
+    }
+    .accent { color: #0A9E84; }
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #0A9E84, #1E6FE0);
+      color: #fff;
+      padding: .45rem 1.4rem;
+      border-radius: 50px;
+      font-size: .95rem;
+      font-weight: 600;
+    }
+    .back-link {
+      display: inline-block;
+      color: #0A9E84;
+      font-size: .9rem;
+      margin-bottom: .5rem;
+      transition: opacity .2s;
+    }
+    .back-link:hover { opacity: .7; }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    .search-box {
+      max-width: 560px;
+      margin: 0 auto 2rem;
+      text-align: center;
+    }
+    .search-box input {
+      width: 100%;
+      padding: .85rem 1.2rem;
+      border-radius: 12px;
+      border: 1px solid rgba(1, 1, 34, 0.15);
+      background: #fff;
+      color: #1a1a1a;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .search-box input::placeholder { color: #999; }
+    .search-box input:focus {
+      border-color: #0A9E84;
+      box-shadow: 0 0 0 3px rgba(10, 158, 132, 0.18);
+    }
+    .search-count {
+      margin-top: .5rem;
+      font-size: .85rem;
+      color: #888;
+    }
+
+    .dep-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    .dep-card {
+      background: linear-gradient(145deg, #0A9E84, #1E6FE0);
+      border-radius: 14px;
+      padding: 1.3rem;
+      transition: transform .2s, box-shadow .2s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+    }
+    .dep-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(10, 158, 132, 0.3);
+    }
+    .dep-card-main {
+      display: flex;
+      flex-direction: column;
+      color: inherit;
+      text-decoration: none;
+    }
+    .dep-card-icon {
+      position: absolute;
+      top: .8rem;
+      right: .9rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: #fff;
+      filter: brightness(0) invert(1);
+      transition: transform .15s, opacity .15s;
+      cursor: pointer;
+      text-decoration: none;
+      opacity: 0.85;
+      z-index: 2;
+    }
+    .dep-card-icon:hover {
+      opacity: 1;
+      transform: rotate(15deg) scale(1.08);
+    }
+    .dep-card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: .35rem;
+    }
+    .dep-card-count {
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 700;
+      font-size: .95rem;
+    }
+    .dep-card-name {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: .85rem;
+      margin-top: .15rem;
+    }
+
+    .dep-detail-card {
+      background: #fff;
+      border: 1px solid rgba(1, 1, 34, 0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(1, 1, 34, 0.06);
+    }
+    .dep-detail-header {
+      background: linear-gradient(135deg, #0A9E84, #1E6FE0);
+      color: #fff;
+      padding: 1rem 1.5rem;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .sites-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .sites-table tr {
+      border-bottom: 1px solid rgba(1, 1, 34, 0.06);
+      transition: background .15s;
+    }
+    .sites-table tr:hover {
+      background: rgba(10, 158, 132, 0.05);
+    }
+    .sites-table td {
+      padding: .75rem 1rem;
+      vertical-align: middle;
+    }
+    .row-num {
+      color: #0A9E84;
+      font-weight: 700;
+      width: 3rem;
+      text-align: center;
+    }
+    .row-name a {
+      color: #1a1a1a;
+      font-weight: 500;
+      transition: color .15s;
+    }
+    .row-name a:hover { color: #0A9E84; }
+    .pop {
+      margin-left: .6rem;
+      color: #0A9E84;
+      font-size: .85rem;
+    }
+    .row-actions {
+      text-align: right;
+      white-space: nowrap;
+    }
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #0A9E84, #1E6FE0);
+      margin-left: 4px;
+      font-size: .8rem;
+      transition: transform .15s, box-shadow .15s;
+      color: #fff;
+    }
+    .action-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 12px rgba(10, 158, 132, 0.3);
+    }
+    .action-g { font-weight: 700; font-size: .85rem; }
+    .action-b { font-weight: 700; font-size: .85rem; }
+
+    @media (max-width: 640px) {
+      .dash-header h1 { font-size: 1.4rem; }
+      .dep-grid { grid-template-columns: repeat(2, 1fr); gap: .7rem; }
+      .dep-card { padding: 1rem; }
+      .row-actions { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="dash-header">
+    <a href="index.html" class="back-link">← Retour</a>
+    <h1>Lavage Auto <span class="accent">Seine-Saint-Denis (93)</span></h1>
+    <div class="badge">40 sites en ligne</div>
+  </header>
+
+  <main class="container">
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Rechercher une ville ou un lien..." autocomplete="off">
+      <div class="search-count" id="search-count">40 sites affichés</div>
+    </div>
+
+    <div class="dep-detail-card">
+      <div class="dep-detail-header">
+        🌐 *.lavage-auto-a-domicile-93.fr · 40 sites villes
+      </div>
+      <table class="sites-table" id="sites-table">
+        <tbody>
+
+          <tr>
+            <td class="row-num">1.</td>
+            <td class="row-name">
+              <a href="https://aubervilliers.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">aubervilliers.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 90 071</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://aubervilliers.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=aubervilliers.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:aubervilliers.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Aubervilliers" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Aubervilliers" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">2.</td>
+            <td class="row-name">
+              <a href="https://aulnay-sous-bois.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">aulnay-sous-bois.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 86 135</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://aulnay-sous-bois.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=aulnay-sous-bois.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:aulnay-sous-bois.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Aulnay-sous-Bois" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Aulnay-sous-Bois" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">3.</td>
+            <td class="row-name">
+              <a href="https://bagnolet.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">bagnolet.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 39 366</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://bagnolet.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=bagnolet.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:bagnolet.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Bagnolet" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Bagnolet" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">4.</td>
+            <td class="row-name">
+              <a href="https://bobigny.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">bobigny.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 55 056</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://bobigny.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=bobigny.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:bobigny.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Bobigny" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Bobigny" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">5.</td>
+            <td class="row-name">
+              <a href="https://bondy.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">bondy.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 52 905</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://bondy.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=bondy.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:bondy.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Bondy" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Bondy" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">6.</td>
+            <td class="row-name">
+              <a href="https://clichy-sous-bois.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">clichy-sous-bois.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 29 735</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://clichy-sous-bois.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=clichy-sous-bois.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:clichy-sous-bois.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Clichy-sous-Bois" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Clichy-sous-Bois" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">7.</td>
+            <td class="row-name">
+              <a href="https://coubron.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">coubron.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 5 063</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://coubron.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=coubron.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:coubron.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Coubron" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Coubron" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">8.</td>
+            <td class="row-name">
+              <a href="https://drancy.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">drancy.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 71 363</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://drancy.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=drancy.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:drancy.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Drancy" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Drancy" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">9.</td>
+            <td class="row-name">
+              <a href="https://dugny.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">dugny.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 11 328</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://dugny.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=dugny.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:dugny.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Dugny" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Dugny" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">10.</td>
+            <td class="row-name">
+              <a href="https://epinay-sur-seine.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">epinay-sur-seine.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 53 489</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://epinay-sur-seine.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=epinay-sur-seine.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:epinay-sur-seine.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+%C3%89pinay-sur-Seine" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+%C3%89pinay-sur-Seine" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">11.</td>
+            <td class="row-name">
+              <a href="https://gagny.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">gagny.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 40 189</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://gagny.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=gagny.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:gagny.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Gagny" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Gagny" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">12.</td>
+            <td class="row-name">
+              <a href="https://gournay-sur-marne.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">gournay-sur-marne.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 6 882</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://gournay-sur-marne.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=gournay-sur-marne.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:gournay-sur-marne.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Gournay-sur-Marne" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Gournay-sur-Marne" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">13.</td>
+            <td class="row-name">
+              <a href="https://l-ile-saint-denis.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">l-ile-saint-denis.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 8 664</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://l-ile-saint-denis.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=l-ile-saint-denis.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:l-ile-saint-denis.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+L'%C3%8Ele-Saint-Denis" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+L'%C3%8Ele-Saint-Denis" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">14.</td>
+            <td class="row-name">
+              <a href="https://la-courneuve.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">la-courneuve.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 47 160</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://la-courneuve.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=la-courneuve.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:la-courneuve.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+La+Courneuve" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+La+Courneuve" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">15.</td>
+            <td class="row-name">
+              <a href="https://le-blanc-mesnil.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">le-blanc-mesnil.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 58 257</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://le-blanc-mesnil.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=le-blanc-mesnil.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:le-blanc-mesnil.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Le+Blanc-Mesnil" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Le+Blanc-Mesnil" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">16.</td>
+            <td class="row-name">
+              <a href="https://le-bourget.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">le-bourget.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 14 832</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://le-bourget.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=le-bourget.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:le-bourget.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Le+Bourget" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Le+Bourget" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">17.</td>
+            <td class="row-name">
+              <a href="https://le-pre-saint-gervais.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">le-pre-saint-gervais.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 16 865</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://le-pre-saint-gervais.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=le-pre-saint-gervais.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:le-pre-saint-gervais.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Le+Pr%C3%A9-Saint-Gervais" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Le+Pr%C3%A9-Saint-Gervais" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">18.</td>
+            <td class="row-name">
+              <a href="https://le-raincy.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">le-raincy.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 14 877</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://le-raincy.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=le-raincy.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:le-raincy.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Le+Raincy" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Le+Raincy" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">19.</td>
+            <td class="row-name">
+              <a href="https://les-lilas.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">les-lilas.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 23 469</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://les-lilas.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=les-lilas.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:les-lilas.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Les+Lilas" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Les+Lilas" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">20.</td>
+            <td class="row-name">
+              <a href="https://les-pavillons-sous-bois.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">les-pavillons-sous-bois.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 24 165</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://les-pavillons-sous-bois.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=les-pavillons-sous-bois.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:les-pavillons-sous-bois.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Les+Pavillons-sous-Bois" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Les+Pavillons-sous-Bois" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">21.</td>
+            <td class="row-name">
+              <a href="https://livry-gargan.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">livry-gargan.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 46 028</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://livry-gargan.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=livry-gargan.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:livry-gargan.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Livry-Gargan" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Livry-Gargan" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">22.</td>
+            <td class="row-name">
+              <a href="https://montfermeil.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">montfermeil.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 27 980</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://montfermeil.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=montfermeil.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:montfermeil.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Montfermeil" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Montfermeil" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">23.</td>
+            <td class="row-name">
+              <a href="https://montreuil.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">montreuil.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 111 455</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://montreuil.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=montreuil.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:montreuil.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Montreuil" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Montreuil" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">24.</td>
+            <td class="row-name">
+              <a href="https://neuilly-plaisance.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">neuilly-plaisance.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 21 415</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://neuilly-plaisance.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=neuilly-plaisance.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:neuilly-plaisance.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Neuilly-Plaisance" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Neuilly-Plaisance" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">25.</td>
+            <td class="row-name">
+              <a href="https://neuilly-sur-marne.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">neuilly-sur-marne.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 37 531</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://neuilly-sur-marne.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=neuilly-sur-marne.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:neuilly-sur-marne.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Neuilly-sur-Marne" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Neuilly-sur-Marne" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">26.</td>
+            <td class="row-name">
+              <a href="https://noisy-le-grand.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">noisy-le-grand.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 70 374</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://noisy-le-grand.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=noisy-le-grand.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:noisy-le-grand.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Noisy-le-Grand" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Noisy-le-Grand" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">27.</td>
+            <td class="row-name">
+              <a href="https://noisy-le-sec.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">noisy-le-sec.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 46 094</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://noisy-le-sec.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=noisy-le-sec.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:noisy-le-sec.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Noisy-le-Sec" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Noisy-le-Sec" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">28.</td>
+            <td class="row-name">
+              <a href="https://pantin.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">pantin.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 60 800</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://pantin.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=pantin.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:pantin.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Pantin" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Pantin" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">29.</td>
+            <td class="row-name">
+              <a href="https://pierrefitte-sur-seine.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">pierrefitte-sur-seine.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 32 379</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://pierrefitte-sur-seine.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=pierrefitte-sur-seine.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:pierrefitte-sur-seine.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Pierrefitte-sur-Seine" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Pierrefitte-sur-Seine" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">30.</td>
+            <td class="row-name">
+              <a href="https://romainville.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">romainville.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 33 266</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://romainville.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=romainville.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:romainville.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Romainville" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Romainville" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">31.</td>
+            <td class="row-name">
+              <a href="https://rosny-sous-bois.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">rosny-sous-bois.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 45 655</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://rosny-sous-bois.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=rosny-sous-bois.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:rosny-sous-bois.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Rosny-sous-Bois" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Rosny-sous-Bois" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">32.</td>
+            <td class="row-name">
+              <a href="https://saint-denis.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">saint-denis.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 113 942</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-denis.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-denis.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-denis.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Saint-Denis" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Saint-Denis" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">33.</td>
+            <td class="row-name">
+              <a href="https://saint-ouen-sur-seine.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">saint-ouen-sur-seine.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 53 207</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-ouen-sur-seine.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-ouen-sur-seine.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-ouen-sur-seine.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Saint-Ouen-sur-Seine" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Saint-Ouen-sur-Seine" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">34.</td>
+            <td class="row-name">
+              <a href="https://sevran.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">sevran.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 51 845</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://sevran.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=sevran.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:sevran.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Sevran" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Sevran" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">35.</td>
+            <td class="row-name">
+              <a href="https://stains.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">stains.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 40 359</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://stains.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=stains.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:stains.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Stains" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Stains" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">36.</td>
+            <td class="row-name">
+              <a href="https://tremblay-en-france.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">tremblay-en-france.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 37 271</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://tremblay-en-france.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=tremblay-en-france.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:tremblay-en-france.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Tremblay-en-France" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Tremblay-en-France" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">37.</td>
+            <td class="row-name">
+              <a href="https://vaujours.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">vaujours.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 7 478</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://vaujours.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=vaujours.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:vaujours.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Vaujours" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Vaujours" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">38.</td>
+            <td class="row-name">
+              <a href="https://villemomble.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">villemomble.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 30 332</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://villemomble.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=villemomble.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:villemomble.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Villemomble" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Villemomble" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">39.</td>
+            <td class="row-name">
+              <a href="https://villepinte.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">villepinte.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 38 725</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://villepinte.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=villepinte.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:villepinte.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Villepinte" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Villepinte" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">40.</td>
+            <td class="row-name">
+              <a href="https://villetaneuse.lavage-auto-a-domicile-93.fr" target="_blank" rel="noopener">villetaneuse.lavage-auto-a-domicile-93.fr</a>
+              <span class="pop">🏠 12 663</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://villetaneuse.lavage-auto-a-domicile-93.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=villetaneuse.lavage-auto-a-domicile-93.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:villetaneuse.lavage-auto-a-domicile-93.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Villetaneuse" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Villetaneuse" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    const input = document.getElementById('search');
+    const table = document.getElementById('sites-table');
+    const rows  = [...table.querySelectorAll('tr')];
+    const count = document.getElementById('search-count');
+    input.addEventListener('input', function() {
+      const q = this.value.toLowerCase().trim();
+      let n = 0;
+      rows.forEach(r => {
+        const text = r.textContent.toLowerCase();
+        const show = !q || text.includes(q);
+        r.style.display = show ? '' : 'none';
+        if (show) n++;
+      });
+      count.textContent = n + ' site' + (n > 1 ? 's' : '') + ' affiché' + (n > 1 ? 's' : '');
+    });
+  </script>
+</body>
+</html>

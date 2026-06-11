@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hauts-de-Seine (92) — Dashboard Lavage Auto à domicile</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Poppins", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f4f5f7;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .dash-header {
+      text-align: center;
+      padding: 2.5rem 1rem 1.5rem;
+    }
+    .dash-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #010122;
+      margin-bottom: .6rem;
+    }
+    .accent { color: #0A9E84; }
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #0A9E84, #1E6FE0);
+      color: #fff;
+      padding: .45rem 1.4rem;
+      border-radius: 50px;
+      font-size: .95rem;
+      font-weight: 600;
+    }
+    .back-link {
+      display: inline-block;
+      color: #0A9E84;
+      font-size: .9rem;
+      margin-bottom: .5rem;
+      transition: opacity .2s;
+    }
+    .back-link:hover { opacity: .7; }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    .search-box {
+      max-width: 560px;
+      margin: 0 auto 2rem;
+      text-align: center;
+    }
+    .search-box input {
+      width: 100%;
+      padding: .85rem 1.2rem;
+      border-radius: 12px;
+      border: 1px solid rgba(1, 1, 34, 0.15);
+      background: #fff;
+      color: #1a1a1a;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .search-box input::placeholder { color: #999; }
+    .search-box input:focus {
+      border-color: #0A9E84;
+      box-shadow: 0 0 0 3px rgba(10, 158, 132, 0.18);
+    }
+    .search-count {
+      margin-top: .5rem;
+      font-size: .85rem;
+      color: #888;
+    }
+
+    .dep-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    .dep-card {
+      background: linear-gradient(145deg, #0A9E84, #1E6FE0);
+      border-radius: 14px;
+      padding: 1.3rem;
+      transition: transform .2s, box-shadow .2s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+    }
+    .dep-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(10, 158, 132, 0.3);
+    }
+    .dep-card-main {
+      display: flex;
+      flex-direction: column;
+      color: inherit;
+      text-decoration: none;
+    }
+    .dep-card-icon {
+      position: absolute;
+      top: .8rem;
+      right: .9rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: #fff;
+      filter: brightness(0) invert(1);
+      transition: transform .15s, opacity .15s;
+      cursor: pointer;
+      text-decoration: none;
+      opacity: 0.85;
+      z-index: 2;
+    }
+    .dep-card-icon:hover {
+      opacity: 1;
+      transform: rotate(15deg) scale(1.08);
+    }
+    .dep-card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: .35rem;
+    }
+    .dep-card-count {
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 700;
+      font-size: .95rem;
+    }
+    .dep-card-name {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: .85rem;
+      margin-top: .15rem;
+    }
+
+    .dep-detail-card {
+      background: #fff;
+      border: 1px solid rgba(1, 1, 34, 0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(1, 1, 34, 0.06);
+    }
+    .dep-detail-header {
+      background: linear-gradient(135deg, #0A9E84, #1E6FE0);
+      color: #fff;
+      padding: 1rem 1.5rem;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .sites-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .sites-table tr {
+      border-bottom: 1px solid rgba(1, 1, 34, 0.06);
+      transition: background .15s;
+    }
+    .sites-table tr:hover {
+      background: rgba(10, 158, 132, 0.05);
+    }
+    .sites-table td {
+      padding: .75rem 1rem;
+      vertical-align: middle;
+    }
+    .row-num {
+      color: #0A9E84;
+      font-weight: 700;
+      width: 3rem;
+      text-align: center;
+    }
+    .row-name a {
+      color: #1a1a1a;
+      font-weight: 500;
+      transition: color .15s;
+    }
+    .row-name a:hover { color: #0A9E84; }
+    .pop {
+      margin-left: .6rem;
+      color: #0A9E84;
+      font-size: .85rem;
+    }
+    .row-actions {
+      text-align: right;
+      white-space: nowrap;
+    }
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #0A9E84, #1E6FE0);
+      margin-left: 4px;
+      font-size: .8rem;
+      transition: transform .15s, box-shadow .15s;
+      color: #fff;
+    }
+    .action-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 12px rgba(10, 158, 132, 0.3);
+    }
+    .action-g { font-weight: 700; font-size: .85rem; }
+    .action-b { font-weight: 700; font-size: .85rem; }
+
+    @media (max-width: 640px) {
+      .dash-header h1 { font-size: 1.4rem; }
+      .dep-grid { grid-template-columns: repeat(2, 1fr); gap: .7rem; }
+      .dep-card { padding: 1rem; }
+      .row-actions { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="dash-header">
+    <a href="index.html" class="back-link">← Retour</a>
+    <h1>Lavage Auto <span class="accent">Hauts-de-Seine (92)</span></h1>
+    <div class="badge">36 sites en ligne</div>
+  </header>
+
+  <main class="container">
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Rechercher une ville ou un lien..." autocomplete="off">
+      <div class="search-count" id="search-count">36 sites affichés</div>
+    </div>
+
+    <div class="dep-detail-card">
+      <div class="dep-detail-header">
+        🌐 *.lavage-auto-a-domicile-92.fr · 36 sites villes
+      </div>
+      <table class="sites-table" id="sites-table">
+        <tbody>
+
+          <tr>
+            <td class="row-num">1.</td>
+            <td class="row-name">
+              <a href="https://antony.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">antony.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 63 232</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://antony.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=antony.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:antony.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Antony" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Antony" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">2.</td>
+            <td class="row-name">
+              <a href="https://asnieres-sur-seine.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">asnieres-sur-seine.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 89 662</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://asnieres-sur-seine.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=asnieres-sur-seine.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:asnieres-sur-seine.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Asni%C3%A8res-sur-Seine" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Asni%C3%A8res-sur-Seine" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">3.</td>
+            <td class="row-name">
+              <a href="https://bagneux.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">bagneux.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 43 699</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://bagneux.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=bagneux.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:bagneux.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Bagneux" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Bagneux" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">4.</td>
+            <td class="row-name">
+              <a href="https://bois-colombes.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">bois-colombes.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 29 765</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://bois-colombes.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=bois-colombes.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:bois-colombes.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Bois-Colombes" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Bois-Colombes" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">5.</td>
+            <td class="row-name">
+              <a href="https://boulogne-billancourt.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">boulogne-billancourt.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 119 808</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://boulogne-billancourt.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=boulogne-billancourt.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:boulogne-billancourt.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Boulogne-Billancourt" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Boulogne-Billancourt" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">6.</td>
+            <td class="row-name">
+              <a href="https://bourg-la-reine.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">bourg-la-reine.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 20 810</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://bourg-la-reine.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=bourg-la-reine.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:bourg-la-reine.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Bourg-la-Reine" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Bourg-la-Reine" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">7.</td>
+            <td class="row-name">
+              <a href="https://chatenay-malabry.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">chatenay-malabry.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 34 898</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://chatenay-malabry.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=chatenay-malabry.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:chatenay-malabry.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Ch%C3%A2tenay-Malabry" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Ch%C3%A2tenay-Malabry" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">8.</td>
+            <td class="row-name">
+              <a href="https://chatillon.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">chatillon.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 36 777</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://chatillon.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=chatillon.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:chatillon.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Ch%C3%A2tillon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Ch%C3%A2tillon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">9.</td>
+            <td class="row-name">
+              <a href="https://chaville.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">chaville.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 19 991</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://chaville.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=chaville.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:chaville.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Chaville" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Chaville" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">10.</td>
+            <td class="row-name">
+              <a href="https://clamart.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">clamart.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 54 491</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://clamart.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=clamart.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:clamart.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Clamart" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Clamart" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">11.</td>
+            <td class="row-name">
+              <a href="https://clichy.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">clichy.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 64 849</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://clichy.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=clichy.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:clichy.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Clichy" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Clichy" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">12.</td>
+            <td class="row-name">
+              <a href="https://colombes.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">colombes.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 88 870</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://colombes.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=colombes.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:colombes.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Colombes" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Colombes" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">13.</td>
+            <td class="row-name">
+              <a href="https://courbevoie.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">courbevoie.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 81 516</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://courbevoie.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=courbevoie.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:courbevoie.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Courbevoie" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Courbevoie" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">14.</td>
+            <td class="row-name">
+              <a href="https://fontenay-aux-roses.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">fontenay-aux-roses.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 24 772</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://fontenay-aux-roses.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=fontenay-aux-roses.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:fontenay-aux-roses.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Fontenay-aux-Roses" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Fontenay-aux-Roses" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">15.</td>
+            <td class="row-name">
+              <a href="https://garches.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">garches.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 17 898</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://garches.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=garches.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:garches.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Garches" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Garches" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">16.</td>
+            <td class="row-name">
+              <a href="https://gennevilliers.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">gennevilliers.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 49 410</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://gennevilliers.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=gennevilliers.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:gennevilliers.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Gennevilliers" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Gennevilliers" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">17.</td>
+            <td class="row-name">
+              <a href="https://issy-les-moulineaux.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">issy-les-moulineaux.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 68 580</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://issy-les-moulineaux.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=issy-les-moulineaux.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:issy-les-moulineaux.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Issy-les-Moulineaux" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Issy-les-Moulineaux" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">18.</td>
+            <td class="row-name">
+              <a href="https://la-garenne-colombes.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">la-garenne-colombes.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 29 932</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://la-garenne-colombes.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=la-garenne-colombes.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:la-garenne-colombes.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+La+Garenne-Colombes" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+La+Garenne-Colombes" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">19.</td>
+            <td class="row-name">
+              <a href="https://le-plessis-robinson.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">le-plessis-robinson.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 29 228</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://le-plessis-robinson.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=le-plessis-robinson.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:le-plessis-robinson.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Le+Plessis-Robinson" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Le+Plessis-Robinson" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">20.</td>
+            <td class="row-name">
+              <a href="https://levallois-perret.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">levallois-perret.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 68 009</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://levallois-perret.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=levallois-perret.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:levallois-perret.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Levallois-Perret" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Levallois-Perret" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">21.</td>
+            <td class="row-name">
+              <a href="https://malakoff.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">malakoff.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 30 292</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://malakoff.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=malakoff.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:malakoff.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Malakoff" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Malakoff" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">22.</td>
+            <td class="row-name">
+              <a href="https://marnes-la-coquette.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">marnes-la-coquette.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 1 745</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://marnes-la-coquette.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=marnes-la-coquette.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:marnes-la-coquette.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Marnes-la-Coquette" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Marnes-la-Coquette" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">23.</td>
+            <td class="row-name">
+              <a href="https://meudon.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">meudon.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 46 342</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://meudon.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=meudon.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:meudon.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Meudon" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Meudon" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">24.</td>
+            <td class="row-name">
+              <a href="https://montrouge.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">montrouge.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 47 657</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://montrouge.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=montrouge.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:montrouge.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Montrouge" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Montrouge" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">25.</td>
+            <td class="row-name">
+              <a href="https://nanterre.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">nanterre.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 97 351</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://nanterre.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=nanterre.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:nanterre.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Nanterre" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Nanterre" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">26.</td>
+            <td class="row-name">
+              <a href="https://neuilly-sur-seine.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">neuilly-sur-seine.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 59 267</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://neuilly-sur-seine.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=neuilly-sur-seine.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:neuilly-sur-seine.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Neuilly-sur-Seine" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Neuilly-sur-Seine" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">27.</td>
+            <td class="row-name">
+              <a href="https://puteaux.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">puteaux.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 43 672</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://puteaux.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=puteaux.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:puteaux.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Puteaux" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Puteaux" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">28.</td>
+            <td class="row-name">
+              <a href="https://rueil-malmaison.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">rueil-malmaison.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 78 186</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://rueil-malmaison.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=rueil-malmaison.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:rueil-malmaison.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Rueil-Malmaison" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Rueil-Malmaison" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">29.</td>
+            <td class="row-name">
+              <a href="https://saint-cloud.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">saint-cloud.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 29 727</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://saint-cloud.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=saint-cloud.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:saint-cloud.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Saint-Cloud" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Saint-Cloud" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">30.</td>
+            <td class="row-name">
+              <a href="https://sceaux.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">sceaux.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 20 488</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://sceaux.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=sceaux.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:sceaux.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Sceaux" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Sceaux" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">31.</td>
+            <td class="row-name">
+              <a href="https://sevres.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">sevres.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 22 618</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://sevres.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=sevres.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:sevres.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+S%C3%A8vres" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+S%C3%A8vres" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">32.</td>
+            <td class="row-name">
+              <a href="https://suresnes.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">suresnes.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 49 104</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://suresnes.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=suresnes.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:suresnes.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Suresnes" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Suresnes" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">33.</td>
+            <td class="row-name">
+              <a href="https://vanves.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">vanves.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 28 014</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://vanves.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=vanves.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:vanves.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Vanves" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Vanves" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">34.</td>
+            <td class="row-name">
+              <a href="https://vaucresson.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">vaucresson.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 8 566</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://vaucresson.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=vaucresson.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:vaucresson.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Vaucresson" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Vaucresson" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">35.</td>
+            <td class="row-name">
+              <a href="https://ville-d-avray.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">ville-d-avray.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 10 694</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://ville-d-avray.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=ville-d-avray.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:ville-d-avray.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Ville-d'Avray" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Ville-d'Avray" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="row-num">36.</td>
+            <td class="row-name">
+              <a href="https://villeneuve-la-garenne.lavage-auto-a-domicile-92.fr" target="_blank" rel="noopener">villeneuve-la-garenne.lavage-auto-a-domicile-92.fr</a>
+              <span class="pop">🏠 25 371</span>
+            </td>
+            <td class="row-actions">
+              <a href="https://villeneuve-la-garenne.lavage-auto-a-domicile-92.fr" target="_blank" title="Ouvrir le site" class="action-btn">🔗</a>
+              <a href="https://developers.google.com/speed/pagespeed/insights/?url=villeneuve-la-garenne.lavage-auto-a-domicile-92.fr" target="_blank" title="PageSpeed" class="action-btn">⚡</a>
+              <a href="https://www.google.com/search?q=site:villeneuve-la-garenne.lavage-auto-a-domicile-92.fr" target="_blank" title="Indexation Google" class="action-btn action-g">G<sub>i</sub></a>
+              <a href="https://www.google.com/search?q=lavage+auto+%C3%A0+domicile+Villeneuve-la-Garenne" target="_blank" title="Position Google" class="action-btn action-g">G</a>
+              <a href="https://www.bing.com/search?q=lavage+auto+%C3%A0+domicile+Villeneuve-la-Garenne" target="_blank" title="Position Bing" class="action-btn action-b">B</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    const input = document.getElementById('search');
+    const table = document.getElementById('sites-table');
+    const rows  = [...table.querySelectorAll('tr')];
+    const count = document.getElementById('search-count');
+    input.addEventListener('input', function() {
+      const q = this.value.toLowerCase().trim();
+      let n = 0;
+      rows.forEach(r => {
+        const text = r.textContent.toLowerCase();
+        const show = !q || text.includes(q);
+        r.style.display = show ? '' : 'none';
+        if (show) n++;
+      });
+      count.textContent = n + ' site' + (n > 1 ? 's' : '') + ' affiché' + (n > 1 ? 's' : '');
+    });
+  </script>
+</body>
+</html>

@@ -143,6 +143,14 @@
       border-color: rgba(255, 139, 61, 0.4);
     }
 
+    /* Lavage Auto — teal/bleu */
+    .card--lavage .cta {
+      background: linear-gradient(135deg, #0A9E84, #1E6FE0);
+    }
+    .card--lavage:hover {
+      border-color: rgba(10, 158, 132, 0.4);
+    }
+
     @media (max-width: 720px) {
       .cards { grid-template-columns: 1fr; gap: 1.5rem; }
       .header h1 { font-size: 1.6rem; }
@@ -185,6 +193,17 @@
         <img src="assets/logo-couvreur.webp" alt="Couvreur" loading="lazy">
       </div>
       <h2>Couvreur</h2>
+      <span class="cta">
+        Ouvrir le dashboard
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </span>
+    </a>
+
+    <a href="lavage-auto/index.html" class="card card--lavage">
+      <div class="logo-wrap">
+        <img src="assets/logo-lavage-auto.webp" alt="Lavage Auto" loading="lazy" onerror="this.style.display='none'">
+      </div>
+      <h2>Lavage Auto</h2>
       <span class="cta">
         Ouvrir le dashboard
         <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
