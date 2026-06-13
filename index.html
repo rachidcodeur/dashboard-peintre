@@ -7,6 +7,7 @@
   <meta name="robots" content="noindex, nofollow, noarchive">
   <meta name="googlebot" content="noindex, nofollow, noarchive">
   <script src="auth.js"></script>
+  <link rel="icon" href="assets/favicon-dashboard.png" type="image/png">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -154,6 +155,12 @@
     .card--lavage:hover {
       border-color: rgba(10, 158, 132, 0.4);
     }
+    .card--ent-nettoyage .cta {
+      background: linear-gradient(135deg, #C9A961, #0F172A);
+    }
+    .card--ent-nettoyage:hover {
+      border-color: rgba(201, 169, 97, 0.45);
+    }
 
     @media (max-width: 1100px) {
       .cards { grid-template-columns: repeat(3, 1fr); }
@@ -214,6 +221,17 @@
         <img src="assets/logo-lavage-auto.webp" alt="Lavage Auto" loading="lazy" onerror="this.style.display='none'">
       </div>
       <h2>Lavage Auto</h2>
+      <span class="cta">
+        Ouvrir le dashboard
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </span>
+    </a>
+
+    <a href="entreprise-de-nettoyage/index.html" class="card card--ent-nettoyage">
+      <div class="logo-wrap">
+        <img src="assets/logo-entreprise-nettoyage.webp" alt="Entreprise de nettoyage" loading="lazy" onerror="this.style.display='none'">
+      </div>
+      <h2>Entreprise de nettoyage</h2>
       <span class="cta">
         Ouvrir le dashboard
         <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>

@@ -7,6 +7,7 @@
   <meta name="robots" content="noindex, nofollow, noarchive">
   <meta name="googlebot" content="noindex, nofollow, noarchive">
   <script src="../auth.js"></script>
+  <link rel="icon" href="../assets/favicon-dashboard.png" type="image/png">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -98,12 +99,31 @@
       transform: translateY(-3px);
       box-shadow: 0 8px 32px rgba(189, 87, 34, 0.3);
     }
+    .dep-card-main {
+      display: flex;
+      flex-direction: column;
+      color: inherit;
+      text-decoration: none;
+    }
     .dep-card-icon {
       position: absolute;
-      top: 1rem;
-      right: 1rem;
-      font-size: 1.3rem;
-      opacity: .6;
+      top: .8rem;
+      right: .9rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: #fff;
+      filter: brightness(0) invert(1);
+      transition: transform .15s, opacity .15s;
+      cursor: pointer;
+      text-decoration: none;
+      opacity: 0.85;
+      z-index: 2;
+    }
+    .dep-card-icon:hover {
+      opacity: 1;
+      transform: rotate(15deg) scale(1.08);
     }
     .dep-card-title {
       font-size: 1.05rem;
@@ -215,670 +235,860 @@
 
     <div class="dep-grid" id="dep-grid">
 
-        <a href="dep-01.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 01</div>
-          <div class="dep-card-count">391 sites</div>
-          <div class="dep-card-name">Ain</div>
-        </a>
-
-        <a href="dep-02.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 02</div>
-          <div class="dep-card-count">796 sites</div>
-          <div class="dep-card-name">Aisne</div>
-        </a>
-
-        <a href="dep-03.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 03</div>
-          <div class="dep-card-count">317 sites</div>
-          <div class="dep-card-name">Allier</div>
-        </a>
-
-        <a href="dep-04.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 04</div>
-          <div class="dep-card-count">198 sites</div>
-          <div class="dep-card-name">Alpes-de-Haute-Provence</div>
-        </a>
-
-        <a href="dep-05.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 05</div>
-          <div class="dep-card-count">162 sites</div>
-          <div class="dep-card-name">Hautes-Alpes</div>
-        </a>
-
-        <a href="dep-06.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 06</div>
-          <div class="dep-card-count">163 sites</div>
-          <div class="dep-card-name">Alpes-Maritimes</div>
-        </a>
-
-        <a href="dep-07.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 07</div>
-          <div class="dep-card-count">335 sites</div>
-          <div class="dep-card-name">Ardeche</div>
-        </a>
-
-        <a href="dep-08.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 08</div>
-          <div class="dep-card-count">446 sites</div>
-          <div class="dep-card-name">Ardennes</div>
-        </a>
-
-        <a href="dep-09.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 09</div>
-          <div class="dep-card-count">324 sites</div>
-          <div class="dep-card-name">Ariege</div>
-        </a>
-
-        <a href="dep-10.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 10</div>
-          <div class="dep-card-count">431 sites</div>
-          <div class="dep-card-name">Aube</div>
-        </a>
-
-        <a href="dep-11.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 11</div>
-          <div class="dep-card-count">433 sites</div>
-          <div class="dep-card-name">Aude</div>
-        </a>
-
-        <a href="dep-12.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 12</div>
-          <div class="dep-card-count">285 sites</div>
-          <div class="dep-card-name">Aveyron</div>
-        </a>
-
-        <a href="dep-13.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 13</div>
-          <div class="dep-card-count">119 sites</div>
-          <div class="dep-card-name">Bouches-du-Rhone</div>
-        </a>
-
-        <a href="dep-14.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 14</div>
-          <div class="dep-card-count">526 sites</div>
-          <div class="dep-card-name">Calvados</div>
-        </a>
-
-        <a href="dep-15.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 15</div>
-          <div class="dep-card-count">246 sites</div>
-          <div class="dep-card-name">Cantal</div>
-        </a>
-
-        <a href="dep-16.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 16</div>
-          <div class="dep-card-count">361 sites</div>
-          <div class="dep-card-name">Charente</div>
-        </a>
-
-        <a href="dep-17.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 17</div>
-          <div class="dep-card-count">461 sites</div>
-          <div class="dep-card-name">Charente-Maritime</div>
-        </a>
-
-        <a href="dep-18.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 18</div>
-          <div class="dep-card-count">286 sites</div>
-          <div class="dep-card-name">Cher</div>
-        </a>
-
-        <a href="dep-19.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 19</div>
-          <div class="dep-card-count">279 sites</div>
-          <div class="dep-card-name">Correze</div>
-        </a>
-
-        <a href="dep-20.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 20</div>
-          <div class="dep-card-count">360 sites</div>
-          <div class="dep-card-name">Corse</div>
-        </a>
-
-        <a href="dep-21.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 21</div>
-          <div class="dep-card-count">698 sites</div>
-          <div class="dep-card-name">Cote-d-Or</div>
-        </a>
-
-        <a href="dep-22.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 22</div>
-          <div class="dep-card-count">345 sites</div>
-          <div class="dep-card-name">Cotes-d-Armor</div>
-        </a>
-
-        <a href="dep-23.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 23</div>
-          <div class="dep-card-count">256 sites</div>
-          <div class="dep-card-name">Creuse</div>
-        </a>
-
-        <a href="dep-24.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 24</div>
-          <div class="dep-card-count">502 sites</div>
-          <div class="dep-card-name">Dordogne</div>
-        </a>
-
-        <a href="dep-25.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 25</div>
-          <div class="dep-card-count">564 sites</div>
-          <div class="dep-card-name">Doubs</div>
-        </a>
-
-        <a href="dep-26.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 26</div>
-          <div class="dep-card-count">361 sites</div>
-          <div class="dep-card-name">Drome</div>
-        </a>
-
-        <a href="dep-27.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 27</div>
-          <div class="dep-card-count">585 sites</div>
-          <div class="dep-card-name">Eure</div>
-        </a>
-
-        <a href="dep-28.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 28</div>
-          <div class="dep-card-count">362 sites</div>
-          <div class="dep-card-name">Eure-et-Loir</div>
-        </a>
-
-        <a href="dep-29.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 29</div>
-          <div class="dep-card-count">277 sites</div>
-          <div class="dep-card-name">Finistere</div>
-        </a>
-
-        <a href="dep-30.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 30</div>
-          <div class="dep-card-count">349 sites</div>
-          <div class="dep-card-name">Gard</div>
-        </a>
-
-        <a href="dep-31.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 31</div>
-          <div class="dep-card-count">585 sites</div>
-          <div class="dep-card-name">Haute-Garonne</div>
-        </a>
-
-        <a href="dep-32.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 32</div>
-          <div class="dep-card-count">458 sites</div>
-          <div class="dep-card-name">Gers</div>
-        </a>
-
-        <a href="dep-33.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 33</div>
-          <div class="dep-card-count">534 sites</div>
-          <div class="dep-card-name">Gironde</div>
-        </a>
-
-        <a href="dep-34.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 34</div>
-          <div class="dep-card-count">341 sites</div>
-          <div class="dep-card-name">Herault</div>
-        </a>
-
-        <a href="dep-35.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 35</div>
-          <div class="dep-card-count">332 sites</div>
-          <div class="dep-card-name">Ille-et-Vilaine</div>
-        </a>
-
-        <a href="dep-36.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 36</div>
-          <div class="dep-card-count">241 sites</div>
-          <div class="dep-card-name">Indre</div>
-        </a>
-
-        <a href="dep-37.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 37</div>
-          <div class="dep-card-count">272 sites</div>
-          <div class="dep-card-name">Indre-et-Loire</div>
-        </a>
-
-        <a href="dep-38.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 38</div>
-          <div class="dep-card-count">512 sites</div>
-          <div class="dep-card-name">Isere</div>
-        </a>
-
-        <a href="dep-39.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 39</div>
-          <div class="dep-card-count">493 sites</div>
-          <div class="dep-card-name">Jura</div>
-        </a>
-
-        <a href="dep-40.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 40</div>
-          <div class="dep-card-count">327 sites</div>
-          <div class="dep-card-name">Landes</div>
-        </a>
-
-        <a href="dep-41.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 41</div>
-          <div class="dep-card-count">267 sites</div>
-          <div class="dep-card-name">Loir-et-Cher</div>
-        </a>
-
-        <a href="dep-42.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 42</div>
-          <div class="dep-card-count">318 sites</div>
-          <div class="dep-card-name">Loire</div>
-        </a>
-
-        <a href="dep-43.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 43</div>
-          <div class="dep-card-count">257 sites</div>
-          <div class="dep-card-name">Haute-Loire</div>
-        </a>
-
-        <a href="dep-44.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 44</div>
-          <div class="dep-card-count">207 sites</div>
-          <div class="dep-card-name">Loire-Atlantique</div>
-        </a>
-
-        <a href="dep-45.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 45</div>
-          <div class="dep-card-count">325 sites</div>
-          <div class="dep-card-name">Loiret</div>
-        </a>
-
-        <a href="dep-46.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 46</div>
-          <div class="dep-card-count">312 sites</div>
-          <div class="dep-card-name">Lot</div>
-        </a>
-
-        <a href="dep-47.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 47</div>
-          <div class="dep-card-count">319 sites</div>
-          <div class="dep-card-name">Lot-et-Garonne</div>
-        </a>
-
-        <a href="dep-48.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 48</div>
-          <div class="dep-card-count">152 sites</div>
-          <div class="dep-card-name">Lozere</div>
-        </a>
-
-        <a href="dep-49.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 49</div>
-          <div class="dep-card-count">176 sites</div>
-          <div class="dep-card-name">Maine-et-Loire</div>
-        </a>
-
-        <a href="dep-50.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 50</div>
-          <div class="dep-card-count">444 sites</div>
-          <div class="dep-card-name">Manche</div>
-        </a>
-
-        <a href="dep-51.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 51</div>
-          <div class="dep-card-count">610 sites</div>
-          <div class="dep-card-name">Marne</div>
-        </a>
-
-        <a href="dep-52.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 52</div>
-          <div class="dep-card-count">420 sites</div>
-          <div class="dep-card-name">Haute-Marne</div>
-        </a>
-
-        <a href="dep-53.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 53</div>
-          <div class="dep-card-count">240 sites</div>
-          <div class="dep-card-name">Mayenne</div>
-        </a>
-
-        <a href="dep-54.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 54</div>
-          <div class="dep-card-count">591 sites</div>
-          <div class="dep-card-name">Meurthe-et-Moselle</div>
-        </a>
-
-        <a href="dep-55.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 55</div>
-          <div class="dep-card-count">499 sites</div>
-          <div class="dep-card-name">Meuse</div>
-        </a>
-
-        <a href="dep-56.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 56</div>
-          <div class="dep-card-count">249 sites</div>
-          <div class="dep-card-name">Morbihan</div>
-        </a>
-
-        <a href="dep-57.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 57</div>
-          <div class="dep-card-count">721 sites</div>
-          <div class="dep-card-name">Moselle</div>
-        </a>
-
-        <a href="dep-58.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 58</div>
-          <div class="dep-card-count">309 sites</div>
-          <div class="dep-card-name">Nievre</div>
-        </a>
-
-        <a href="dep-59.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 59</div>
-          <div class="dep-card-count">646 sites</div>
-          <div class="dep-card-name">Nord</div>
-        </a>
-
-        <a href="dep-60.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 60</div>
-          <div class="dep-card-count">680 sites</div>
-          <div class="dep-card-name">Oise</div>
-        </a>
-
-        <a href="dep-61.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 61</div>
-          <div class="dep-card-count">381 sites</div>
-          <div class="dep-card-name">Orne</div>
-        </a>
-
-        <a href="dep-62.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 62</div>
-          <div class="dep-card-count">887 sites</div>
-          <div class="dep-card-name">Pas-de-Calais</div>
-        </a>
-
-        <a href="dep-63.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 63</div>
-          <div class="dep-card-count">462 sites</div>
-          <div class="dep-card-name">Puy-de-Dome</div>
-        </a>
-
-        <a href="dep-64.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 64</div>
-          <div class="dep-card-count">543 sites</div>
-          <div class="dep-card-name">Pyrenees-Atlantiques</div>
-        </a>
-
-        <a href="dep-65.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 65</div>
-          <div class="dep-card-count">469 sites</div>
-          <div class="dep-card-name">Hautes-Pyrenees</div>
-        </a>
-
-        <a href="dep-66.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 66</div>
-          <div class="dep-card-count">226 sites</div>
-          <div class="dep-card-name">Pyrenees-Orientales</div>
-        </a>
-
-        <a href="dep-67.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 67</div>
-          <div class="dep-card-count">514 sites</div>
-          <div class="dep-card-name">Bas-Rhin</div>
-        </a>
-
-        <a href="dep-68.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 68</div>
-          <div class="dep-card-count">366 sites</div>
-          <div class="dep-card-name">Haut-Rhin</div>
-        </a>
-
-        <a href="dep-69.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 69</div>
-          <div class="dep-card-count">260 sites</div>
-          <div class="dep-card-name">Rhone</div>
-        </a>
-
-        <a href="dep-70.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 70</div>
-          <div class="dep-card-count">536 sites</div>
-          <div class="dep-card-name">Haute-Saone</div>
-        </a>
-
-        <a href="dep-71.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 71</div>
-          <div class="dep-card-count">564 sites</div>
-          <div class="dep-card-name">Saone-et-Loire</div>
-        </a>
-
-        <a href="dep-72.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 72</div>
-          <div class="dep-card-count">354 sites</div>
-          <div class="dep-card-name">Sarthe</div>
-        </a>
-
-        <a href="dep-73.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 73</div>
-          <div class="dep-card-count">273 sites</div>
-          <div class="dep-card-name">Savoie</div>
-        </a>
-
-        <a href="dep-74.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 74</div>
-          <div class="dep-card-count">279 sites</div>
-          <div class="dep-card-name">Haute-Savoie</div>
-        </a>
-
-        <a href="dep-75.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 75</div>
-          <div class="dep-card-count">20 sites</div>
-          <div class="dep-card-name">Paris</div>
-        </a>
-
-        <a href="dep-76.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 76</div>
-          <div class="dep-card-count">704 sites</div>
-          <div class="dep-card-name">Seine-Maritime</div>
-        </a>
-
-        <a href="dep-77.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 77</div>
-          <div class="dep-card-count">507 sites</div>
-          <div class="dep-card-name">Seine-et-Marne</div>
-        </a>
-
-        <a href="dep-78.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 78</div>
-          <div class="dep-card-count">259 sites</div>
-          <div class="dep-card-name">Yvelines</div>
-        </a>
-
-        <a href="dep-79.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 79</div>
-          <div class="dep-card-count">255 sites</div>
-          <div class="dep-card-name">Deux-Sevres</div>
-        </a>
-
-        <a href="dep-80.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 80</div>
-          <div class="dep-card-count">770 sites</div>
-          <div class="dep-card-name">Somme</div>
-        </a>
-
-        <a href="dep-81.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 81</div>
-          <div class="dep-card-count">314 sites</div>
-          <div class="dep-card-name">Tarn</div>
-        </a>
-
-        <a href="dep-82.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 82</div>
-          <div class="dep-card-count">195 sites</div>
-          <div class="dep-card-name">Tarn-et-Garonne</div>
-        </a>
-
-        <a href="dep-83.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 83</div>
-          <div class="dep-card-count">153 sites</div>
-          <div class="dep-card-name">Var</div>
-        </a>
-
-        <a href="dep-84.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 84</div>
-          <div class="dep-card-count">151 sites</div>
-          <div class="dep-card-name">Vaucluse</div>
-        </a>
-
-        <a href="dep-85.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 85</div>
-          <div class="dep-card-count">255 sites</div>
-          <div class="dep-card-name">Vendee</div>
-        </a>
-
-        <a href="dep-86.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 86</div>
-          <div class="dep-card-count">265 sites</div>
-          <div class="dep-card-name">Vienne</div>
-        </a>
-
-        <a href="dep-87.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 87</div>
-          <div class="dep-card-count">195 sites</div>
-          <div class="dep-card-name">Haute-Vienne</div>
-        </a>
-
-        <a href="dep-88.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 88</div>
-          <div class="dep-card-count">507 sites</div>
-          <div class="dep-card-name">Vosges</div>
-        </a>
-
-        <a href="dep-89.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 89</div>
-          <div class="dep-card-count">423 sites</div>
-          <div class="dep-card-name">Yonne</div>
-        </a>
-
-        <a href="dep-90.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 90</div>
-          <div class="dep-card-count">101 sites</div>
-          <div class="dep-card-name">Territoire de Belfort</div>
-        </a>
-
-        <a href="dep-91.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 91</div>
-          <div class="dep-card-count">194 sites</div>
-          <div class="dep-card-name">Essonne</div>
-        </a>
-
-        <a href="dep-92.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 92</div>
-          <div class="dep-card-count">36 sites</div>
-          <div class="dep-card-name">Hauts-de-Seine</div>
-        </a>
-
-        <a href="dep-93.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 93</div>
-          <div class="dep-card-count">40 sites</div>
-          <div class="dep-card-name">Seine-Saint-Denis</div>
-        </a>
-
-        <a href="dep-94.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 94</div>
-          <div class="dep-card-count">47 sites</div>
-          <div class="dep-card-name">Val-de-Marne</div>
-        </a>
-
-        <a href="dep-95.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre Intérieur 95</div>
-          <div class="dep-card-count">183 sites</div>
-          <div class="dep-card-name">Val-d-Oise</div>
-        </a>
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-01.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-01.fr)" aria-label="Recherche Google site:peintre-interieur-01.fr">🌐</a>
+          <a href="dep-01.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 01</div>
+            <div class="dep-card-count">391 sites</div>
+            <div class="dep-card-name">Ain</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-02.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-02.fr)" aria-label="Recherche Google site:peintre-interieur-02.fr">🌐</a>
+          <a href="dep-02.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 02</div>
+            <div class="dep-card-count">796 sites</div>
+            <div class="dep-card-name">Aisne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-03.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-03.fr)" aria-label="Recherche Google site:peintre-interieur-03.fr">🌐</a>
+          <a href="dep-03.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 03</div>
+            <div class="dep-card-count">317 sites</div>
+            <div class="dep-card-name">Allier</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-04.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-04.fr)" aria-label="Recherche Google site:peintre-interieur-04.fr">🌐</a>
+          <a href="dep-04.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 04</div>
+            <div class="dep-card-count">198 sites</div>
+            <div class="dep-card-name">Alpes-de-Haute-Provence</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-05.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-05.fr)" aria-label="Recherche Google site:peintre-interieur-05.fr">🌐</a>
+          <a href="dep-05.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 05</div>
+            <div class="dep-card-count">162 sites</div>
+            <div class="dep-card-name">Hautes-Alpes</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-06.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-06.fr)" aria-label="Recherche Google site:peintre-interieur-06.fr">🌐</a>
+          <a href="dep-06.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 06</div>
+            <div class="dep-card-count">163 sites</div>
+            <div class="dep-card-name">Alpes-Maritimes</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-07.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-07.fr)" aria-label="Recherche Google site:peintre-interieur-07.fr">🌐</a>
+          <a href="dep-07.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 07</div>
+            <div class="dep-card-count">335 sites</div>
+            <div class="dep-card-name">Ardeche</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-08.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-08.fr)" aria-label="Recherche Google site:peintre-interieur-08.fr">🌐</a>
+          <a href="dep-08.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 08</div>
+            <div class="dep-card-count">446 sites</div>
+            <div class="dep-card-name">Ardennes</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-09.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-09.fr)" aria-label="Recherche Google site:peintre-interieur-09.fr">🌐</a>
+          <a href="dep-09.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 09</div>
+            <div class="dep-card-count">324 sites</div>
+            <div class="dep-card-name">Ariege</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-10.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-10.fr)" aria-label="Recherche Google site:peintre-interieur-10.fr">🌐</a>
+          <a href="dep-10.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 10</div>
+            <div class="dep-card-count">431 sites</div>
+            <div class="dep-card-name">Aube</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-11.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-11.fr)" aria-label="Recherche Google site:peintre-interieur-11.fr">🌐</a>
+          <a href="dep-11.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 11</div>
+            <div class="dep-card-count">433 sites</div>
+            <div class="dep-card-name">Aude</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-12.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-12.fr)" aria-label="Recherche Google site:peintre-interieur-12.fr">🌐</a>
+          <a href="dep-12.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 12</div>
+            <div class="dep-card-count">285 sites</div>
+            <div class="dep-card-name">Aveyron</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-13.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-13.fr)" aria-label="Recherche Google site:peintre-interieur-13.fr">🌐</a>
+          <a href="dep-13.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 13</div>
+            <div class="dep-card-count">119 sites</div>
+            <div class="dep-card-name">Bouches-du-Rhone</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-14.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-14.fr)" aria-label="Recherche Google site:peintre-interieur-14.fr">🌐</a>
+          <a href="dep-14.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 14</div>
+            <div class="dep-card-count">526 sites</div>
+            <div class="dep-card-name">Calvados</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-15.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-15.fr)" aria-label="Recherche Google site:peintre-interieur-15.fr">🌐</a>
+          <a href="dep-15.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 15</div>
+            <div class="dep-card-count">246 sites</div>
+            <div class="dep-card-name">Cantal</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-16.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-16.fr)" aria-label="Recherche Google site:peintre-interieur-16.fr">🌐</a>
+          <a href="dep-16.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 16</div>
+            <div class="dep-card-count">361 sites</div>
+            <div class="dep-card-name">Charente</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-17.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-17.fr)" aria-label="Recherche Google site:peintre-interieur-17.fr">🌐</a>
+          <a href="dep-17.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 17</div>
+            <div class="dep-card-count">461 sites</div>
+            <div class="dep-card-name">Charente-Maritime</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-18.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-18.fr)" aria-label="Recherche Google site:peintre-interieur-18.fr">🌐</a>
+          <a href="dep-18.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 18</div>
+            <div class="dep-card-count">286 sites</div>
+            <div class="dep-card-name">Cher</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-19.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-19.fr)" aria-label="Recherche Google site:peintre-interieur-19.fr">🌐</a>
+          <a href="dep-19.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 19</div>
+            <div class="dep-card-count">279 sites</div>
+            <div class="dep-card-name">Correze</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-20.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-20.fr)" aria-label="Recherche Google site:peintre-interieur-20.fr">🌐</a>
+          <a href="dep-20.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 20</div>
+            <div class="dep-card-count">360 sites</div>
+            <div class="dep-card-name">Corse</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-21.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-21.fr)" aria-label="Recherche Google site:peintre-interieur-21.fr">🌐</a>
+          <a href="dep-21.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 21</div>
+            <div class="dep-card-count">698 sites</div>
+            <div class="dep-card-name">Cote-d-Or</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-22.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-22.fr)" aria-label="Recherche Google site:peintre-interieur-22.fr">🌐</a>
+          <a href="dep-22.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 22</div>
+            <div class="dep-card-count">345 sites</div>
+            <div class="dep-card-name">Cotes-d-Armor</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-23.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-23.fr)" aria-label="Recherche Google site:peintre-interieur-23.fr">🌐</a>
+          <a href="dep-23.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 23</div>
+            <div class="dep-card-count">256 sites</div>
+            <div class="dep-card-name">Creuse</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-24.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-24.fr)" aria-label="Recherche Google site:peintre-interieur-24.fr">🌐</a>
+          <a href="dep-24.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 24</div>
+            <div class="dep-card-count">502 sites</div>
+            <div class="dep-card-name">Dordogne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-25.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-25.fr)" aria-label="Recherche Google site:peintre-interieur-25.fr">🌐</a>
+          <a href="dep-25.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 25</div>
+            <div class="dep-card-count">564 sites</div>
+            <div class="dep-card-name">Doubs</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-26.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-26.fr)" aria-label="Recherche Google site:peintre-interieur-26.fr">🌐</a>
+          <a href="dep-26.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 26</div>
+            <div class="dep-card-count">361 sites</div>
+            <div class="dep-card-name">Drome</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-27.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-27.fr)" aria-label="Recherche Google site:peintre-interieur-27.fr">🌐</a>
+          <a href="dep-27.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 27</div>
+            <div class="dep-card-count">585 sites</div>
+            <div class="dep-card-name">Eure</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-28.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-28.fr)" aria-label="Recherche Google site:peintre-interieur-28.fr">🌐</a>
+          <a href="dep-28.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 28</div>
+            <div class="dep-card-count">362 sites</div>
+            <div class="dep-card-name">Eure-et-Loir</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-29.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-29.fr)" aria-label="Recherche Google site:peintre-interieur-29.fr">🌐</a>
+          <a href="dep-29.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 29</div>
+            <div class="dep-card-count">277 sites</div>
+            <div class="dep-card-name">Finistere</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-30.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-30.fr)" aria-label="Recherche Google site:peintre-interieur-30.fr">🌐</a>
+          <a href="dep-30.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 30</div>
+            <div class="dep-card-count">349 sites</div>
+            <div class="dep-card-name">Gard</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-31.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-31.fr)" aria-label="Recherche Google site:peintre-interieur-31.fr">🌐</a>
+          <a href="dep-31.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 31</div>
+            <div class="dep-card-count">585 sites</div>
+            <div class="dep-card-name">Haute-Garonne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-32.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-32.fr)" aria-label="Recherche Google site:peintre-interieur-32.fr">🌐</a>
+          <a href="dep-32.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 32</div>
+            <div class="dep-card-count">458 sites</div>
+            <div class="dep-card-name">Gers</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-33.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-33.fr)" aria-label="Recherche Google site:peintre-interieur-33.fr">🌐</a>
+          <a href="dep-33.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 33</div>
+            <div class="dep-card-count">534 sites</div>
+            <div class="dep-card-name">Gironde</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-34.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-34.fr)" aria-label="Recherche Google site:peintre-interieur-34.fr">🌐</a>
+          <a href="dep-34.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 34</div>
+            <div class="dep-card-count">341 sites</div>
+            <div class="dep-card-name">Herault</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-35.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-35.fr)" aria-label="Recherche Google site:peintre-interieur-35.fr">🌐</a>
+          <a href="dep-35.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 35</div>
+            <div class="dep-card-count">332 sites</div>
+            <div class="dep-card-name">Ille-et-Vilaine</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-36.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-36.fr)" aria-label="Recherche Google site:peintre-interieur-36.fr">🌐</a>
+          <a href="dep-36.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 36</div>
+            <div class="dep-card-count">241 sites</div>
+            <div class="dep-card-name">Indre</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-37.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-37.fr)" aria-label="Recherche Google site:peintre-interieur-37.fr">🌐</a>
+          <a href="dep-37.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 37</div>
+            <div class="dep-card-count">272 sites</div>
+            <div class="dep-card-name">Indre-et-Loire</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-38.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-38.fr)" aria-label="Recherche Google site:peintre-interieur-38.fr">🌐</a>
+          <a href="dep-38.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 38</div>
+            <div class="dep-card-count">512 sites</div>
+            <div class="dep-card-name">Isere</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-39.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-39.fr)" aria-label="Recherche Google site:peintre-interieur-39.fr">🌐</a>
+          <a href="dep-39.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 39</div>
+            <div class="dep-card-count">493 sites</div>
+            <div class="dep-card-name">Jura</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-40.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-40.fr)" aria-label="Recherche Google site:peintre-interieur-40.fr">🌐</a>
+          <a href="dep-40.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 40</div>
+            <div class="dep-card-count">327 sites</div>
+            <div class="dep-card-name">Landes</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-41.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-41.fr)" aria-label="Recherche Google site:peintre-interieur-41.fr">🌐</a>
+          <a href="dep-41.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 41</div>
+            <div class="dep-card-count">267 sites</div>
+            <div class="dep-card-name">Loir-et-Cher</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-42.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-42.fr)" aria-label="Recherche Google site:peintre-interieur-42.fr">🌐</a>
+          <a href="dep-42.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 42</div>
+            <div class="dep-card-count">318 sites</div>
+            <div class="dep-card-name">Loire</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-43.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-43.fr)" aria-label="Recherche Google site:peintre-interieur-43.fr">🌐</a>
+          <a href="dep-43.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 43</div>
+            <div class="dep-card-count">257 sites</div>
+            <div class="dep-card-name">Haute-Loire</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-44.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-44.fr)" aria-label="Recherche Google site:peintre-interieur-44.fr">🌐</a>
+          <a href="dep-44.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 44</div>
+            <div class="dep-card-count">207 sites</div>
+            <div class="dep-card-name">Loire-Atlantique</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-45.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-45.fr)" aria-label="Recherche Google site:peintre-interieur-45.fr">🌐</a>
+          <a href="dep-45.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 45</div>
+            <div class="dep-card-count">325 sites</div>
+            <div class="dep-card-name">Loiret</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-46.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-46.fr)" aria-label="Recherche Google site:peintre-interieur-46.fr">🌐</a>
+          <a href="dep-46.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 46</div>
+            <div class="dep-card-count">312 sites</div>
+            <div class="dep-card-name">Lot</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-47.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-47.fr)" aria-label="Recherche Google site:peintre-interieur-47.fr">🌐</a>
+          <a href="dep-47.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 47</div>
+            <div class="dep-card-count">319 sites</div>
+            <div class="dep-card-name">Lot-et-Garonne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-48.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-48.fr)" aria-label="Recherche Google site:peintre-interieur-48.fr">🌐</a>
+          <a href="dep-48.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 48</div>
+            <div class="dep-card-count">152 sites</div>
+            <div class="dep-card-name">Lozere</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-49.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-49.fr)" aria-label="Recherche Google site:peintre-interieur-49.fr">🌐</a>
+          <a href="dep-49.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 49</div>
+            <div class="dep-card-count">176 sites</div>
+            <div class="dep-card-name">Maine-et-Loire</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-50.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-50.fr)" aria-label="Recherche Google site:peintre-interieur-50.fr">🌐</a>
+          <a href="dep-50.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 50</div>
+            <div class="dep-card-count">444 sites</div>
+            <div class="dep-card-name">Manche</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-51.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-51.fr)" aria-label="Recherche Google site:peintre-interieur-51.fr">🌐</a>
+          <a href="dep-51.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 51</div>
+            <div class="dep-card-count">610 sites</div>
+            <div class="dep-card-name">Marne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-52.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-52.fr)" aria-label="Recherche Google site:peintre-interieur-52.fr">🌐</a>
+          <a href="dep-52.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 52</div>
+            <div class="dep-card-count">420 sites</div>
+            <div class="dep-card-name">Haute-Marne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-53.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-53.fr)" aria-label="Recherche Google site:peintre-interieur-53.fr">🌐</a>
+          <a href="dep-53.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 53</div>
+            <div class="dep-card-count">240 sites</div>
+            <div class="dep-card-name">Mayenne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-54.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-54.fr)" aria-label="Recherche Google site:peintre-interieur-54.fr">🌐</a>
+          <a href="dep-54.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 54</div>
+            <div class="dep-card-count">591 sites</div>
+            <div class="dep-card-name">Meurthe-et-Moselle</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-55.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-55.fr)" aria-label="Recherche Google site:peintre-interieur-55.fr">🌐</a>
+          <a href="dep-55.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 55</div>
+            <div class="dep-card-count">499 sites</div>
+            <div class="dep-card-name">Meuse</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-56.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-56.fr)" aria-label="Recherche Google site:peintre-interieur-56.fr">🌐</a>
+          <a href="dep-56.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 56</div>
+            <div class="dep-card-count">249 sites</div>
+            <div class="dep-card-name">Morbihan</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-57.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-57.fr)" aria-label="Recherche Google site:peintre-interieur-57.fr">🌐</a>
+          <a href="dep-57.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 57</div>
+            <div class="dep-card-count">721 sites</div>
+            <div class="dep-card-name">Moselle</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-58.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-58.fr)" aria-label="Recherche Google site:peintre-interieur-58.fr">🌐</a>
+          <a href="dep-58.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 58</div>
+            <div class="dep-card-count">309 sites</div>
+            <div class="dep-card-name">Nievre</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-59.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-59.fr)" aria-label="Recherche Google site:peintre-interieur-59.fr">🌐</a>
+          <a href="dep-59.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 59</div>
+            <div class="dep-card-count">646 sites</div>
+            <div class="dep-card-name">Nord</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-60.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-60.fr)" aria-label="Recherche Google site:peintre-interieur-60.fr">🌐</a>
+          <a href="dep-60.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 60</div>
+            <div class="dep-card-count">680 sites</div>
+            <div class="dep-card-name">Oise</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-61.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-61.fr)" aria-label="Recherche Google site:peintre-interieur-61.fr">🌐</a>
+          <a href="dep-61.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 61</div>
+            <div class="dep-card-count">381 sites</div>
+            <div class="dep-card-name">Orne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-62.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-62.fr)" aria-label="Recherche Google site:peintre-interieur-62.fr">🌐</a>
+          <a href="dep-62.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 62</div>
+            <div class="dep-card-count">887 sites</div>
+            <div class="dep-card-name">Pas-de-Calais</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-63.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-63.fr)" aria-label="Recherche Google site:peintre-interieur-63.fr">🌐</a>
+          <a href="dep-63.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 63</div>
+            <div class="dep-card-count">462 sites</div>
+            <div class="dep-card-name">Puy-de-Dome</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-64.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-64.fr)" aria-label="Recherche Google site:peintre-interieur-64.fr">🌐</a>
+          <a href="dep-64.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 64</div>
+            <div class="dep-card-count">543 sites</div>
+            <div class="dep-card-name">Pyrenees-Atlantiques</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-65.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-65.fr)" aria-label="Recherche Google site:peintre-interieur-65.fr">🌐</a>
+          <a href="dep-65.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 65</div>
+            <div class="dep-card-count">469 sites</div>
+            <div class="dep-card-name">Hautes-Pyrenees</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-66.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-66.fr)" aria-label="Recherche Google site:peintre-interieur-66.fr">🌐</a>
+          <a href="dep-66.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 66</div>
+            <div class="dep-card-count">226 sites</div>
+            <div class="dep-card-name">Pyrenees-Orientales</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-67.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-67.fr)" aria-label="Recherche Google site:peintre-interieur-67.fr">🌐</a>
+          <a href="dep-67.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 67</div>
+            <div class="dep-card-count">514 sites</div>
+            <div class="dep-card-name">Bas-Rhin</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-68.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-68.fr)" aria-label="Recherche Google site:peintre-interieur-68.fr">🌐</a>
+          <a href="dep-68.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 68</div>
+            <div class="dep-card-count">366 sites</div>
+            <div class="dep-card-name">Haut-Rhin</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-69.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-69.fr)" aria-label="Recherche Google site:peintre-interieur-69.fr">🌐</a>
+          <a href="dep-69.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 69</div>
+            <div class="dep-card-count">260 sites</div>
+            <div class="dep-card-name">Rhone</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-70.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-70.fr)" aria-label="Recherche Google site:peintre-interieur-70.fr">🌐</a>
+          <a href="dep-70.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 70</div>
+            <div class="dep-card-count">536 sites</div>
+            <div class="dep-card-name">Haute-Saone</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-71.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-71.fr)" aria-label="Recherche Google site:peintre-interieur-71.fr">🌐</a>
+          <a href="dep-71.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 71</div>
+            <div class="dep-card-count">564 sites</div>
+            <div class="dep-card-name">Saone-et-Loire</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-72.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-72.fr)" aria-label="Recherche Google site:peintre-interieur-72.fr">🌐</a>
+          <a href="dep-72.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 72</div>
+            <div class="dep-card-count">354 sites</div>
+            <div class="dep-card-name">Sarthe</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-73.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-73.fr)" aria-label="Recherche Google site:peintre-interieur-73.fr">🌐</a>
+          <a href="dep-73.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 73</div>
+            <div class="dep-card-count">273 sites</div>
+            <div class="dep-card-name">Savoie</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-74.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-74.fr)" aria-label="Recherche Google site:peintre-interieur-74.fr">🌐</a>
+          <a href="dep-74.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 74</div>
+            <div class="dep-card-count">279 sites</div>
+            <div class="dep-card-name">Haute-Savoie</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-75.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-75.fr)" aria-label="Recherche Google site:peintre-interieur-75.fr">🌐</a>
+          <a href="dep-75.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 75</div>
+            <div class="dep-card-count">20 sites</div>
+            <div class="dep-card-name">Paris</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-76.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-76.fr)" aria-label="Recherche Google site:peintre-interieur-76.fr">🌐</a>
+          <a href="dep-76.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 76</div>
+            <div class="dep-card-count">704 sites</div>
+            <div class="dep-card-name">Seine-Maritime</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-77.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-77.fr)" aria-label="Recherche Google site:peintre-interieur-77.fr">🌐</a>
+          <a href="dep-77.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 77</div>
+            <div class="dep-card-count">507 sites</div>
+            <div class="dep-card-name">Seine-et-Marne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-78.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-78.fr)" aria-label="Recherche Google site:peintre-interieur-78.fr">🌐</a>
+          <a href="dep-78.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 78</div>
+            <div class="dep-card-count">259 sites</div>
+            <div class="dep-card-name">Yvelines</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-79.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-79.fr)" aria-label="Recherche Google site:peintre-interieur-79.fr">🌐</a>
+          <a href="dep-79.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 79</div>
+            <div class="dep-card-count">255 sites</div>
+            <div class="dep-card-name">Deux-Sevres</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-80.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-80.fr)" aria-label="Recherche Google site:peintre-interieur-80.fr">🌐</a>
+          <a href="dep-80.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 80</div>
+            <div class="dep-card-count">770 sites</div>
+            <div class="dep-card-name">Somme</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-81.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-81.fr)" aria-label="Recherche Google site:peintre-interieur-81.fr">🌐</a>
+          <a href="dep-81.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 81</div>
+            <div class="dep-card-count">314 sites</div>
+            <div class="dep-card-name">Tarn</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-82.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-82.fr)" aria-label="Recherche Google site:peintre-interieur-82.fr">🌐</a>
+          <a href="dep-82.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 82</div>
+            <div class="dep-card-count">195 sites</div>
+            <div class="dep-card-name">Tarn-et-Garonne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-83.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-83.fr)" aria-label="Recherche Google site:peintre-interieur-83.fr">🌐</a>
+          <a href="dep-83.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 83</div>
+            <div class="dep-card-count">153 sites</div>
+            <div class="dep-card-name">Var</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-84.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-84.fr)" aria-label="Recherche Google site:peintre-interieur-84.fr">🌐</a>
+          <a href="dep-84.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 84</div>
+            <div class="dep-card-count">151 sites</div>
+            <div class="dep-card-name">Vaucluse</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-85.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-85.fr)" aria-label="Recherche Google site:peintre-interieur-85.fr">🌐</a>
+          <a href="dep-85.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 85</div>
+            <div class="dep-card-count">255 sites</div>
+            <div class="dep-card-name">Vendee</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-86.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-86.fr)" aria-label="Recherche Google site:peintre-interieur-86.fr">🌐</a>
+          <a href="dep-86.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 86</div>
+            <div class="dep-card-count">265 sites</div>
+            <div class="dep-card-name">Vienne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-87.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-87.fr)" aria-label="Recherche Google site:peintre-interieur-87.fr">🌐</a>
+          <a href="dep-87.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 87</div>
+            <div class="dep-card-count">195 sites</div>
+            <div class="dep-card-name">Haute-Vienne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-88.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-88.fr)" aria-label="Recherche Google site:peintre-interieur-88.fr">🌐</a>
+          <a href="dep-88.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 88</div>
+            <div class="dep-card-count">507 sites</div>
+            <div class="dep-card-name">Vosges</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-89.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-89.fr)" aria-label="Recherche Google site:peintre-interieur-89.fr">🌐</a>
+          <a href="dep-89.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 89</div>
+            <div class="dep-card-count">423 sites</div>
+            <div class="dep-card-name">Yonne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-90.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-90.fr)" aria-label="Recherche Google site:peintre-interieur-90.fr">🌐</a>
+          <a href="dep-90.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 90</div>
+            <div class="dep-card-count">101 sites</div>
+            <div class="dep-card-name">Territoire de Belfort</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-91.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-91.fr)" aria-label="Recherche Google site:peintre-interieur-91.fr">🌐</a>
+          <a href="dep-91.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 91</div>
+            <div class="dep-card-count">194 sites</div>
+            <div class="dep-card-name">Essonne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-92.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-92.fr)" aria-label="Recherche Google site:peintre-interieur-92.fr">🌐</a>
+          <a href="dep-92.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 92</div>
+            <div class="dep-card-count">36 sites</div>
+            <div class="dep-card-name">Hauts-de-Seine</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-93.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-93.fr)" aria-label="Recherche Google site:peintre-interieur-93.fr">🌐</a>
+          <a href="dep-93.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 93</div>
+            <div class="dep-card-count">40 sites</div>
+            <div class="dep-card-name">Seine-Saint-Denis</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-94.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-94.fr)" aria-label="Recherche Google site:peintre-interieur-94.fr">🌐</a>
+          <a href="dep-94.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 94</div>
+            <div class="dep-card-count">47 sites</div>
+            <div class="dep-card-name">Val-de-Marne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-interieur-95.fr" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-interieur-95.fr)" aria-label="Recherche Google site:peintre-interieur-95.fr">🌐</a>
+          <a href="dep-95.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre Intérieur 95</div>
+            <div class="dep-card-count">183 sites</div>
+            <div class="dep-card-name">Val-d-Oise</div>
+          </a>
+        </div>
     </div>
   </main>
 

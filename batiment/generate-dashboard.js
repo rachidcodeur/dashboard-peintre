@@ -68,13 +68,16 @@ function encodeQ(str) {
 function generateIndex() {
   const cards = departments.map(dep => {
     const depCode = String(dep.code).padStart(2, '0');
+    const depDomain = `peintre-en-batiment-${dep.code}.com`;
     return `
-        <a href="dep-${dep.code}.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment ${depCode}</div>
-          <div class="dep-card-count">${dep.cities.length} sites</div>
-          <div class="dep-card-name">${dep.nom}</div>
-        </a>`;
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:${depDomain}" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:${depDomain})" aria-label="Recherche Google site:${depDomain}">🌐</a>
+          <a href="dep-${dep.code}.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment ${depCode}</div>
+            <div class="dep-card-count">${dep.cities.length} sites</div>
+            <div class="dep-card-name">${dep.nom}</div>
+          </a>
+        </div>`;
   }).join('\n');
 
   return `<!DOCTYPE html>
@@ -86,6 +89,7 @@ function generateIndex() {
   <meta name="robots" content="noindex, nofollow, noarchive">
   <meta name="googlebot" content="noindex, nofollow, noarchive">
   <script src="../auth.js"></script>
+  <link rel="icon" href="../assets/favicon-dashboard.png" type="image/png">
   <style>${getCSS()}</style>
 </head>
 <body>
@@ -158,6 +162,7 @@ function generateDepPage(dep) {
   <meta name="robots" content="noindex, nofollow, noarchive">
   <meta name="googlebot" content="noindex, nofollow, noarchive">
   <script src="../auth.js"></script>
+  <link rel="icon" href="../assets/favicon-dashboard.png" type="image/png">
   <style>${getCSS()}</style>
 </head>
 <body>
@@ -302,12 +307,31 @@ function getCSS() {
       transform: translateY(-3px);
       box-shadow: 0 8px 32px rgba(0, 113, 152, 0.3);
     }
+    .dep-card-main {
+      display: flex;
+      flex-direction: column;
+      color: inherit;
+      text-decoration: none;
+    }
     .dep-card-icon {
       position: absolute;
-      top: 1rem;
-      right: 1rem;
-      font-size: 1.3rem;
-      opacity: .6;
+      top: .8rem;
+      right: .9rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: #fff;
+      filter: brightness(0) invert(1);
+      transition: transform .15s, opacity .15s;
+      cursor: pointer;
+      text-decoration: none;
+      opacity: 0.85;
+      z-index: 2;
+    }
+    .dep-card-icon:hover {
+      opacity: 1;
+      transform: rotate(15deg) scale(1.08);
     }
     .dep-card-title {
       font-size: 1.05rem;

@@ -81,7 +81,7 @@ function generateIndex() {
           <a href="https://www.google.com/search?q=site:${depDomain}" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:${depDomain})" aria-label="Recherche Google site:${depDomain}">🌐</a>
           <a href="dep-${dep.code}.html" class="dep-card-main">
             <div class="dep-card-title">Lavage ${dep2}</div>
-            <div class="dep-card-count">1 dépt + ${dep.cities.length} villes</div>
+            <div class="dep-card-count">${dep.cities.length} villes</div>
             <div class="dep-card-name">${dep.nom}</div>
           </a>
         </div>`;
@@ -96,6 +96,7 @@ function generateIndex() {
   <meta name="robots" content="noindex, nofollow, noarchive">
   <meta name="googlebot" content="noindex, nofollow, noarchive">
   <script src="../auth.js"></script>
+  <link rel="icon" href="../assets/favicon-dashboard.png" type="image/png">
   <style>${getCSS()}</style>
 </head>
 <body>
@@ -170,6 +171,7 @@ function generateDepPage(dep) {
   <meta name="robots" content="noindex, nofollow, noarchive">
   <meta name="googlebot" content="noindex, nofollow, noarchive">
   <script src="../auth.js"></script>
+  <link rel="icon" href="../assets/favicon-dashboard.png" type="image/png">
   <style>${getCSS()}</style>
 </head>
 <body>

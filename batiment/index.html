@@ -7,6 +7,7 @@
   <meta name="robots" content="noindex, nofollow, noarchive">
   <meta name="googlebot" content="noindex, nofollow, noarchive">
   <script src="../auth.js"></script>
+  <link rel="icon" href="../assets/favicon-dashboard.png" type="image/png">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -100,12 +101,31 @@
       transform: translateY(-3px);
       box-shadow: 0 8px 32px rgba(0, 113, 152, 0.3);
     }
+    .dep-card-main {
+      display: flex;
+      flex-direction: column;
+      color: inherit;
+      text-decoration: none;
+    }
     .dep-card-icon {
       position: absolute;
-      top: 1rem;
-      right: 1rem;
-      font-size: 1.3rem;
-      opacity: .6;
+      top: .8rem;
+      right: .9rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: #fff;
+      filter: brightness(0) invert(1);
+      transition: transform .15s, opacity .15s;
+      cursor: pointer;
+      text-decoration: none;
+      opacity: 0.85;
+      z-index: 2;
+    }
+    .dep-card-icon:hover {
+      opacity: 1;
+      transform: rotate(15deg) scale(1.08);
     }
     .dep-card-title {
       font-size: 1.05rem;
@@ -219,670 +239,860 @@
 
     <div class="dep-grid" id="dep-grid">
 
-        <a href="dep-01.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 01</div>
-          <div class="dep-card-count">392 sites</div>
-          <div class="dep-card-name">Ain</div>
-        </a>
-
-        <a href="dep-02.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 02</div>
-          <div class="dep-card-count">798 sites</div>
-          <div class="dep-card-name">Aisne</div>
-        </a>
-
-        <a href="dep-03.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 03</div>
-          <div class="dep-card-count">317 sites</div>
-          <div class="dep-card-name">Allier</div>
-        </a>
-
-        <a href="dep-04.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 04</div>
-          <div class="dep-card-count">198 sites</div>
-          <div class="dep-card-name">Alpes-de-Haute-Provence</div>
-        </a>
-
-        <a href="dep-05.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 05</div>
-          <div class="dep-card-count">162 sites</div>
-          <div class="dep-card-name">Hautes-Alpes</div>
-        </a>
-
-        <a href="dep-06.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 06</div>
-          <div class="dep-card-count">163 sites</div>
-          <div class="dep-card-name">Alpes-Maritimes</div>
-        </a>
-
-        <a href="dep-07.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 07</div>
-          <div class="dep-card-count">335 sites</div>
-          <div class="dep-card-name">Ardeche</div>
-        </a>
-
-        <a href="dep-08.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 08</div>
-          <div class="dep-card-count">448 sites</div>
-          <div class="dep-card-name">Ardennes</div>
-        </a>
-
-        <a href="dep-09.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 09</div>
-          <div class="dep-card-count">326 sites</div>
-          <div class="dep-card-name">Ariege</div>
-        </a>
-
-        <a href="dep-10.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 10</div>
-          <div class="dep-card-count">431 sites</div>
-          <div class="dep-card-name">Aube</div>
-        </a>
-
-        <a href="dep-11.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 11</div>
-          <div class="dep-card-count">433 sites</div>
-          <div class="dep-card-name">Aude</div>
-        </a>
-
-        <a href="dep-12.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 12</div>
-          <div class="dep-card-count">285 sites</div>
-          <div class="dep-card-name">Aveyron</div>
-        </a>
-
-        <a href="dep-13.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 13</div>
-          <div class="dep-card-count">119 sites</div>
-          <div class="dep-card-name">Bouches-du-Rhone</div>
-        </a>
-
-        <a href="dep-14.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 14</div>
-          <div class="dep-card-count">528 sites</div>
-          <div class="dep-card-name">Calvados</div>
-        </a>
-
-        <a href="dep-15.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 15</div>
-          <div class="dep-card-count">246 sites</div>
-          <div class="dep-card-name">Cantal</div>
-        </a>
-
-        <a href="dep-16.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 16</div>
-          <div class="dep-card-count">362 sites</div>
-          <div class="dep-card-name">Charente</div>
-        </a>
-
-        <a href="dep-17.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 17</div>
-          <div class="dep-card-count">463 sites</div>
-          <div class="dep-card-name">Charente-Maritime</div>
-        </a>
-
-        <a href="dep-18.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 18</div>
-          <div class="dep-card-count">286 sites</div>
-          <div class="dep-card-name">Cher</div>
-        </a>
-
-        <a href="dep-19.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 19</div>
-          <div class="dep-card-count">279 sites</div>
-          <div class="dep-card-name">Correze</div>
-        </a>
-
-        <a href="dep-20.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 20</div>
-          <div class="dep-card-count">360 sites</div>
-          <div class="dep-card-name">Corse</div>
-        </a>
-
-        <a href="dep-21.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 21</div>
-          <div class="dep-card-count">698 sites</div>
-          <div class="dep-card-name">Cote-d-Or</div>
-        </a>
-
-        <a href="dep-22.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 22</div>
-          <div class="dep-card-count">348 sites</div>
-          <div class="dep-card-name">Cotes-d-Armor</div>
-        </a>
-
-        <a href="dep-23.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 23</div>
-          <div class="dep-card-count">256 sites</div>
-          <div class="dep-card-name">Creuse</div>
-        </a>
-
-        <a href="dep-24.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 24</div>
-          <div class="dep-card-count">503 sites</div>
-          <div class="dep-card-name">Dordogne</div>
-        </a>
-
-        <a href="dep-25.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 25</div>
-          <div class="dep-card-count">571 sites</div>
-          <div class="dep-card-name">Doubs</div>
-        </a>
-
-        <a href="dep-26.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 26</div>
-          <div class="dep-card-count">363 sites</div>
-          <div class="dep-card-name">Drome</div>
-        </a>
-
-        <a href="dep-27.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 27</div>
-          <div class="dep-card-count">585 sites</div>
-          <div class="dep-card-name">Eure</div>
-        </a>
-
-        <a href="dep-28.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 28</div>
-          <div class="dep-card-count">365 sites</div>
-          <div class="dep-card-name">Eure-et-Loir</div>
-        </a>
-
-        <a href="dep-29.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 29</div>
-          <div class="dep-card-count">277 sites</div>
-          <div class="dep-card-name">Finistere</div>
-        </a>
-
-        <a href="dep-30.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 30</div>
-          <div class="dep-card-count">351 sites</div>
-          <div class="dep-card-name">Gard</div>
-        </a>
-
-        <a href="dep-31.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 31</div>
-          <div class="dep-card-count">586 sites</div>
-          <div class="dep-card-name">Haute-Garonne</div>
-        </a>
-
-        <a href="dep-32.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 32</div>
-          <div class="dep-card-count">461 sites</div>
-          <div class="dep-card-name">Gers</div>
-        </a>
-
-        <a href="dep-33.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 33</div>
-          <div class="dep-card-count">535 sites</div>
-          <div class="dep-card-name">Gironde</div>
-        </a>
-
-        <a href="dep-34.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 34</div>
-          <div class="dep-card-count">342 sites</div>
-          <div class="dep-card-name">Herault</div>
-        </a>
-
-        <a href="dep-35.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 35</div>
-          <div class="dep-card-count">332 sites</div>
-          <div class="dep-card-name">Ille-et-Vilaine</div>
-        </a>
-
-        <a href="dep-36.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 36</div>
-          <div class="dep-card-count">241 sites</div>
-          <div class="dep-card-name">Indre</div>
-        </a>
-
-        <a href="dep-37.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 37</div>
-          <div class="dep-card-count">272 sites</div>
-          <div class="dep-card-name">Indre-et-Loire</div>
-        </a>
-
-        <a href="dep-38.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 38</div>
-          <div class="dep-card-count">512 sites</div>
-          <div class="dep-card-name">Isere</div>
-        </a>
-
-        <a href="dep-39.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 39</div>
-          <div class="dep-card-count">494 sites</div>
-          <div class="dep-card-name">Jura</div>
-        </a>
-
-        <a href="dep-40.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 40</div>
-          <div class="dep-card-count">327 sites</div>
-          <div class="dep-card-name">Landes</div>
-        </a>
-
-        <a href="dep-41.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 41</div>
-          <div class="dep-card-count">267 sites</div>
-          <div class="dep-card-name">Loir-et-Cher</div>
-        </a>
-
-        <a href="dep-42.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 42</div>
-          <div class="dep-card-count">323 sites</div>
-          <div class="dep-card-name">Loire</div>
-        </a>
-
-        <a href="dep-43.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 43</div>
-          <div class="dep-card-count">257 sites</div>
-          <div class="dep-card-name">Haute-Loire</div>
-        </a>
-
-        <a href="dep-44.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 44</div>
-          <div class="dep-card-count">207 sites</div>
-          <div class="dep-card-name">Loire-Atlantique</div>
-        </a>
-
-        <a href="dep-45.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 45</div>
-          <div class="dep-card-count">325 sites</div>
-          <div class="dep-card-name">Loiret</div>
-        </a>
-
-        <a href="dep-46.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 46</div>
-          <div class="dep-card-count">313 sites</div>
-          <div class="dep-card-name">Lot</div>
-        </a>
-
-        <a href="dep-47.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 47</div>
-          <div class="dep-card-count">319 sites</div>
-          <div class="dep-card-name">Lot-et-Garonne</div>
-        </a>
-
-        <a href="dep-48.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 48</div>
-          <div class="dep-card-count">152 sites</div>
-          <div class="dep-card-name">Lozere</div>
-        </a>
-
-        <a href="dep-49.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 49</div>
-          <div class="dep-card-count">176 sites</div>
-          <div class="dep-card-name">Maine-et-Loire</div>
-        </a>
-
-        <a href="dep-50.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 50</div>
-          <div class="dep-card-count">445 sites</div>
-          <div class="dep-card-name">Manche</div>
-        </a>
-
-        <a href="dep-51.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 51</div>
-          <div class="dep-card-count">611 sites</div>
-          <div class="dep-card-name">Marne</div>
-        </a>
-
-        <a href="dep-52.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 52</div>
-          <div class="dep-card-count">426 sites</div>
-          <div class="dep-card-name">Haute-Marne</div>
-        </a>
-
-        <a href="dep-53.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 53</div>
-          <div class="dep-card-count">240 sites</div>
-          <div class="dep-card-name">Mayenne</div>
-        </a>
-
-        <a href="dep-54.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 54</div>
-          <div class="dep-card-count">591 sites</div>
-          <div class="dep-card-name">Meurthe-et-Moselle</div>
-        </a>
-
-        <a href="dep-55.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 55</div>
-          <div class="dep-card-count">499 sites</div>
-          <div class="dep-card-name">Meuse</div>
-        </a>
-
-        <a href="dep-56.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 56</div>
-          <div class="dep-card-count">249 sites</div>
-          <div class="dep-card-name">Morbihan</div>
-        </a>
-
-        <a href="dep-57.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 57</div>
-          <div class="dep-card-count">725 sites</div>
-          <div class="dep-card-name">Moselle</div>
-        </a>
-
-        <a href="dep-58.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 58</div>
-          <div class="dep-card-count">309 sites</div>
-          <div class="dep-card-name">Nievre</div>
-        </a>
-
-        <a href="dep-59.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 59</div>
-          <div class="dep-card-count">648 sites</div>
-          <div class="dep-card-name">Nord</div>
-        </a>
-
-        <a href="dep-60.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 60</div>
-          <div class="dep-card-count">680 sites</div>
-          <div class="dep-card-name">Oise</div>
-        </a>
-
-        <a href="dep-61.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 61</div>
-          <div class="dep-card-count">385 sites</div>
-          <div class="dep-card-name">Orne</div>
-        </a>
-
-        <a href="dep-62.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 62</div>
-          <div class="dep-card-count">890 sites</div>
-          <div class="dep-card-name">Pas-de-Calais</div>
-        </a>
-
-        <a href="dep-63.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 63</div>
-          <div class="dep-card-count">464 sites</div>
-          <div class="dep-card-name">Puy-de-Dome</div>
-        </a>
-
-        <a href="dep-64.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 64</div>
-          <div class="dep-card-count">545 sites</div>
-          <div class="dep-card-name">Pyrenees-Atlantiques</div>
-        </a>
-
-        <a href="dep-65.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 65</div>
-          <div class="dep-card-count">469 sites</div>
-          <div class="dep-card-name">Hautes-Pyrenees</div>
-        </a>
-
-        <a href="dep-66.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 66</div>
-          <div class="dep-card-count">226 sites</div>
-          <div class="dep-card-name">Pyrenees-Orientales</div>
-        </a>
-
-        <a href="dep-67.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 67</div>
-          <div class="dep-card-count">514 sites</div>
-          <div class="dep-card-name">Bas-Rhin</div>
-        </a>
-
-        <a href="dep-68.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 68</div>
-          <div class="dep-card-count">366 sites</div>
-          <div class="dep-card-name">Haut-Rhin</div>
-        </a>
-
-        <a href="dep-69.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 69</div>
-          <div class="dep-card-count">266 sites</div>
-          <div class="dep-card-name">Rhone</div>
-        </a>
-
-        <a href="dep-70.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 70</div>
-          <div class="dep-card-count">539 sites</div>
-          <div class="dep-card-name">Haute-Saone</div>
-        </a>
-
-        <a href="dep-71.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 71</div>
-          <div class="dep-card-count">564 sites</div>
-          <div class="dep-card-name">Saone-et-Loire</div>
-        </a>
-
-        <a href="dep-72.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 72</div>
-          <div class="dep-card-count">354 sites</div>
-          <div class="dep-card-name">Sarthe</div>
-        </a>
-
-        <a href="dep-73.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 73</div>
-          <div class="dep-card-count">273 sites</div>
-          <div class="dep-card-name">Savoie</div>
-        </a>
-
-        <a href="dep-74.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 74</div>
-          <div class="dep-card-count">279 sites</div>
-          <div class="dep-card-name">Haute-Savoie</div>
-        </a>
-
-        <a href="dep-75.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 75</div>
-          <div class="dep-card-count">20 sites</div>
-          <div class="dep-card-name">Paris</div>
-        </a>
-
-        <a href="dep-76.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 76</div>
-          <div class="dep-card-count">708 sites</div>
-          <div class="dep-card-name">Seine-Maritime</div>
-        </a>
-
-        <a href="dep-77.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 77</div>
-          <div class="dep-card-count">507 sites</div>
-          <div class="dep-card-name">Seine-et-Marne</div>
-        </a>
-
-        <a href="dep-78.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 78</div>
-          <div class="dep-card-count">259 sites</div>
-          <div class="dep-card-name">Yvelines</div>
-        </a>
-
-        <a href="dep-79.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 79</div>
-          <div class="dep-card-count">256 sites</div>
-          <div class="dep-card-name">Deux-Sevres</div>
-        </a>
-
-        <a href="dep-80.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 80</div>
-          <div class="dep-card-count">772 sites</div>
-          <div class="dep-card-name">Somme</div>
-        </a>
-
-        <a href="dep-81.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 81</div>
-          <div class="dep-card-count">314 sites</div>
-          <div class="dep-card-name">Tarn</div>
-        </a>
-
-        <a href="dep-82.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 82</div>
-          <div class="dep-card-count">195 sites</div>
-          <div class="dep-card-name">Tarn-et-Garonne</div>
-        </a>
-
-        <a href="dep-83.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 83</div>
-          <div class="dep-card-count">153 sites</div>
-          <div class="dep-card-name">Var</div>
-        </a>
-
-        <a href="dep-84.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 84</div>
-          <div class="dep-card-count">151 sites</div>
-          <div class="dep-card-name">Vaucluse</div>
-        </a>
-
-        <a href="dep-85.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 85</div>
-          <div class="dep-card-count">255 sites</div>
-          <div class="dep-card-name">Vendee</div>
-        </a>
-
-        <a href="dep-86.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 86</div>
-          <div class="dep-card-count">265 sites</div>
-          <div class="dep-card-name">Vienne</div>
-        </a>
-
-        <a href="dep-87.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 87</div>
-          <div class="dep-card-count">195 sites</div>
-          <div class="dep-card-name">Haute-Vienne</div>
-        </a>
-
-        <a href="dep-88.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 88</div>
-          <div class="dep-card-count">507 sites</div>
-          <div class="dep-card-name">Vosges</div>
-        </a>
-
-        <a href="dep-89.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 89</div>
-          <div class="dep-card-count">423 sites</div>
-          <div class="dep-card-name">Yonne</div>
-        </a>
-
-        <a href="dep-90.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 90</div>
-          <div class="dep-card-count">101 sites</div>
-          <div class="dep-card-name">Territoire de Belfort</div>
-        </a>
-
-        <a href="dep-91.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 91</div>
-          <div class="dep-card-count">194 sites</div>
-          <div class="dep-card-name">Essonne</div>
-        </a>
-
-        <a href="dep-92.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 92</div>
-          <div class="dep-card-count">36 sites</div>
-          <div class="dep-card-name">Hauts-de-Seine</div>
-        </a>
-
-        <a href="dep-93.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 93</div>
-          <div class="dep-card-count">40 sites</div>
-          <div class="dep-card-name">Seine-Saint-Denis</div>
-        </a>
-
-        <a href="dep-94.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 94</div>
-          <div class="dep-card-count">47 sites</div>
-          <div class="dep-card-name">Val-de-Marne</div>
-        </a>
-
-        <a href="dep-95.html" class="dep-card">
-          <div class="dep-card-icon">🌐</div>
-          <div class="dep-card-title">Peintre en Bâtiment 95</div>
-          <div class="dep-card-count">183 sites</div>
-          <div class="dep-card-name">Val-d-Oise</div>
-        </a>
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-01.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-01.com)" aria-label="Recherche Google site:peintre-en-batiment-01.com">🌐</a>
+          <a href="dep-01.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 01</div>
+            <div class="dep-card-count">392 sites</div>
+            <div class="dep-card-name">Ain</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-02.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-02.com)" aria-label="Recherche Google site:peintre-en-batiment-02.com">🌐</a>
+          <a href="dep-02.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 02</div>
+            <div class="dep-card-count">798 sites</div>
+            <div class="dep-card-name">Aisne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-03.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-03.com)" aria-label="Recherche Google site:peintre-en-batiment-03.com">🌐</a>
+          <a href="dep-03.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 03</div>
+            <div class="dep-card-count">317 sites</div>
+            <div class="dep-card-name">Allier</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-04.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-04.com)" aria-label="Recherche Google site:peintre-en-batiment-04.com">🌐</a>
+          <a href="dep-04.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 04</div>
+            <div class="dep-card-count">198 sites</div>
+            <div class="dep-card-name">Alpes-de-Haute-Provence</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-05.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-05.com)" aria-label="Recherche Google site:peintre-en-batiment-05.com">🌐</a>
+          <a href="dep-05.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 05</div>
+            <div class="dep-card-count">162 sites</div>
+            <div class="dep-card-name">Hautes-Alpes</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-06.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-06.com)" aria-label="Recherche Google site:peintre-en-batiment-06.com">🌐</a>
+          <a href="dep-06.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 06</div>
+            <div class="dep-card-count">163 sites</div>
+            <div class="dep-card-name">Alpes-Maritimes</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-07.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-07.com)" aria-label="Recherche Google site:peintre-en-batiment-07.com">🌐</a>
+          <a href="dep-07.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 07</div>
+            <div class="dep-card-count">335 sites</div>
+            <div class="dep-card-name">Ardeche</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-08.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-08.com)" aria-label="Recherche Google site:peintre-en-batiment-08.com">🌐</a>
+          <a href="dep-08.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 08</div>
+            <div class="dep-card-count">448 sites</div>
+            <div class="dep-card-name">Ardennes</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-09.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-09.com)" aria-label="Recherche Google site:peintre-en-batiment-09.com">🌐</a>
+          <a href="dep-09.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 09</div>
+            <div class="dep-card-count">326 sites</div>
+            <div class="dep-card-name">Ariege</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-10.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-10.com)" aria-label="Recherche Google site:peintre-en-batiment-10.com">🌐</a>
+          <a href="dep-10.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 10</div>
+            <div class="dep-card-count">431 sites</div>
+            <div class="dep-card-name">Aube</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-11.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-11.com)" aria-label="Recherche Google site:peintre-en-batiment-11.com">🌐</a>
+          <a href="dep-11.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 11</div>
+            <div class="dep-card-count">433 sites</div>
+            <div class="dep-card-name">Aude</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-12.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-12.com)" aria-label="Recherche Google site:peintre-en-batiment-12.com">🌐</a>
+          <a href="dep-12.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 12</div>
+            <div class="dep-card-count">285 sites</div>
+            <div class="dep-card-name">Aveyron</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-13.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-13.com)" aria-label="Recherche Google site:peintre-en-batiment-13.com">🌐</a>
+          <a href="dep-13.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 13</div>
+            <div class="dep-card-count">119 sites</div>
+            <div class="dep-card-name">Bouches-du-Rhone</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-14.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-14.com)" aria-label="Recherche Google site:peintre-en-batiment-14.com">🌐</a>
+          <a href="dep-14.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 14</div>
+            <div class="dep-card-count">528 sites</div>
+            <div class="dep-card-name">Calvados</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-15.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-15.com)" aria-label="Recherche Google site:peintre-en-batiment-15.com">🌐</a>
+          <a href="dep-15.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 15</div>
+            <div class="dep-card-count">246 sites</div>
+            <div class="dep-card-name">Cantal</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-16.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-16.com)" aria-label="Recherche Google site:peintre-en-batiment-16.com">🌐</a>
+          <a href="dep-16.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 16</div>
+            <div class="dep-card-count">362 sites</div>
+            <div class="dep-card-name">Charente</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-17.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-17.com)" aria-label="Recherche Google site:peintre-en-batiment-17.com">🌐</a>
+          <a href="dep-17.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 17</div>
+            <div class="dep-card-count">463 sites</div>
+            <div class="dep-card-name">Charente-Maritime</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-18.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-18.com)" aria-label="Recherche Google site:peintre-en-batiment-18.com">🌐</a>
+          <a href="dep-18.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 18</div>
+            <div class="dep-card-count">286 sites</div>
+            <div class="dep-card-name">Cher</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-19.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-19.com)" aria-label="Recherche Google site:peintre-en-batiment-19.com">🌐</a>
+          <a href="dep-19.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 19</div>
+            <div class="dep-card-count">279 sites</div>
+            <div class="dep-card-name">Correze</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-20.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-20.com)" aria-label="Recherche Google site:peintre-en-batiment-20.com">🌐</a>
+          <a href="dep-20.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 20</div>
+            <div class="dep-card-count">360 sites</div>
+            <div class="dep-card-name">Corse</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-21.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-21.com)" aria-label="Recherche Google site:peintre-en-batiment-21.com">🌐</a>
+          <a href="dep-21.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 21</div>
+            <div class="dep-card-count">698 sites</div>
+            <div class="dep-card-name">Cote-d-Or</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-22.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-22.com)" aria-label="Recherche Google site:peintre-en-batiment-22.com">🌐</a>
+          <a href="dep-22.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 22</div>
+            <div class="dep-card-count">348 sites</div>
+            <div class="dep-card-name">Cotes-d-Armor</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-23.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-23.com)" aria-label="Recherche Google site:peintre-en-batiment-23.com">🌐</a>
+          <a href="dep-23.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 23</div>
+            <div class="dep-card-count">256 sites</div>
+            <div class="dep-card-name">Creuse</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-24.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-24.com)" aria-label="Recherche Google site:peintre-en-batiment-24.com">🌐</a>
+          <a href="dep-24.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 24</div>
+            <div class="dep-card-count">503 sites</div>
+            <div class="dep-card-name">Dordogne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-25.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-25.com)" aria-label="Recherche Google site:peintre-en-batiment-25.com">🌐</a>
+          <a href="dep-25.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 25</div>
+            <div class="dep-card-count">571 sites</div>
+            <div class="dep-card-name">Doubs</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-26.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-26.com)" aria-label="Recherche Google site:peintre-en-batiment-26.com">🌐</a>
+          <a href="dep-26.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 26</div>
+            <div class="dep-card-count">363 sites</div>
+            <div class="dep-card-name">Drome</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-27.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-27.com)" aria-label="Recherche Google site:peintre-en-batiment-27.com">🌐</a>
+          <a href="dep-27.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 27</div>
+            <div class="dep-card-count">585 sites</div>
+            <div class="dep-card-name">Eure</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-28.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-28.com)" aria-label="Recherche Google site:peintre-en-batiment-28.com">🌐</a>
+          <a href="dep-28.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 28</div>
+            <div class="dep-card-count">365 sites</div>
+            <div class="dep-card-name">Eure-et-Loir</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-29.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-29.com)" aria-label="Recherche Google site:peintre-en-batiment-29.com">🌐</a>
+          <a href="dep-29.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 29</div>
+            <div class="dep-card-count">277 sites</div>
+            <div class="dep-card-name">Finistere</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-30.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-30.com)" aria-label="Recherche Google site:peintre-en-batiment-30.com">🌐</a>
+          <a href="dep-30.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 30</div>
+            <div class="dep-card-count">351 sites</div>
+            <div class="dep-card-name">Gard</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-31.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-31.com)" aria-label="Recherche Google site:peintre-en-batiment-31.com">🌐</a>
+          <a href="dep-31.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 31</div>
+            <div class="dep-card-count">586 sites</div>
+            <div class="dep-card-name">Haute-Garonne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-32.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-32.com)" aria-label="Recherche Google site:peintre-en-batiment-32.com">🌐</a>
+          <a href="dep-32.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 32</div>
+            <div class="dep-card-count">461 sites</div>
+            <div class="dep-card-name">Gers</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-33.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-33.com)" aria-label="Recherche Google site:peintre-en-batiment-33.com">🌐</a>
+          <a href="dep-33.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 33</div>
+            <div class="dep-card-count">535 sites</div>
+            <div class="dep-card-name">Gironde</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-34.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-34.com)" aria-label="Recherche Google site:peintre-en-batiment-34.com">🌐</a>
+          <a href="dep-34.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 34</div>
+            <div class="dep-card-count">342 sites</div>
+            <div class="dep-card-name">Herault</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-35.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-35.com)" aria-label="Recherche Google site:peintre-en-batiment-35.com">🌐</a>
+          <a href="dep-35.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 35</div>
+            <div class="dep-card-count">332 sites</div>
+            <div class="dep-card-name">Ille-et-Vilaine</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-36.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-36.com)" aria-label="Recherche Google site:peintre-en-batiment-36.com">🌐</a>
+          <a href="dep-36.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 36</div>
+            <div class="dep-card-count">241 sites</div>
+            <div class="dep-card-name">Indre</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-37.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-37.com)" aria-label="Recherche Google site:peintre-en-batiment-37.com">🌐</a>
+          <a href="dep-37.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 37</div>
+            <div class="dep-card-count">272 sites</div>
+            <div class="dep-card-name">Indre-et-Loire</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-38.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-38.com)" aria-label="Recherche Google site:peintre-en-batiment-38.com">🌐</a>
+          <a href="dep-38.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 38</div>
+            <div class="dep-card-count">512 sites</div>
+            <div class="dep-card-name">Isere</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-39.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-39.com)" aria-label="Recherche Google site:peintre-en-batiment-39.com">🌐</a>
+          <a href="dep-39.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 39</div>
+            <div class="dep-card-count">494 sites</div>
+            <div class="dep-card-name">Jura</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-40.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-40.com)" aria-label="Recherche Google site:peintre-en-batiment-40.com">🌐</a>
+          <a href="dep-40.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 40</div>
+            <div class="dep-card-count">327 sites</div>
+            <div class="dep-card-name">Landes</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-41.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-41.com)" aria-label="Recherche Google site:peintre-en-batiment-41.com">🌐</a>
+          <a href="dep-41.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 41</div>
+            <div class="dep-card-count">267 sites</div>
+            <div class="dep-card-name">Loir-et-Cher</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-42.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-42.com)" aria-label="Recherche Google site:peintre-en-batiment-42.com">🌐</a>
+          <a href="dep-42.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 42</div>
+            <div class="dep-card-count">323 sites</div>
+            <div class="dep-card-name">Loire</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-43.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-43.com)" aria-label="Recherche Google site:peintre-en-batiment-43.com">🌐</a>
+          <a href="dep-43.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 43</div>
+            <div class="dep-card-count">257 sites</div>
+            <div class="dep-card-name">Haute-Loire</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-44.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-44.com)" aria-label="Recherche Google site:peintre-en-batiment-44.com">🌐</a>
+          <a href="dep-44.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 44</div>
+            <div class="dep-card-count">207 sites</div>
+            <div class="dep-card-name">Loire-Atlantique</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-45.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-45.com)" aria-label="Recherche Google site:peintre-en-batiment-45.com">🌐</a>
+          <a href="dep-45.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 45</div>
+            <div class="dep-card-count">325 sites</div>
+            <div class="dep-card-name">Loiret</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-46.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-46.com)" aria-label="Recherche Google site:peintre-en-batiment-46.com">🌐</a>
+          <a href="dep-46.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 46</div>
+            <div class="dep-card-count">313 sites</div>
+            <div class="dep-card-name">Lot</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-47.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-47.com)" aria-label="Recherche Google site:peintre-en-batiment-47.com">🌐</a>
+          <a href="dep-47.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 47</div>
+            <div class="dep-card-count">319 sites</div>
+            <div class="dep-card-name">Lot-et-Garonne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-48.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-48.com)" aria-label="Recherche Google site:peintre-en-batiment-48.com">🌐</a>
+          <a href="dep-48.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 48</div>
+            <div class="dep-card-count">152 sites</div>
+            <div class="dep-card-name">Lozere</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-49.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-49.com)" aria-label="Recherche Google site:peintre-en-batiment-49.com">🌐</a>
+          <a href="dep-49.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 49</div>
+            <div class="dep-card-count">176 sites</div>
+            <div class="dep-card-name">Maine-et-Loire</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-50.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-50.com)" aria-label="Recherche Google site:peintre-en-batiment-50.com">🌐</a>
+          <a href="dep-50.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 50</div>
+            <div class="dep-card-count">445 sites</div>
+            <div class="dep-card-name">Manche</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-51.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-51.com)" aria-label="Recherche Google site:peintre-en-batiment-51.com">🌐</a>
+          <a href="dep-51.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 51</div>
+            <div class="dep-card-count">611 sites</div>
+            <div class="dep-card-name">Marne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-52.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-52.com)" aria-label="Recherche Google site:peintre-en-batiment-52.com">🌐</a>
+          <a href="dep-52.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 52</div>
+            <div class="dep-card-count">426 sites</div>
+            <div class="dep-card-name">Haute-Marne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-53.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-53.com)" aria-label="Recherche Google site:peintre-en-batiment-53.com">🌐</a>
+          <a href="dep-53.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 53</div>
+            <div class="dep-card-count">240 sites</div>
+            <div class="dep-card-name">Mayenne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-54.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-54.com)" aria-label="Recherche Google site:peintre-en-batiment-54.com">🌐</a>
+          <a href="dep-54.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 54</div>
+            <div class="dep-card-count">591 sites</div>
+            <div class="dep-card-name">Meurthe-et-Moselle</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-55.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-55.com)" aria-label="Recherche Google site:peintre-en-batiment-55.com">🌐</a>
+          <a href="dep-55.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 55</div>
+            <div class="dep-card-count">499 sites</div>
+            <div class="dep-card-name">Meuse</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-56.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-56.com)" aria-label="Recherche Google site:peintre-en-batiment-56.com">🌐</a>
+          <a href="dep-56.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 56</div>
+            <div class="dep-card-count">249 sites</div>
+            <div class="dep-card-name">Morbihan</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-57.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-57.com)" aria-label="Recherche Google site:peintre-en-batiment-57.com">🌐</a>
+          <a href="dep-57.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 57</div>
+            <div class="dep-card-count">725 sites</div>
+            <div class="dep-card-name">Moselle</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-58.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-58.com)" aria-label="Recherche Google site:peintre-en-batiment-58.com">🌐</a>
+          <a href="dep-58.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 58</div>
+            <div class="dep-card-count">309 sites</div>
+            <div class="dep-card-name">Nievre</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-59.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-59.com)" aria-label="Recherche Google site:peintre-en-batiment-59.com">🌐</a>
+          <a href="dep-59.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 59</div>
+            <div class="dep-card-count">648 sites</div>
+            <div class="dep-card-name">Nord</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-60.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-60.com)" aria-label="Recherche Google site:peintre-en-batiment-60.com">🌐</a>
+          <a href="dep-60.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 60</div>
+            <div class="dep-card-count">680 sites</div>
+            <div class="dep-card-name">Oise</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-61.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-61.com)" aria-label="Recherche Google site:peintre-en-batiment-61.com">🌐</a>
+          <a href="dep-61.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 61</div>
+            <div class="dep-card-count">385 sites</div>
+            <div class="dep-card-name">Orne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-62.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-62.com)" aria-label="Recherche Google site:peintre-en-batiment-62.com">🌐</a>
+          <a href="dep-62.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 62</div>
+            <div class="dep-card-count">890 sites</div>
+            <div class="dep-card-name">Pas-de-Calais</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-63.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-63.com)" aria-label="Recherche Google site:peintre-en-batiment-63.com">🌐</a>
+          <a href="dep-63.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 63</div>
+            <div class="dep-card-count">464 sites</div>
+            <div class="dep-card-name">Puy-de-Dome</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-64.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-64.com)" aria-label="Recherche Google site:peintre-en-batiment-64.com">🌐</a>
+          <a href="dep-64.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 64</div>
+            <div class="dep-card-count">545 sites</div>
+            <div class="dep-card-name">Pyrenees-Atlantiques</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-65.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-65.com)" aria-label="Recherche Google site:peintre-en-batiment-65.com">🌐</a>
+          <a href="dep-65.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 65</div>
+            <div class="dep-card-count">469 sites</div>
+            <div class="dep-card-name">Hautes-Pyrenees</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-66.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-66.com)" aria-label="Recherche Google site:peintre-en-batiment-66.com">🌐</a>
+          <a href="dep-66.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 66</div>
+            <div class="dep-card-count">226 sites</div>
+            <div class="dep-card-name">Pyrenees-Orientales</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-67.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-67.com)" aria-label="Recherche Google site:peintre-en-batiment-67.com">🌐</a>
+          <a href="dep-67.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 67</div>
+            <div class="dep-card-count">514 sites</div>
+            <div class="dep-card-name">Bas-Rhin</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-68.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-68.com)" aria-label="Recherche Google site:peintre-en-batiment-68.com">🌐</a>
+          <a href="dep-68.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 68</div>
+            <div class="dep-card-count">366 sites</div>
+            <div class="dep-card-name">Haut-Rhin</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-69.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-69.com)" aria-label="Recherche Google site:peintre-en-batiment-69.com">🌐</a>
+          <a href="dep-69.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 69</div>
+            <div class="dep-card-count">266 sites</div>
+            <div class="dep-card-name">Rhone</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-70.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-70.com)" aria-label="Recherche Google site:peintre-en-batiment-70.com">🌐</a>
+          <a href="dep-70.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 70</div>
+            <div class="dep-card-count">539 sites</div>
+            <div class="dep-card-name">Haute-Saone</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-71.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-71.com)" aria-label="Recherche Google site:peintre-en-batiment-71.com">🌐</a>
+          <a href="dep-71.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 71</div>
+            <div class="dep-card-count">564 sites</div>
+            <div class="dep-card-name">Saone-et-Loire</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-72.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-72.com)" aria-label="Recherche Google site:peintre-en-batiment-72.com">🌐</a>
+          <a href="dep-72.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 72</div>
+            <div class="dep-card-count">354 sites</div>
+            <div class="dep-card-name">Sarthe</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-73.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-73.com)" aria-label="Recherche Google site:peintre-en-batiment-73.com">🌐</a>
+          <a href="dep-73.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 73</div>
+            <div class="dep-card-count">273 sites</div>
+            <div class="dep-card-name">Savoie</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-74.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-74.com)" aria-label="Recherche Google site:peintre-en-batiment-74.com">🌐</a>
+          <a href="dep-74.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 74</div>
+            <div class="dep-card-count">279 sites</div>
+            <div class="dep-card-name">Haute-Savoie</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-75.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-75.com)" aria-label="Recherche Google site:peintre-en-batiment-75.com">🌐</a>
+          <a href="dep-75.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 75</div>
+            <div class="dep-card-count">20 sites</div>
+            <div class="dep-card-name">Paris</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-76.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-76.com)" aria-label="Recherche Google site:peintre-en-batiment-76.com">🌐</a>
+          <a href="dep-76.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 76</div>
+            <div class="dep-card-count">708 sites</div>
+            <div class="dep-card-name">Seine-Maritime</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-77.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-77.com)" aria-label="Recherche Google site:peintre-en-batiment-77.com">🌐</a>
+          <a href="dep-77.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 77</div>
+            <div class="dep-card-count">507 sites</div>
+            <div class="dep-card-name">Seine-et-Marne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-78.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-78.com)" aria-label="Recherche Google site:peintre-en-batiment-78.com">🌐</a>
+          <a href="dep-78.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 78</div>
+            <div class="dep-card-count">259 sites</div>
+            <div class="dep-card-name">Yvelines</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-79.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-79.com)" aria-label="Recherche Google site:peintre-en-batiment-79.com">🌐</a>
+          <a href="dep-79.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 79</div>
+            <div class="dep-card-count">256 sites</div>
+            <div class="dep-card-name">Deux-Sevres</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-80.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-80.com)" aria-label="Recherche Google site:peintre-en-batiment-80.com">🌐</a>
+          <a href="dep-80.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 80</div>
+            <div class="dep-card-count">772 sites</div>
+            <div class="dep-card-name">Somme</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-81.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-81.com)" aria-label="Recherche Google site:peintre-en-batiment-81.com">🌐</a>
+          <a href="dep-81.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 81</div>
+            <div class="dep-card-count">314 sites</div>
+            <div class="dep-card-name">Tarn</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-82.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-82.com)" aria-label="Recherche Google site:peintre-en-batiment-82.com">🌐</a>
+          <a href="dep-82.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 82</div>
+            <div class="dep-card-count">195 sites</div>
+            <div class="dep-card-name">Tarn-et-Garonne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-83.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-83.com)" aria-label="Recherche Google site:peintre-en-batiment-83.com">🌐</a>
+          <a href="dep-83.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 83</div>
+            <div class="dep-card-count">153 sites</div>
+            <div class="dep-card-name">Var</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-84.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-84.com)" aria-label="Recherche Google site:peintre-en-batiment-84.com">🌐</a>
+          <a href="dep-84.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 84</div>
+            <div class="dep-card-count">151 sites</div>
+            <div class="dep-card-name">Vaucluse</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-85.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-85.com)" aria-label="Recherche Google site:peintre-en-batiment-85.com">🌐</a>
+          <a href="dep-85.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 85</div>
+            <div class="dep-card-count">255 sites</div>
+            <div class="dep-card-name">Vendee</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-86.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-86.com)" aria-label="Recherche Google site:peintre-en-batiment-86.com">🌐</a>
+          <a href="dep-86.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 86</div>
+            <div class="dep-card-count">265 sites</div>
+            <div class="dep-card-name">Vienne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-87.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-87.com)" aria-label="Recherche Google site:peintre-en-batiment-87.com">🌐</a>
+          <a href="dep-87.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 87</div>
+            <div class="dep-card-count">195 sites</div>
+            <div class="dep-card-name">Haute-Vienne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-88.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-88.com)" aria-label="Recherche Google site:peintre-en-batiment-88.com">🌐</a>
+          <a href="dep-88.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 88</div>
+            <div class="dep-card-count">507 sites</div>
+            <div class="dep-card-name">Vosges</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-89.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-89.com)" aria-label="Recherche Google site:peintre-en-batiment-89.com">🌐</a>
+          <a href="dep-89.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 89</div>
+            <div class="dep-card-count">423 sites</div>
+            <div class="dep-card-name">Yonne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-90.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-90.com)" aria-label="Recherche Google site:peintre-en-batiment-90.com">🌐</a>
+          <a href="dep-90.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 90</div>
+            <div class="dep-card-count">101 sites</div>
+            <div class="dep-card-name">Territoire de Belfort</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-91.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-91.com)" aria-label="Recherche Google site:peintre-en-batiment-91.com">🌐</a>
+          <a href="dep-91.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 91</div>
+            <div class="dep-card-count">194 sites</div>
+            <div class="dep-card-name">Essonne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-92.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-92.com)" aria-label="Recherche Google site:peintre-en-batiment-92.com">🌐</a>
+          <a href="dep-92.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 92</div>
+            <div class="dep-card-count">36 sites</div>
+            <div class="dep-card-name">Hauts-de-Seine</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-93.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-93.com)" aria-label="Recherche Google site:peintre-en-batiment-93.com">🌐</a>
+          <a href="dep-93.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 93</div>
+            <div class="dep-card-count">40 sites</div>
+            <div class="dep-card-name">Seine-Saint-Denis</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-94.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-94.com)" aria-label="Recherche Google site:peintre-en-batiment-94.com">🌐</a>
+          <a href="dep-94.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 94</div>
+            <div class="dep-card-count">47 sites</div>
+            <div class="dep-card-name">Val-de-Marne</div>
+          </a>
+        </div>
+
+        <div class="dep-card">
+          <a href="https://www.google.com/search?q=site:peintre-en-batiment-95.com" target="_blank" rel="noopener" class="dep-card-icon" title="Pages indexées sur Google (site:peintre-en-batiment-95.com)" aria-label="Recherche Google site:peintre-en-batiment-95.com">🌐</a>
+          <a href="dep-95.html" class="dep-card-main">
+            <div class="dep-card-title">Peintre en Bâtiment 95</div>
+            <div class="dep-card-count">183 sites</div>
+            <div class="dep-card-name">Val-d-Oise</div>
+          </a>
+        </div>
     </div>
   </main>
 
