@@ -6,8 +6,8 @@
  * et villes générés (pas besoin de maintenir un deployed.json).
  *
  * Patterns d'URL :
- *   Site dépt  : pv-{XX}.fr
- *   Site ville : {ville-slug}.pv-{XX}.fr
+ *   Site dépt  : entreprise-de-nettoyage-{XX}.fr
+ *   Site ville : {ville-slug}.entreprise-de-nettoyage-{XX}.fr
  *
  * Usage : node dashboard-peintre/entreprise-de-nettoyage/generate-dashboard.js
  */
@@ -59,7 +59,7 @@ function encodeQ(str) {
 }
 
 // ─── Exceptions : départements en domaine mutualisé entreprise-de-nettoyage-france.fr ────────────
-// Liste des codes département qui utilisent entreprise-de-nettoyage-france.fr au lieu de pv-{XX}.fr
+// Liste des codes département qui utilisent entreprise-de-nettoyage-france.fr au lieu de entreprise-de-nettoyage-{XX}.fr
 const FRANCE_MUTUAL_CODES = new Set();
 
 function isFranceMutual(code) {
@@ -67,7 +67,7 @@ function isFranceMutual(code) {
 }
 
 function buildDomainBase(code) {
-  return isFranceMutual(code) ? 'entreprise-de-nettoyage-france.fr' : `pv-${depCode2(code)}.fr`;
+  return isFranceMutual(code) ? 'entreprise-de-nettoyage-france.fr' : `entreprise-de-nettoyage-${depCode2(code)}.fr`;
 }
 
 // URL d'un site ville. En mode france, on s'assure que le suffixe -{xx}
