@@ -161,6 +161,12 @@
     .card--ent-nettoyage:hover {
       border-color: rgba(201, 169, 97, 0.45);
     }
+    .card--femme-menage .cta {
+      background: linear-gradient(135deg, #5B7F61, #1F2D24);
+    }
+    .card--femme-menage:hover {
+      border-color: rgba(91, 127, 97, 0.45);
+    }
 
     @media (max-width: 1100px) {
       .cards { grid-template-columns: repeat(3, 1fr); }
@@ -232,6 +238,17 @@
         <img src="assets/logo-entreprise-nettoyage.webp" alt="Entreprise de nettoyage" loading="lazy" onerror="this.style.display='none'">
       </div>
       <h2>Entreprise de nettoyage</h2>
+      <span class="cta">
+        Ouvrir le dashboard
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </span>
+    </a>
+
+    <a href="femme-de-menage/index.html" class="card card--femme-menage">
+      <div class="logo-wrap">
+        <img src="assets/logo-femme-menage.webp" alt="Femme de ménage" loading="lazy" onerror="this.style.display='none'">
+      </div>
+      <h2>Femme de ménage</h2>
       <span class="cta">
         Ouvrir le dashboard
         <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
